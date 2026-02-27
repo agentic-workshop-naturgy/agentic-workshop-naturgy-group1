@@ -5,19 +5,19 @@ export const DRAWER_WIDTH = 240;
 export const theme = createTheme({
   palette: {
     primary: {
+      main: '#F5831F',
+      light: '#F9A55A',
+      dark: '#C45E0A',
+      contrastText: '#ffffff',
+    },
+    secondary: {
       main: '#1a2744',
       light: '#2e3f6e',
       dark: '#0d1526',
       contrastText: '#ffffff',
     },
-    secondary: {
-      main: '#00a650',
-      light: '#4fc87f',
-      dark: '#007835',
-      contrastText: '#ffffff',
-    },
     background: {
-      default: '#f5f6fa',
+      default: '#FFF8F2',
       paper: '#ffffff',
     },
   },

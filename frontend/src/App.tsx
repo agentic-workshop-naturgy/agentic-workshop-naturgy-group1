@@ -112,7 +112,7 @@ export function App() {
         }}
       >
         <Toolbar sx={{ px: 2 }}>
-          <GasMeterIcon sx={{ mr: 1, color: 'secondary.light' }} />
+          <GasMeterIcon sx={{ mr: 1, color: 'inherit' }} />
           <Typography variant="h6" fontWeight={700} color="inherit">
             GAS Workshop
           </Typography>
