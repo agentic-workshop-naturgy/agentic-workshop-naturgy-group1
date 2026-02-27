@@ -17,9 +17,38 @@ The spec defines `taxCode` as PK. Only one row per taxCode is stored.
 Future effective-date versioning should use a composite key (taxCode, vigencia_desde)
 or a new table – noted here for the backend-scaffold agent.
 
-## Invoice / InvoiceLine tables
-These are created empty at startup. They will be populated by the billing service
-(to be implemented by backend-scaffold agent).
+## API layer clarifications (backend-scaffold agent)
+
+### BillingError persistence
+Per-CUPS billing errors are stored in `billing_errors` table (entity BillingError).
+Errors for a period are deleted before each re-run (idempotent).
+
+### Idempotency for invoices
+On re-run of a period, existing invoices are updated in-place (same numero_factura kept stable).
+Lines are replaced (orphan removal via CascadeType.ALL on Invoice.lines).
+
+### Invoice number sequence
+Format: GAS-{YYYYMM}-{CUPS}-{seq}
+seq is computed as: count of existing invoices starting with "GAS-{YYYYMM}-" + 1 at creation time.
+On re-run (update), the existing numero_factura is preserved.
+
+### PDF character set
+PDFBox Type1 fonts (Helvetica) use WinAnsiEncoding. Only Latin-1 characters are used.
+Arrow symbol '→' replaced with ASCII '->'.
+
+### GasTariff uniqueness
+GasTariff.tarifa is the PK (single effective row per tarifa code in current schema).
+The `findEffective` query selects max(vigencia_desde) <= period_end, so adding multiple rows
+per tarifa (for future date versioning) would work transparently.
+
+### Lazy loading
+Invoice.lines is LAZY. InvoiceRepository.findByIdWithLines() uses JOIN FETCH for the
+GET /invoices/{id} and GET /invoices/{id}/pdf endpoints.
+
+### alquiler_eur
+Workshop default: 0.00 (not stored in DB; hardcoded to BigDecimal.ZERO in BillingService).
+No ALQUILER invoice line is created when alquiler = 0 (per logic-spec: "only if alquiler_eur > 0").
+
 
 ## Path resolution
 The DataSeeder resolves `_data/db/samples/` by walking up from the JVM working directory
