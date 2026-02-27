@@ -136,7 +136,7 @@ frontend/
 │   ├── main.tsx            # entry point (StrictMode + Providers)
 │   ├── App.tsx             # AppShell: Drawer + AppBar + routing por estado
 │   ├── app/
-│   │   ├── theme.ts        # Naturgy navy + green, MUI v7
+│   │   ├── theme.ts        # Naturgy orange (#F5831F) + navy, MUI v7
 │   │   └── providers.tsx   # ThemeProvider + CssBaseline
 │   ├── shared/
 │   │   ├── api/httpClient.ts   # fetch wrapper + error mapping
