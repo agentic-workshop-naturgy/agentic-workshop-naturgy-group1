@@ -1,6 +1,6 @@
 ---
 name: backend-scaffold
-description: Implementa backend Spring Boot para workshop GAS: lecturas m³ → kWh, tarifas fijo/variable, IVA parametrizable, facturas (cabecera/líneas) y PDF listo para enviar/archivo.
+description: "Implementa backend Spring Boot para workshop GAS: lecturas m³ → kWh, tarifas fijo/variable, IVA parametrizable, facturas (cabecera/líneas) y PDF listo para enviar/archivo."
 tools:
   - read
   - search
