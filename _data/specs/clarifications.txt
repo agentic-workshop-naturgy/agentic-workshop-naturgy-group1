@@ -1,0 +1,26 @@
+# DB Scaffold – Clarifications & Notes
+# Generated: 2026-02-27
+
+## CSV loading behavior when a file is missing
+If any CSV under `_data/db/samples/` is absent at boot time, the DataSeeder will:
+- Log a WARN message: "CSV not found: <path> — skipping (app still boots)"
+- Continue booting normally (no exception thrown)
+This ensures the app can start even in partially-provisioned environments.
+
+## gas-readings.csv: orphan readings accepted
+The sample file contains a reading for CUPS `ES0021000000003CD` which does NOT appear in
+`supply-points.csv`. The seeder stores it anyway (no FK at DB level for cups in gas_readings),
+keeping flexibility for future validation in the billing service layer.
+
+## taxCode uniqueness
+The spec defines `taxCode` as PK. Only one row per taxCode is stored.
+Future effective-date versioning should use a composite key (taxCode, vigencia_desde)
+or a new table – noted here for the backend-scaffold agent.
+
+## Invoice / InvoiceLine tables
+These are created empty at startup. They will be populated by the billing service
+(to be implemented by backend-scaffold agent).
+
+## Path resolution
+The DataSeeder resolves `_data/db/samples/` by walking up from the JVM working directory
+(up to 5 levels). This works whether the app is started from `backend/` or the repo root.
