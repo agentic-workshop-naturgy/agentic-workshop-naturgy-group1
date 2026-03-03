@@ -9,10 +9,17 @@ public record GasTariffDto(
         String tarifa,
         BigDecimal fijoMesEur,
         BigDecimal variableEurKwh,
-        LocalDate vigenciaDesde
+        LocalDate vigenciaDesde,
+        String tipo
 ) {
     public static GasTariffDto from(GasTariff e) {
-        return new GasTariffDto(e.getTarifa(), e.getFijoMesEur(), e.getVariableEurKwh(), e.getVigenciaDesde());
+        return new GasTariffDto(
+                e.getTarifa(),
+                e.getFijoMesEur(),
+                e.getVariableEurKwh(),
+                e.getVigenciaDesde(),
+                e.getTipo().name()
+        );
     }
 
     public GasTariff toEntity() {
@@ -21,6 +28,7 @@ public record GasTariffDto(
         gt.setFijoMesEur(fijoMesEur);
         gt.setVariableEurKwh(variableEurKwh);
         gt.setVigenciaDesde(vigenciaDesde);
+        gt.setTipo(tipo != null ? GasTariff.TipoTarifa.valueOf(tipo) : GasTariff.TipoTarifa.GAS);
         return gt;
     }
 }

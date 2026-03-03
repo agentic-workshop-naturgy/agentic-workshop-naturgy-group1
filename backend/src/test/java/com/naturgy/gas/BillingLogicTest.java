@@ -144,4 +144,49 @@ class BillingLogicTest {
 
         assertThat(shouldError).isTrue();
     }
+
+    // ---- Dual energy discount ----
+
+    @Test
+    void dualDiscount_10percent_appliedToBase() {
+        BigDecimal costeFijo = new BigDecimal("3.85");
+        BigDecimal costeVariable = new BigDecimal("2.62");
+        BigDecimal alquiler = BigDecimal.ZERO;
+        BigDecimal base = costeFijo.add(costeVariable).add(alquiler).setScale(2, RoundingMode.HALF_UP);
+        // base = 6.47
+
+        BigDecimal discountRate = new BigDecimal("0.10");
+        BigDecimal descuento = base.multiply(discountRate).setScale(2, RoundingMode.HALF_UP);
+        // 6.47 * 0.10 = 0.647 -> 0.65
+        assertThat(descuento).isEqualByComparingTo("0.65");
+
+        BigDecimal baseDescontada = base.subtract(descuento).setScale(2, RoundingMode.HALF_UP);
+        // 6.47 - 0.65 = 5.82
+        assertThat(baseDescontada).isEqualByComparingTo("5.82");
+    }
+
+    @Test
+    void dualDiscount_ivaCalculatedOnDiscountedBase() {
+        BigDecimal baseDescontada = new BigDecimal("5.82");
+        BigDecimal ivaRate = new BigDecimal("0.21");
+
+        BigDecimal impuestos = baseDescontada.multiply(ivaRate).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = baseDescontada.add(impuestos).setScale(2, RoundingMode.HALF_UP);
+
+        // 5.82 * 0.21 = 1.2222 -> 1.22
+        assertThat(impuestos).isEqualByComparingTo("1.22");
+        // 5.82 + 1.22 = 7.04
+        assertThat(total).isEqualByComparingTo("7.04");
+    }
+
+    @Test
+    void dualDiscount_notApplied_forGasTariff() {
+        BigDecimal base = new BigDecimal("7.91");
+        boolean isCombinada = false;
+        BigDecimal descuento = BigDecimal.ZERO;
+        if (isCombinada) {
+            descuento = base.multiply(new BigDecimal("0.10")).setScale(2, RoundingMode.HALF_UP);
+        }
+        assertThat(descuento).isEqualByComparingTo("0.00");
+    }
 }

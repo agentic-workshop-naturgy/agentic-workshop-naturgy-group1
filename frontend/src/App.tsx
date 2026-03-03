@@ -18,6 +18,8 @@ import TransformIcon from '@mui/icons-material/Transform';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import DescriptionIcon from '@mui/icons-material/Description';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import RecommendIcon from '@mui/icons-material/Recommend';
 import { DRAWER_WIDTH } from './app/theme';
 import { SupplyPointsPage } from './features/supplyPoints/SupplyPointsPage';
 import { ReadingsPage } from './features/readings/ReadingsPage';
@@ -26,6 +28,8 @@ import { ConversionFactorsPage } from './features/conversionFactors/ConversionFa
 import { TaxesPage } from './features/taxes/TaxesPage';
 import { BillingPage } from './features/billing/BillingPage';
 import { InvoicesPage } from './features/invoices/InvoicesPage';
+import { ConsumptionChartPage } from './features/consumptionChart/ConsumptionChartPage';
+import { TariffRecommenderPage } from './features/tariffRecommender/TariffRecommenderPage';
 
 type PageKey =
   | 'supply-points'
@@ -34,7 +38,9 @@ type PageKey =
   | 'conversion-factors'
   | 'taxes'
   | 'billing'
-  | 'invoices';
+  | 'invoices'
+  | 'consumption-chart'
+  | 'tariff-recommender';
 
 interface NavItem {
   key: PageKey;
@@ -49,6 +55,8 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'tariffs', label: 'Tarifario', icon: <LocalOfferIcon /> },
   { key: 'conversion-factors', label: 'Factores Conversión', icon: <TransformIcon /> },
   { key: 'taxes', label: 'Impuestos (IVA)', icon: <AccountBalanceIcon /> },
+  { key: 'consumption-chart', label: 'Gráfico Consumo', icon: <BarChartIcon />, section: 'Análisis' },
+  { key: 'tariff-recommender', label: 'Recomendador Tarifa', icon: <RecommendIcon /> },
   { key: 'billing', label: 'Facturación', icon: <RequestQuoteIcon />, section: 'Facturación' },
   { key: 'invoices', label: 'Facturas', icon: <DescriptionIcon /> },
 ];
@@ -59,6 +67,8 @@ const PAGE_TITLES: Record<PageKey, string> = {
   tariffs: 'Tarifario',
   'conversion-factors': 'Factores de Conversión',
   taxes: 'Impuestos (IVA)',
+  'consumption-chart': 'Gráfico de Consumo',
+  'tariff-recommender': 'Recomendador de Tarifa',
   billing: 'Ejecutar Facturación',
   invoices: 'Facturas',
 };
@@ -72,6 +82,8 @@ function renderPage(page: PageKey): React.ReactNode {
     case 'taxes': return <TaxesPage />;
     case 'billing': return <BillingPage />;
     case 'invoices': return <InvoicesPage />;
+    case 'consumption-chart': return <ConsumptionChartPage />;
+    case 'tariff-recommender': return <TariffRecommenderPage />;
   }
 }
 
@@ -93,7 +105,7 @@ export function App() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Typography variant="body2" sx={{ opacity: 0.7 }}>
-            GAS Workshop · Naturgy
+            Gas Billing · Naturgy
           </Typography>
         </Toolbar>
       </AppBar>
@@ -111,11 +123,13 @@ export function App() {
           },
         }}
       >
-        <Toolbar sx={{ px: 2 }}>
-          <GasMeterIcon sx={{ mr: 1, color: 'inherit' }} />
-          <Typography variant="h6" fontWeight={700} color="inherit">
-            GAS Workshop
-          </Typography>
+        <Toolbar sx={{ px: 2, py: 1.5, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Box
+            component="img"
+            src="/naturgy-logo-white.svg"
+            alt="Naturgy"
+            sx={{ height: 36, width: 'auto' }}
+          />
         </Toolbar>
         <Divider sx={{ borderColor: 'rgba(255,255,255,0.15)' }} />
 
@@ -142,8 +156,10 @@ export function App() {
                       mb: 0.5,
                       color: 'inherit',
                       '&.Mui-selected': {
-                        bgcolor: 'secondary.main',
-                        '&:hover': { bgcolor: 'secondary.dark' },
+                        bgcolor: 'rgba(100, 190, 40, 0.2)',
+                        borderLeft: '3px solid',
+                        borderColor: 'secondary.main',
+                        '&:hover': { bgcolor: 'rgba(100, 190, 40, 0.3)' },
                       },
                       '&:hover': { bgcolor: 'rgba(255,255,255,0.08)' },
                     }}

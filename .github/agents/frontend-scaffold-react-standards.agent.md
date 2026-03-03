@@ -2,10 +2,7 @@
 name: frontend-scaffold-react-standards
 description: Builds or refactors the React/Vite UI following Naturgy React standards defined in the GitHub Copilot Space "React-Standards". Produces a runbook.
 tools:
-  - read
-  - search
-  - edit
-  - execute
+  [execute/runNotebookCell, execute/testFailure, execute/getTerminalOutput, execute/awaitTerminal, execute/killTerminal, execute/createAndRunTask, execute/runTests, execute/runInTerminal, read/getNotebookSummary, read/problems, read/readFile, read/terminalSelection, read/terminalLastCommand, edit/createDirectory, edit/createFile, edit/createJupyterNotebook, edit/editFiles, edit/editNotebook, search/changes, search/codebase, search/fileSearch, search/listDirectory, search/searchResults, search/textSearch, search/usages, search/searchSubagent, web/fetch, web/githubRepo]
 ---
 ## Goal
 Build (or restyle) the workshop React/Vite UI following the Naturgy React standards defined in the Copilot Space "React-Standards", and end with a short runbook to launch and test end-to-end.

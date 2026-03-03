@@ -5,31 +5,53 @@ export const DRAWER_WIDTH = 240;
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#F5831F',
-      light: '#F9A55A',
-      dark: '#C45E0A',
+      main: '#002855',
+      light: '#1A4A7A',
+      dark: '#001B3D',
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#1a2744',
-      light: '#2e3f6e',
-      dark: '#0d1526',
+      main: '#64BE28',
+      light: '#7ED348',
+      dark: '#4A9A1E',
       contrastText: '#ffffff',
     },
+    warning: {
+      main: '#F39200',
+      light: '#F5A833',
+      dark: '#C47600',
+    },
     background: {
-      default: '#FFF8F2',
+      default: '#F5F5F5',
       paper: '#ffffff',
+    },
+    text: {
+      primary: '#333333',
+      secondary: '#666666',
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"FSEmeric", Arial, Helvetica, sans-serif',
     h4: { fontWeight: 600 },
+    h5: { fontWeight: 600 },
     h6: { fontWeight: 600 },
   },
   shape: { borderRadius: 8 },
   components: {
     MuiButton: {
       defaultProps: { disableElevation: true },
+      styleOverrides: {
+        containedSecondary: {
+          '&:hover': { backgroundColor: '#7ED348' },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: '#002855',
+        },
+      },
     },
   },
 });

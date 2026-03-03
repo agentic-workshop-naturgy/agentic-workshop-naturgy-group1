@@ -26,6 +26,9 @@ public class SupplyPoint {
     @Column(nullable = false, length = 10)
     private EstadoSupply estado;
 
+    @Column(nullable = false)
+    private boolean servigas = false;
+
     public enum EstadoSupply {
         ACTIVO, INACTIVO
     }

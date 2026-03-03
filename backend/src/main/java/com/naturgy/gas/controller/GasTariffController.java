@@ -45,6 +45,7 @@ public class GasTariffController {
         gt.setFijoMesEur(dto.fijoMesEur());
         gt.setVariableEurKwh(dto.variableEurKwh());
         gt.setVigenciaDesde(dto.vigenciaDesde());
+        gt.setTipo(dto.tipo() != null ? GasTariff.TipoTarifa.valueOf(dto.tipo()) : gt.getTipo());
         return GasTariffDto.from(repo.save(gt));
     }
 

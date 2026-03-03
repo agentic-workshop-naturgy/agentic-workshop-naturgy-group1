@@ -144,4 +144,35 @@ class BillingIntegrationTest {
         assertThat(result.invoicesCreated()).isEqualTo(0);
         assertThat(result.invoicesUpdated()).isEqualTo(0);
     }
+
+    @Test
+    @Transactional
+    void billingRun_dualTariff_appliesDiscountLine() {
+        billingService.runBilling("2026-02");
+
+        // CUPS CC now has RL1-DUAL (COMBINADA) tariff
+        Optional<Invoice> invoiceOpt = invoiceRepository.findByCupsAndPeriodoInicio(
+                "ES0021000000003CC",
+                java.time.LocalDate.of(2026, 2, 1)
+        );
+        assertThat(invoiceOpt).isPresent();
+
+        Invoice inv = invoiceOpt.get();
+        List<InvoiceLine> lines = inv.getLines();
+
+        // Should have 4 lines: TERMINO_FIJO, TERMINO_VARIABLE, DESCUENTO_DUAL, IVA
+        assertThat(lines).hasSize(4);
+
+        boolean hasDescuento = lines.stream()
+                .anyMatch(l -> l.getTipoLinea() == InvoiceLine.TipoLinea.DESCUENTO_DUAL);
+        assertThat(hasDescuento).as("Combined tariff should have DESCUENTO_DUAL line").isTrue();
+
+        InvoiceLine descuentoLine = lines.stream()
+                .filter(l -> l.getTipoLinea() == InvoiceLine.TipoLinea.DESCUENTO_DUAL)
+                .findFirst().orElseThrow();
+
+        // Discount should be negative
+        assertThat(descuentoLine.getImporte().compareTo(java.math.BigDecimal.ZERO))
+                .as("Discount importe should be negative").isLessThan(0);
+    }
 }

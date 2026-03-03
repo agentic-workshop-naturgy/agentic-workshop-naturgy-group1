@@ -27,4 +27,12 @@ public class GasTariff {
 
     @Column(name = "vigencia_desde", nullable = false)
     private LocalDate vigenciaDesde;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private TipoTarifa tipo = TipoTarifa.GAS;
+
+    public enum TipoTarifa {
+        GAS, COMBINADA
+    }
 }

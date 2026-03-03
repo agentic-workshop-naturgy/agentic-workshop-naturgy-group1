@@ -46,7 +46,7 @@ class SmokeTest {
     @Test
     void gasTariffsSeedLoaded() {
         long count = gasTariffRepository.count();
-        assertThat(count).as("gas_tariffs should have 3 rows from sample CSV").isEqualTo(3);
+        assertThat(count).as("gas_tariffs should have 5 rows from sample CSV (3 GAS + 2 COMBINADA)").isEqualTo(5);
     }
 
     @Test

@@ -37,15 +37,34 @@ Rules:
 - Business logic stays in feature services/helpers.
 - `shared/ui` must not include business rules.
 
-## Theme & tokens (Naturgy)
+## Theme & tokens (Naturgy brand)
 - Define a single theme in `frontend/src/app/theme.ts`.
 - Use semantic tokens (not raw colors in components).
 
-Suggested defaults (can be adjusted later):
-- Primary: dark/navy for headers/sidebar
-- Secondary: green for CTA
-- Background: light neutral
-- Typography: default MUI with slight adjustments
+### Brand colors (from www.naturgy.es)
+| Token | Hex | Usage |
+|---|---|---|
+| primary.main | `#002855` | Sidebar, AppBar, main header backgrounds |
+| primary.light | `#1A4A7A` | Hover states on dark surfaces |
+| primary.dark | `#001B3D` | Pressed / active sidebar items |
+| secondary.main | `#64BE28` | CTA buttons, success accents |
+| secondary.light | `#7ED348` | Hover on green buttons |
+| secondary.dark | `#4A9A1E` | Pressed green buttons |
+| warning.main | `#F39200` | Highlights, badges, brand-accent orange |
+| background.default | `#F5F5F5` | Main content area background |
+| background.paper | `#FFFFFF` | Cards, dialogs, paper surfaces |
+| text.primary | `#333333` | Body text |
+| text.secondary | `#666666` | Secondary/caption text |
+
+### Typography
+- Font family: **"Inter"** (Google Fonts) as primary; fallback: `"Helvetica Neue", Arial, sans-serif`.
+- Load via `<link>` in `index.html` or `@import` in CSS.
+- h4–h6: fontWeight 600.
+
+### Logo
+- Naturgy SVG logo displayed in the sidebar header.
+- Source: `public/naturgy-logo.svg` (inline SVG, white version for dark sidebar).
+- Dimensions: constrained to max-height 32px in sidebar.
 
 Must:
 - Centralize colors, spacing and typography in the theme.

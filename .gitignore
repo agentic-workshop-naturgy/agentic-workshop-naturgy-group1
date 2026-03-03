@@ -1,0 +1,17 @@
+# Build outputs
+**/build/
+**/target/
+**/.gradle/
+
+# Node
+**/node_modules/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

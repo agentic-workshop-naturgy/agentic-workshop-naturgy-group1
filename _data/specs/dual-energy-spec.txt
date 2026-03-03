@@ -1,0 +1,72 @@
+# GAS Workshop — Dual Energy (Gas + Electricity) Spec
+# This file documents the combined gas+electricity tariff with 10% discount.
+
+## Overview
+Customers who contract both gas and electricity with Naturgy are eligible for a
+combined tariff ("tarifa combinada"). These tariffs apply a 10% discount on the
+gas bill base amount (before IVA).
+
+## Tariff Model Changes
+
+### GasTariff entity — new field: tipo
+- Field: tipo (enum: GAS | COMBINADA)
+- Default: GAS
+- Column: tipo VARCHAR(20) NOT NULL DEFAULT 'GAS'
+- Existing tariffs (RL1, RL2, RL3) keep tipo=GAS.
+- New combined tariffs (e.g. RL1-DUAL, RL2-DUAL) have tipo=COMBINADA.
+
+### CSV format (gas-tariffs.csv)
+New column appended:
+  tarifa,fijo_mes_eur,variable_eur_kwh,vigencia_desde,tipo
+Default value for tipo if column missing in CSV: GAS (backward compatible).
+
+## Billing Logic Changes
+
+### Discount calculation (inserted after base calculation, before IVA)
+When tariff.tipo == COMBINADA:
+  1. descuento_dual = base * 0.10    (scale=2, HALF_UP)
+  2. base = base - descuento_dual    (scale=2, HALF_UP)
+  3. IVA is calculated on the discounted base.
+
+When tariff.tipo == GAS:
+  No discount applied. Flow unchanged.
+
+### New invoice line type: DESCUENTO_DUAL
+Added to InvoiceLine.TipoLinea enum.
+
+Invoice line for DESCUENTO_DUAL:
+  - tipoLinea: DESCUENTO_DUAL
+  - descripcion: "Bonificacion dual gas+electricidad 10%"
+  - cantidad: 1
+  - precioUnitario: base_before_discount (scale=6)
+  - importe: -descuento_dual (negative value, scale=2)
+
+### Updated invoice line order for combined tariffs:
+  1. TERMINO_FIJO
+  2. TERMINO_VARIABLE
+  3. DESCUENTO_DUAL (only if tipo=COMBINADA)
+  4. IVA (calculated on discounted base)
+
+### Worked example (CUPS with RL1-DUAL, ZONA2, period 2026-02)
+  - m3_consumidos = 550.00 - 500.00 = 50.00
+  - kwh = 50.00 * 1.01 * 11.55 = 583.275
+  - coste_fijo = 3.85
+  - coste_variable = 583.275 * 0.0045 = 2.62 (rounded HALF_UP)
+  - base_before_discount = 3.85 + 2.62 + 0.00 = 6.47
+  - descuento_dual = 6.47 * 0.10 = 0.65 (rounded HALF_UP)
+  - base = 6.47 - 0.65 = 5.82
+  - impuestos = 5.82 * 0.21 = 1.22 (rounded HALF_UP)
+  - total = 5.82 + 1.22 = 7.04
+
+## Rounding
+Same rules as gas_logic-spec.txt:
+- Monetary amounts: scale=2, HALF_UP
+- Discount amount: scale=2, HALF_UP
+
+## Idempotency
+Same rules apply. DESCUENTO_DUAL line is cleared and recreated on re-run.
+
+## Data Seed
+- gas-tariffs.csv gains tipo column.
+- Two new combined tariffs: RL1-DUAL, RL2-DUAL.
+- supply-points.csv: CUPS ES0021000000003CC assigned to RL1-DUAL for demo.

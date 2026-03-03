@@ -17,6 +17,8 @@ import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,7 +29,7 @@ import { supplyPointsApi } from './api';
 import type { SupplyPoint, SupplyPointForm } from './types';
 import { ESTADO_OPTIONS } from './types';
 
-const DEFAULT_FORM: SupplyPointForm = { cups: '', zona: '', tarifa: '', estado: 'ACTIVO' };
+const DEFAULT_FORM: SupplyPointForm = { cups: '', zona: '', tarifa: '', estado: 'ACTIVO', servigas: false };
 
 function validate(form: SupplyPointForm, isEdit: boolean): Record<string, string> {
   const errors: Record<string, string> = {};
@@ -76,7 +78,7 @@ export function SupplyPointsPage() {
 
   function handleOpenEdit(row: SupplyPoint) {
     setEditingCups(row.cups);
-    setFormData({ cups: row.cups, zona: row.zona, tarifa: row.tarifa, estado: row.estado });
+    setFormData({ cups: row.cups, zona: row.zona, tarifa: row.tarifa, estado: row.estado, servigas: row.servigas });
     setFormErrors({});
     setFormOpen(true);
   }
@@ -122,6 +124,20 @@ export function SupplyPointsPage() {
     { field: 'cups', headerName: 'CUPS', flex: 2, minWidth: 180 },
     { field: 'zona', headerName: 'Zona', flex: 1, minWidth: 100 },
     { field: 'tarifa', headerName: 'Tarifa', flex: 1, minWidth: 100 },
+    {
+      field: 'servigas',
+      headerName: 'Servigas',
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => (
+        <Chip
+          label={params.row.servigas ? 'Sí' : 'No'}
+          color={params.row.servigas ? 'info' : 'default'}
+          size="small"
+          variant={params.row.servigas ? 'filled' : 'outlined'}
+        />
+      ),
+    },
     {
       field: 'estado',
       headerName: 'Estado',
@@ -224,6 +240,15 @@ export function SupplyPointsPage() {
             </Select>
             {formErrors.estado && <FormHelperText>{formErrors.estado}</FormHelperText>}
           </FormControl>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.servigas}
+                onChange={(e) => setFormData((p) => ({ ...p, servigas: e.target.checked }))}
+              />
+            }
+            label="Servigas (mantenimiento caldera +12 €/mes)"
+          />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={() => setFormOpen(false)} disabled={saving}>Cancelar</Button>

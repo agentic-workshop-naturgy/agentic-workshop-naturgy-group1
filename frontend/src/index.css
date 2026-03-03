@@ -1,7 +1,45 @@
+/* ── FSEmeric – Naturgy corporate typeface ── */
+@font-face {
+  font-family: 'FSEmeric';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/FSEmericWeb-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FSEmeric';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/FSEmericWeb-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FSEmeric';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/FSEmericWeb-Italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FSEmeric';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/FSEmericWeb-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FSEmeric';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/FSEmericWeb-SemiBold.woff2') format('woff2');
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
 body {
   margin: 0;
   padding: 0;
+  font-family: 'FSEmeric', Arial, Helvetica, sans-serif;
 }

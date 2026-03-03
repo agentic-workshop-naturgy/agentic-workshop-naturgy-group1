@@ -8,6 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import LinearProgress from '@mui/material/LinearProgress';
+import MenuItem from '@mui/material/MenuItem';
 import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -18,9 +19,9 @@ import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { PageHeader } from '../../shared/ui/PageHeader';
 import { ConfirmDialog } from '../../shared/ui/ConfirmDialog';
 import { tariffsApi } from './api';
-import type { GasTariff, GasTariffForm } from './types';
+import type { GasTariff, GasTariffForm, TipoTarifa } from './types';
 
-const DEFAULT_FORM: GasTariffForm = { tarifa: '', fijoMesEur: '', variableEurKwh: '', vigenciaDesde: '' };
+const DEFAULT_FORM: GasTariffForm = { tarifa: '', fijoMesEur: '', variableEurKwh: '', vigenciaDesde: '', tipo: 'GAS' };
 const DATE_RE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
 function validate(form: GasTariffForm, isEdit: boolean): Record<string, string> {
@@ -77,7 +78,7 @@ export function TariffsPage() {
 
   function handleOpenEdit(row: GasTariff) {
     setEditingTarifa(row.tarifa);
-    setFormData({ tarifa: row.tarifa, fijoMesEur: String(row.fijoMesEur), variableEurKwh: String(row.variableEurKwh), vigenciaDesde: row.vigenciaDesde });
+    setFormData({ tarifa: row.tarifa, fijoMesEur: String(row.fijoMesEur), variableEurKwh: String(row.variableEurKwh), vigenciaDesde: row.vigenciaDesde, tipo: row.tipo });
     setFormErrors({});
     setFormOpen(true);
   }
@@ -85,7 +86,7 @@ export function TariffsPage() {
   async function handleSave() {
     const errors = validate(formData, editingTarifa !== null);
     if (Object.keys(errors).length > 0) { setFormErrors(errors); return; }
-    const payload: GasTariff = { tarifa: formData.tarifa, fijoMesEur: Number(formData.fijoMesEur), variableEurKwh: Number(formData.variableEurKwh), vigenciaDesde: formData.vigenciaDesde };
+    const payload: GasTariff = { tarifa: formData.tarifa, fijoMesEur: Number(formData.fijoMesEur), variableEurKwh: Number(formData.variableEurKwh), vigenciaDesde: formData.vigenciaDesde, tipo: formData.tipo };
     setSaving(true);
     try {
       if (editingTarifa !== null) {
@@ -122,6 +123,9 @@ export function TariffsPage() {
 
   const columns: GridColDef<GasTariff>[] = [
     { field: 'tarifa', headerName: 'Tarifa', width: 120 },
+    { field: 'tipo', headerName: 'Tipo', width: 130,
+      renderCell: (p) => p.row.tipo === 'COMBINADA' ? '⚡ Combinada' : 'Gas',
+    },
     { field: 'fijoMesEur', headerName: 'Fijo/Mes (€)', flex: 1, minWidth: 130, renderCell: (p) => fmtEur(p.row.fijoMesEur) },
     { field: 'variableEurKwh', headerName: 'Variable (€/kWh)', flex: 1, minWidth: 160, renderCell: (p) => fmtEur(p.row.variableEurKwh) },
     { field: 'vigenciaDesde', headerName: 'Vigencia Desde', width: 140 },
@@ -148,6 +152,10 @@ export function TariffsPage() {
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           {formErrors._global && <Alert severity="error">{formErrors._global}</Alert>}
           <TextField label="Código Tarifa" value={formData.tarifa} onChange={(e) => setFormData((p) => ({ ...p, tarifa: e.target.value }))} error={!!formErrors.tarifa} helperText={formErrors.tarifa ?? 'Ej: RL1'} disabled={editingTarifa !== null} required fullWidth />
+          <TextField label="Tipo de Tarifa" select value={formData.tipo} onChange={(e) => setFormData((p) => ({ ...p, tipo: e.target.value as TipoTarifa }))} required fullWidth helperText="GAS = solo gas, COMBINADA = gas+electricidad (10% dto.)">
+            <MenuItem value="GAS">GAS</MenuItem>
+            <MenuItem value="COMBINADA">COMBINADA (Gas + Electricidad)</MenuItem>
+          </TextField>
           <TextField label="Término Fijo (€/mes)" value={formData.fijoMesEur} onChange={(e) => setFormData((p) => ({ ...p, fijoMesEur: e.target.value }))} error={!!formErrors.fijoMesEur} helperText={formErrors.fijoMesEur} inputProps={{ inputMode: 'decimal' }} required fullWidth />
           <TextField label="Término Variable (€/kWh)" value={formData.variableEurKwh} onChange={(e) => setFormData((p) => ({ ...p, variableEurKwh: e.target.value }))} error={!!formErrors.variableEurKwh} helperText={formErrors.variableEurKwh} inputProps={{ inputMode: 'decimal' }} required fullWidth />
           <TextField label="Vigencia Desde (YYYY-MM-DD)" value={formData.vigenciaDesde} onChange={(e) => setFormData((p) => ({ ...p, vigenciaDesde: e.target.value }))} error={!!formErrors.vigenciaDesde} helperText={formErrors.vigenciaDesde ?? 'Ej: 2026-01-01'} required fullWidth />

@@ -88,6 +88,10 @@ public class DataSeeder implements ApplicationRunner {
             sp.setZona(cell(row, 1, file));
             sp.setTarifa(cell(row, 2, file));
             sp.setEstado(parseEnum(SupplyPoint.EstadoSupply.class, cell(row, 3, file), file));
+            // servigas column (index 4) — optional, defaults to false
+            if (row.length > 4 && row[4] != null && !row[4].trim().isEmpty()) {
+                sp.setServigas(Boolean.parseBoolean(row[4].trim()));
+            }
             supplyPointRepository.save(sp);
             loaded++;
         }
@@ -108,6 +112,12 @@ public class DataSeeder implements ApplicationRunner {
             gt.setFijoMesEur(parseDecimal(cell(row, 1, file), "fijo_mes_eur", file));
             gt.setVariableEurKwh(parseDecimal(cell(row, 2, file), "variable_eur_kwh", file));
             gt.setVigenciaDesde(parseDate(cell(row, 3, file), "vigencia_desde", file));
+            // tipo column (index 4) — optional for backward compatibility
+            if (row.length > 4 && row[4] != null && !row[4].trim().isEmpty()) {
+                gt.setTipo(parseEnum(GasTariff.TipoTarifa.class, row[4].trim(), file));
+            } else {
+                gt.setTipo(GasTariff.TipoTarifa.GAS);
+            }
             gasTariffRepository.save(gt);
             loaded++;
         }

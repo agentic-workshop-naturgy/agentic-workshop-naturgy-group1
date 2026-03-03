@@ -25,6 +25,7 @@ public class BillingService {
 
     private static final Logger log = LoggerFactory.getLogger(BillingService.class);
     private static final BigDecimal ZERO = BigDecimal.ZERO;
+    private static final BigDecimal DUAL_DISCOUNT_RATE = new BigDecimal("0.10");
 
     private final SupplyPointRepository supplyPointRepository;
     private final GasReadingRepository gasReadingRepository;
@@ -140,8 +141,25 @@ public class BillingService {
                 .setScale(2, RoundingMode.HALF_UP);
 
         BigDecimal alquilerEur = ZERO; // Workshop default: 0.00
-        BigDecimal base = costeFijo.add(costeVariable).add(alquilerEur)
+
+        // Servigas: +12 EUR (pre-IVA) when the supply point has the service active
+        BigDecimal servigasEur = sp.isServigas()
+                ? new BigDecimal("12.00")
+                : ZERO;
+
+        BigDecimal base = costeFijo.add(costeVariable).add(alquilerEur).add(servigasEur)
                 .setScale(2, RoundingMode.HALF_UP);
+
+        // 6) Dual energy discount (10%) — applied before IVA
+        boolean isCombinada = tariff.getTipo() == GasTariff.TipoTarifa.COMBINADA;
+        BigDecimal descuentoDual = ZERO;
+        BigDecimal baseBeforeDiscount = base;
+        if (isCombinada) {
+            descuentoDual = base.multiply(DUAL_DISCOUNT_RATE)
+                    .setScale(2, RoundingMode.HALF_UP);
+            base = base.subtract(descuentoDual)
+                    .setScale(2, RoundingMode.HALF_UP);
+        }
 
         BigDecimal impuestos = base.multiply(iva.getTaxRate())
                 .setScale(2, RoundingMode.HALF_UP);
@@ -201,12 +219,38 @@ public class BillingService {
 
         invoice.getLines().add(lineaFija);
         invoice.getLines().add(lineaVariable);
+
+        // Servigas line (boiler maintenance service)
+        if (sp.isServigas()) {
+            InvoiceLine lineaServigas = new InvoiceLine();
+            lineaServigas.setInvoice(invoice);
+            lineaServigas.setTipoLinea(InvoiceLine.TipoLinea.SERVIGAS);
+            lineaServigas.setDescripcion("Servigas - Mantenimiento de caldera");
+            lineaServigas.setCantidad(BigDecimal.ONE.setScale(3, RoundingMode.HALF_UP));
+            lineaServigas.setPrecioUnitario(servigasEur.setScale(6, RoundingMode.HALF_UP));
+            lineaServigas.setImporte(servigasEur);
+            invoice.getLines().add(lineaServigas);
+        }
+
+        // Dual discount line (only for COMBINADA tariffs)
+        if (isCombinada) {
+            InvoiceLine lineaDescuento = new InvoiceLine();
+            lineaDescuento.setInvoice(invoice);
+            lineaDescuento.setTipoLinea(InvoiceLine.TipoLinea.DESCUENTO_DUAL);
+            lineaDescuento.setDescripcion("Bonificacion dual gas+electricidad 10%");
+            lineaDescuento.setCantidad(BigDecimal.ONE.setScale(3, RoundingMode.HALF_UP));
+            lineaDescuento.setPrecioUnitario(baseBeforeDiscount.setScale(6, RoundingMode.HALF_UP));
+            lineaDescuento.setImporte(descuentoDual.negate());
+            invoice.getLines().add(lineaDescuento);
+        }
+
         invoice.getLines().add(lineaIva);
 
         invoiceRepository.save(invoice);
 
-        log.info("Invoice {} for CUPS {} period {}: base={} IVA={} total={}",
-                invoice.getNumeroFactura(), cups, period, base, impuestos, total);
+        log.info("Invoice {} for CUPS {} period {}: base={} IVA={} total={}{}",
+                invoice.getNumeroFactura(), cups, period, base, impuestos, total,
+                isCombinada ? " (dual discount=" + descuentoDual + ")" : "");
         return isNew;
     }
 
