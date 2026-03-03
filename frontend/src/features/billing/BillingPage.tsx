@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -26,6 +27,7 @@ interface ErrorRow extends BillingError {
 }
 
 export function BillingPage() {
+  const { t } = useTranslation();
   const [period, setPeriod] = useState('');
   const [periodError, setPeriodError] = useState('');
   const [running, setRunning] = useState(false);
@@ -33,8 +35,8 @@ export function BillingPage() {
   const [runError, setRunError] = useState<string | null>(null);
 
   async function handleRun() {
-    if (!period.trim()) { setPeriodError('El periodo es requerido'); return; }
-    if (!PERIOD_RE.test(period)) { setPeriodError('Formato YYYY-MM (ej: 2026-01)'); return; }
+    if (!period.trim()) { setPeriodError(t('billing.periodRequired')); return; }
+    if (!PERIOD_RE.test(period)) { setPeriodError(t('billing.periodFormat')); return; }
     setPeriodError('');
     setRunError(null);
     setResult(null);
@@ -43,7 +45,7 @@ export function BillingPage() {
       const res = await billingApi.run(period);
       setResult(res);
     } catch (e) {
-      setRunError(e instanceof Error ? e.message : 'Error al ejecutar facturación');
+      setRunError(e instanceof Error ? e.message : t('billing.errorRun'));
     } finally {
       setRunning(false);
     }
@@ -51,23 +53,23 @@ export function BillingPage() {
 
   const errorColumns: GridColDef<ErrorRow>[] = [
     { field: 'cups', headerName: 'CUPS', flex: 2, minWidth: 180 },
-    { field: 'error', headerName: 'Error', flex: 3, minWidth: 240 },
+    { field: 'error', headerName: t('billing.errors'), flex: 3, minWidth: 240 },
   ];
 
   const errorRows: ErrorRow[] = (result?.errors ?? []).map((e, i) => ({ ...e, _idx: i }));
 
   return (
     <Box>
-      <PageHeader title="Facturación" />
+      <PageHeader title={t('billing.title')} />
 
       <Box sx={{ maxWidth: 600, mb: 4 }}>
         <Stack direction="row" spacing={2} alignItems="flex-start">
           <TextField
-            label="Periodo (YYYY-MM)"
+            label={t('billing.period')}
             value={period}
             onChange={(e) => { setPeriod(e.target.value); setPeriodError(''); }}
             error={!!periodError}
-            helperText={periodError || 'Ej: 2026-01'}
+            helperText={periodError || t('billing.periodExample')}
             sx={{ flex: 1 }}
             disabled={running}
           />
@@ -80,7 +82,7 @@ export function BillingPage() {
             disabled={running}
             sx={{ mt: '4px', minWidth: 180, height: 56 }}
           >
-            {running ? 'Ejecutando…' : 'Ejecutar Facturación'}
+            {running ? t('billing.running') : t('billing.runBtn')}
           </Button>
         </Stack>
       </Box>
@@ -94,7 +96,7 @@ export function BillingPage() {
       {result && (
         <Box>
           <Typography variant="h6" sx={{ mb: 2 }}>
-            Resultado para el periodo <strong>{result.period}</strong>
+            {t('billing.resultTitle', { period: result.period })}
           </Typography>
 
           <Grid container spacing={2} sx={{ mb: 3 }}>
@@ -105,7 +107,7 @@ export function BillingPage() {
                     <CheckCircleIcon color="success" />
                     <Box>
                       <Typography variant="h4" color="secondary.main">{result.invoicesCreated}</Typography>
-                      <Typography variant="body2" color="text.secondary">Facturas creadas</Typography>
+                      <Typography variant="body2" color="text.secondary">{t('billing.invoicesCreated')}</Typography>
                     </Box>
                   </Stack>
                 </CardContent>
@@ -118,7 +120,7 @@ export function BillingPage() {
                     <UpdateIcon color="primary" />
                     <Box>
                       <Typography variant="h4" color="primary.main">{result.invoicesUpdated}</Typography>
-                      <Typography variant="body2" color="text.secondary">Facturas actualizadas</Typography>
+                      <Typography variant="body2" color="text.secondary">{t('billing.invoicesUpdated')}</Typography>
                     </Box>
                   </Stack>
                 </CardContent>
@@ -133,7 +135,7 @@ export function BillingPage() {
                       <Typography variant="h4" color={result.errors.length > 0 ? 'error.main' : 'success.main'}>
                         {result.errors.length}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">Errores</Typography>
+                      <Typography variant="body2" color="text.secondary">{t('billing.errors')}</Typography>
                     </Box>
                   </Stack>
                 </CardContent>
@@ -145,7 +147,7 @@ export function BillingPage() {
             <Box>
               <Divider sx={{ mb: 2 }} />
               <Typography variant="h6" color="error" sx={{ mb: 1 }}>
-                CUPS con errores de facturación
+                {t('billing.errorsCups')}
               </Typography>
               <DataGrid
                 rows={errorRows}
@@ -161,13 +163,13 @@ export function BillingPage() {
 
           {result.errors.length === 0 && result.invoicesCreated + result.invoicesUpdated > 0 && (
             <Alert severity="success">
-              ✅ Facturación completada sin errores. Ve a <strong>Facturas</strong> para ver el resultado.
+              {t('billing.successMsg')}
             </Alert>
           )}
 
           {result.errors.length === 0 && result.invoicesCreated + result.invoicesUpdated === 0 && (
             <Alert severity="info">
-              No hay puntos de suministro activos con datos suficientes para el periodo {result.period}.
+              {t('billing.noDataMsg', { period: result.period })}
             </Alert>
           )}
         </Box>

@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import GasMeterIcon from '@mui/icons-material/GasMeter';
@@ -18,7 +22,8 @@ import TransformIcon from '@mui/icons-material/Transform';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { DRAWER_WIDTH } from './app/theme';
+import LanguageIcon from '@mui/icons-material/Language';
+import { DRAWER_WIDTH, NATURGY } from './app/theme';
 import { SupplyPointsPage } from './features/supplyPoints/SupplyPointsPage';
 import { ReadingsPage } from './features/readings/ReadingsPage';
 import { TariffsPage } from './features/tariffs/TariffsPage';
@@ -38,30 +43,36 @@ type PageKey =
 
 interface NavItem {
   key: PageKey;
-  label: string;
+  labelKey: string;
   icon: React.ReactNode;
-  section?: string;
+  sectionKey?: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { key: 'supply-points', label: 'Puntos de Suministro', icon: <GasMeterIcon />, section: 'Maestros' },
-  { key: 'readings', label: 'Lecturas', icon: <ShowChartIcon /> },
-  { key: 'tariffs', label: 'Tarifario', icon: <LocalOfferIcon /> },
-  { key: 'conversion-factors', label: 'Factores Conversión', icon: <TransformIcon /> },
-  { key: 'taxes', label: 'Impuestos (IVA)', icon: <AccountBalanceIcon /> },
-  { key: 'billing', label: 'Facturación', icon: <RequestQuoteIcon />, section: 'Facturación' },
-  { key: 'invoices', label: 'Facturas', icon: <DescriptionIcon /> },
+  { key: 'supply-points', labelKey: 'nav.supplyPoints', icon: <GasMeterIcon />, sectionKey: 'nav.sectionMasters' },
+  { key: 'readings', labelKey: 'nav.readings', icon: <ShowChartIcon /> },
+  { key: 'tariffs', labelKey: 'nav.tariffs', icon: <LocalOfferIcon /> },
+  { key: 'conversion-factors', labelKey: 'nav.conversionFactors', icon: <TransformIcon /> },
+  { key: 'taxes', labelKey: 'nav.taxes', icon: <AccountBalanceIcon /> },
+  { key: 'billing', labelKey: 'nav.billing', icon: <RequestQuoteIcon />, sectionKey: 'nav.sectionBilling' },
+  { key: 'invoices', labelKey: 'nav.invoices', icon: <DescriptionIcon /> },
 ];
 
-const PAGE_TITLES: Record<PageKey, string> = {
-  'supply-points': 'Puntos de Suministro',
-  readings: 'Lecturas de Gas',
-  tariffs: 'Tarifario',
-  'conversion-factors': 'Factores de Conversión',
-  taxes: 'Impuestos (IVA)',
-  billing: 'Ejecutar Facturación',
-  invoices: 'Facturas',
+const PAGE_TITLE_KEYS: Record<PageKey, string> = {
+  'supply-points': 'supplyPoints.title',
+  readings: 'readings.title',
+  tariffs: 'tariffs.title',
+  'conversion-factors': 'conversionFactors.title',
+  taxes: 'taxes.title',
+  billing: 'billing.title',
+  invoices: 'invoices.title',
 };
+
+const LANGUAGES = [
+  { code: 'es', label: 'Español' },
+  { code: 'en', label: 'English' },
+  { code: 'ca', label: 'Català' },
+];
 
 function renderPage(page: PageKey): React.ReactNode {
   switch (page) {
@@ -76,25 +87,74 @@ function renderPage(page: PageKey): React.ReactNode {
 }
 
 export function App() {
+  const { t, i18n } = useTranslation();
   const [currentPage, setCurrentPage] = useState<PageKey>('supply-points');
+  const [langAnchor, setLangAnchor] = useState<null | HTMLElement>(null);
 
   let lastSection = '';
+
+  const currentLang = LANGUAGES.find((l) => l.code === i18n.language)?.label
+    ?? LANGUAGES.find((l) => i18n.language.startsWith(l.code))?.label
+    ?? 'Español';
 
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar
         position="fixed"
         sx={{ width: `calc(100% - ${DRAWER_WIDTH}px)`, ml: `${DRAWER_WIDTH}px` }}
-        elevation={1}
+        elevation={0}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap>
-            {PAGE_TITLES[currentPage]}
+          <Typography variant="h6" noWrap fontWeight={700}>
+            {t(PAGE_TITLE_KEYS[currentPage])}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Typography variant="body2" sx={{ opacity: 0.7 }}>
-            GAS Workshop · Naturgy
+
+          {/* Language selector */}
+          <IconButton
+            onClick={(e) => setLangAnchor(e.currentTarget)}
+            sx={{ mr: 1, color: NATURGY.blue }}
+          >
+            <LanguageIcon />
+          </IconButton>
+          <Typography
+            variant="body2"
+            sx={{ color: NATURGY.grayText, fontWeight: 600, cursor: 'pointer', mr: 2 }}
+            onClick={(e) => setLangAnchor(e.currentTarget as HTMLElement)}
+          >
+            {currentLang}
           </Typography>
+          <Menu
+            anchorEl={langAnchor}
+            open={Boolean(langAnchor)}
+            onClose={() => setLangAnchor(null)}
+          >
+            {LANGUAGES.map((lang) => (
+              <MenuItem
+                key={lang.code}
+                selected={i18n.language === lang.code || i18n.language.startsWith(lang.code)}
+                onClick={() => { void i18n.changeLanguage(lang.code); setLangAnchor(null); }}
+              >
+                {lang.label}
+              </MenuItem>
+            ))}
+          </Menu>
+
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              bgcolor: NATURGY.grayLight,
+              px: 2,
+              py: 0.5,
+              borderRadius: 2,
+            }}
+          >
+            <Typography variant="body2" sx={{ color: NATURGY.grayText, fontWeight: 600 }}>
+              {t('app.title')}
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -106,23 +166,25 @@ export function App() {
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            bgcolor: 'primary.main',
-            color: 'primary.contrastText',
           },
         }}
       >
-        <Toolbar sx={{ px: 2 }}>
-          <GasMeterIcon sx={{ mr: 1, color: 'inherit' }} />
-          <Typography variant="h6" fontWeight={700} color="inherit">
-            GAS Workshop
-          </Typography>
-        </Toolbar>
-        <Divider sx={{ borderColor: 'rgba(255,255,255,0.15)' }} />
+        {/* Logo Naturgy */}
+        <Box sx={{ px: 2.5, py: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Box
+            component="img"
+            src="/logo-naturgy.svg"
+            alt="Naturgy"
+            sx={{ height: 34 }}
+          />
+        </Box>
+        <Divider sx={{ borderColor: 'rgba(255,255,255,0.12)' }} />
 
         <List sx={{ px: 1, pt: 1 }}>
           {NAV_ITEMS.map((item) => {
-            const showSection = item.section != null && item.section !== lastSection;
-            if (item.section != null) lastSection = item.section;
+            const sectionLabel = item.sectionKey ? t(item.sectionKey) : '';
+            const showSection = item.sectionKey != null && sectionLabel !== lastSection;
+            if (item.sectionKey != null) lastSection = sectionLabel;
             return (
               <Box key={item.key}>
                 {showSection && (
@@ -130,7 +192,7 @@ export function App() {
                     variant="overline"
                     sx={{ px: 2, pt: 2, pb: 0.5, display: 'block', opacity: 0.6, fontSize: '0.65rem' }}
                   >
-                    {item.section}
+                    {sectionLabel}
                   </Typography>
                 )}
                 <ListItem disablePadding>
@@ -138,12 +200,14 @@ export function App() {
                     selected={currentPage === item.key}
                     onClick={() => setCurrentPage(item.key)}
                     sx={{
-                      borderRadius: 1,
+                      borderRadius: 1.5,
                       mb: 0.5,
                       color: 'inherit',
+                      transition: 'all 0.15s ease',
                       '&.Mui-selected': {
-                        bgcolor: 'secondary.main',
-                        '&:hover': { bgcolor: 'secondary.dark' },
+                        bgcolor: 'rgba(245,131,31,0.2)',
+                        borderLeft: `3px solid ${NATURGY.orange}`,
+                        '&:hover': { bgcolor: 'rgba(245,131,31,0.28)' },
                       },
                       '&:hover': { bgcolor: 'rgba(255,255,255,0.08)' },
                     }}
@@ -152,7 +216,7 @@ export function App() {
                       {item.icon}
                     </ListItemIcon>
                     <ListItemText
-                      primary={item.label}
+                      primary={t(item.labelKey)}
                       primaryTypographyProps={{ fontSize: '0.875rem' }}
                     />
                   </ListItemButton>

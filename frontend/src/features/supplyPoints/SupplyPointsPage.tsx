@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -29,15 +30,16 @@ import { ESTADO_OPTIONS } from './types';
 
 const DEFAULT_FORM: SupplyPointForm = { cups: '', zona: '', tarifa: '', estado: 'ACTIVO' };
 
-function validate(form: SupplyPointForm, isEdit: boolean): Record<string, string> {
+function validate(form: SupplyPointForm, isEdit: boolean, t: (k: string) => string): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (!isEdit && !form.cups.trim()) errors.cups = 'CUPS es requerido';
-  if (!form.zona.trim()) errors.zona = 'Zona es requerida';
-  if (!form.tarifa.trim()) errors.tarifa = 'Tarifa es requerida';
+  if (!isEdit && !form.cups.trim()) errors.cups = t('supplyPoints.cupsRequired');
+  if (!form.zona.trim()) errors.zona = t('supplyPoints.zoneRequired');
+  if (!form.tarifa.trim()) errors.tarifa = t('supplyPoints.tariffRequired');
   return errors;
 }
 
 export function SupplyPointsPage() {
+  const { t } = useTranslation();
   const [rows, setRows] = useState<SupplyPoint[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,11 +61,11 @@ export function SupplyPointsPage() {
       const data = await supplyPointsApi.getAll();
       setRows(data);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al cargar datos');
+      setError(e instanceof Error ? e.message : t('common.errorLoading'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { void loadData(); }, [loadData]);
 
@@ -82,21 +84,21 @@ export function SupplyPointsPage() {
   }
 
   async function handleSave() {
-    const errors = validate(formData, editingCups !== null);
+    const errors = validate(formData, editingCups !== null, t);
     if (Object.keys(errors).length > 0) { setFormErrors(errors); return; }
     setSaving(true);
     try {
       if (editingCups !== null) {
         await supplyPointsApi.update(editingCups, formData);
-        setSuccessMsg('Punto de suministro actualizado');
+        setSuccessMsg(t('supplyPoints.updated'));
       } else {
         await supplyPointsApi.create(formData);
-        setSuccessMsg('Punto de suministro creado');
+        setSuccessMsg(t('supplyPoints.created'));
       }
       setFormOpen(false);
       await loadData();
     } catch (e) {
-      setFormErrors({ _global: e instanceof Error ? e.message : 'Error al guardar' });
+      setFormErrors({ _global: e instanceof Error ? e.message : t('common.errorSaving') });
     } finally {
       setSaving(false);
     }
@@ -107,11 +109,11 @@ export function SupplyPointsPage() {
     setDeleting(true);
     try {
       await supplyPointsApi.delete(deleteTarget.cups);
-      setSuccessMsg('Punto de suministro eliminado');
+      setSuccessMsg(t('supplyPoints.deleted'));
       setDeleteTarget(null);
       await loadData();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al eliminar');
+      setError(e instanceof Error ? e.message : t('common.errorDeleting'));
       setDeleteTarget(null);
     } finally {
       setDeleting(false);
@@ -119,12 +121,12 @@ export function SupplyPointsPage() {
   }
 
   const columns: GridColDef<SupplyPoint>[] = [
-    { field: 'cups', headerName: 'CUPS', flex: 2, minWidth: 180 },
-    { field: 'zona', headerName: 'Zona', flex: 1, minWidth: 100 },
-    { field: 'tarifa', headerName: 'Tarifa', flex: 1, minWidth: 100 },
+    { field: 'cups', headerName: t('supplyPoints.cups'), flex: 2, minWidth: 180 },
+    { field: 'zona', headerName: t('supplyPoints.zone'), flex: 1, minWidth: 100 },
+    { field: 'tarifa', headerName: t('supplyPoints.tariff'), flex: 1, minWidth: 100 },
     {
       field: 'estado',
-      headerName: 'Estado',
+      headerName: t('supplyPoints.status'),
       flex: 1,
       minWidth: 110,
       renderCell: (params) => (
@@ -157,10 +159,10 @@ export function SupplyPointsPage() {
   return (
     <Box>
       <PageHeader
-        title="Puntos de Suministro"
+        title={t('supplyPoints.title')}
         action={
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>
-            Nuevo
+            {t('supplyPoints.newBtn')}
           </Button>
         }
       />
@@ -174,16 +176,16 @@ export function SupplyPointsPage() {
         pageSizeOptions={[10, 25, 50]}
         initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         disableRowSelectionOnClick
-        slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>Sin datos</Box> }}
+        slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }}
       />
 
       {/* Create/Edit Dialog */}
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>{editingCups ? 'Editar Punto de Suministro' : 'Nuevo Punto de Suministro'}</DialogTitle>
+        <DialogTitle>{editingCups ? t('supplyPoints.editTitle') : t('supplyPoints.createTitle')}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           {formErrors._global && <Alert severity="error">{formErrors._global}</Alert>}
           <TextField
-            label="CUPS"
+            label={t('supplyPoints.cups')}
             value={formData.cups}
             onChange={(e) => setFormData((p) => ({ ...p, cups: e.target.value }))}
             error={!!formErrors.cups}
@@ -193,7 +195,7 @@ export function SupplyPointsPage() {
             fullWidth
           />
           <TextField
-            label="Zona"
+            label={t('supplyPoints.zone')}
             value={formData.zona}
             onChange={(e) => setFormData((p) => ({ ...p, zona: e.target.value }))}
             error={!!formErrors.zona}
@@ -202,7 +204,7 @@ export function SupplyPointsPage() {
             fullWidth
           />
           <TextField
-            label="Tarifa"
+            label={t('supplyPoints.tariff')}
             value={formData.tarifa}
             onChange={(e) => setFormData((p) => ({ ...p, tarifa: e.target.value }))}
             error={!!formErrors.tarifa}
@@ -211,10 +213,10 @@ export function SupplyPointsPage() {
             fullWidth
           />
           <FormControl fullWidth error={!!formErrors.estado}>
-            <InputLabel id="estado-label">Estado</InputLabel>
+            <InputLabel id="estado-label">{t('supplyPoints.status')}</InputLabel>
             <Select
               labelId="estado-label"
-              label="Estado"
+              label={t('supplyPoints.status')}
               value={formData.estado}
               onChange={(e) => setFormData((p) => ({ ...p, estado: e.target.value as 'ACTIVO' | 'INACTIVO' }))}
             >
@@ -226,14 +228,14 @@ export function SupplyPointsPage() {
           </FormControl>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setFormOpen(false)} disabled={saving}>Cancelar</Button>
+          <Button onClick={() => setFormOpen(false)} disabled={saving}>{t('common.cancel')}</Button>
           <Button
             variant="contained"
             onClick={() => { void handleSave(); }}
             disabled={saving}
             startIcon={saving ? <CircularProgress size={16} color="inherit" /> : undefined}
           >
-            Guardar
+            {t('common.save')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -241,8 +243,8 @@ export function SupplyPointsPage() {
       {/* Delete Confirm */}
       <ConfirmDialog
         open={deleteTarget !== null}
-        title="Eliminar Punto de Suministro"
-        message={`¿Eliminar el punto de suministro ${deleteTarget?.cups ?? ''}?`}
+        title={t('supplyPoints.deleteTitle')}
+        message={t('supplyPoints.deleteMsg', { cups: deleteTarget?.cups ?? '' })}
         onConfirm={() => { void handleDeleteConfirm(); }}
         onCancel={() => setDeleteTarget(null)}
         loading={deleting}

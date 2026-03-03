@@ -1,8 +1,10 @@
 package com.naturgy.gas.controller;
 
 import com.naturgy.gas.dto.InvoiceDto;
+import com.naturgy.gas.entity.GasReading;
 import com.naturgy.gas.entity.Invoice;
 import com.naturgy.gas.exception.NotFoundException;
+import com.naturgy.gas.repository.GasReadingRepository;
 import com.naturgy.gas.repository.InvoiceRepository;
 import com.naturgy.gas.service.PdfService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class InvoiceController {
 
     private final InvoiceRepository repo;
+    private final GasReadingRepository readingRepo;
     private final PdfService pdfService;
 
     @GetMapping
@@ -67,7 +70,10 @@ public class InvoiceController {
         Invoice invoice = repo.findByIdWithLines(invoiceId)
                 .orElseThrow(() -> new NotFoundException("Invoice not found: " + invoiceId));
 
-        byte[] pdfBytes = pdfService.generate(invoice);
+        // Fetch readings for this CUPS to render the bar chart
+        List<GasReading> readings = readingRepo.findByCupsOrderByFechaDesc(invoice.getCups());
+
+        byte[] pdfBytes = pdfService.generate(invoice, readings);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

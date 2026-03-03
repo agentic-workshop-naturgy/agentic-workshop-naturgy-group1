@@ -127,7 +127,26 @@ rm -rf frontend/node_modules/.vite
 
 ---
 
-## 7. Estructura del frontend generado
+## 7. Multi-idioma (i18n)
+
+La aplicación soporta tres idiomas: **Español**, **English** y **Català**.
+
+- Selector de idioma: icono de globo (🌐) en la barra superior derecha.
+- El idioma se persiste en `localStorage`; al recargar se mantiene.
+- Ficheros de traducción: `frontend/src/i18n/{es,en,ca}.json`.
+- Stack: `i18next` + `react-i18next` + `i18next-browser-languagedetector`.
+
+## 8. PDF de factura
+
+Cada factura genera un PDF branded Naturgy con:
+
+- Cabecera naranja con logo
+- Datos de factura a dos columnas
+- Tabla de detalle del consumo
+- **Gráfico de pastel** — desglose por concepto (Consumo / Término fijo / IVA)
+- **Gráfico de barras** — últimos consumos (m³) calculados a partir de las lecturas del CUPS
+
+## 9. Estructura del frontend generado
 
 ```
 frontend/
@@ -138,6 +157,11 @@ frontend/
 │   ├── app/
 │   │   ├── theme.ts        # Naturgy orange (#F5831F) + navy, MUI v7
 │   │   └── providers.tsx   # ThemeProvider + CssBaseline
+│   ├── i18n/               # Traducciones ES / EN / CA
+│   │   ├── index.ts
+│   │   ├── es.json
+│   │   ├── en.json
+│   │   └── ca.json
 │   ├── shared/
 │   │   ├── api/httpClient.ts   # fetch wrapper + error mapping
 │   │   └── ui/
@@ -155,7 +179,7 @@ frontend/
 
 ---
 
-## 8. Variables de entorno (opcional)
+## 10. Variables de entorno (opcional)
 
 Para apuntar a un backend en otro host, crea `frontend/.env.local`:
 ```env

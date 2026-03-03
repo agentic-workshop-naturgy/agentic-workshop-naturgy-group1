@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -31,18 +32,19 @@ import { TIPO_OPTIONS } from './types';
 const DEFAULT_FORM: GasReadingForm = { cups: '', fecha: '', lecturaM3: '', tipo: 'REAL' };
 const DATE_RE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
-function validate(form: GasReadingForm): Record<string, string> {
+function validate(form: GasReadingForm, t: (k: string) => string): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (!form.cups.trim()) errors.cups = 'CUPS es requerido';
-  if (!form.fecha.trim()) errors.fecha = 'Fecha es requerida';
-  else if (!DATE_RE.test(form.fecha)) errors.fecha = 'Formato YYYY-MM-DD';
-  if (!form.lecturaM3.trim()) errors.lecturaM3 = 'Lectura es requerida';
+  if (!form.cups.trim()) errors.cups = t('readings.cupsRequired');
+  if (!form.fecha.trim()) errors.fecha = t('readings.dateRequired');
+  else if (!DATE_RE.test(form.fecha)) errors.fecha = t('readings.dateFormat');
+  if (!form.lecturaM3.trim()) errors.lecturaM3 = t('readings.readingRequired');
   else if (isNaN(Number(form.lecturaM3)) || Number(form.lecturaM3) < 0)
-    errors.lecturaM3 = 'Debe ser un número >= 0';
+    errors.lecturaM3 = t('readings.readingPositive');
   return errors;
 }
 
 export function ReadingsPage() {
+  const { t } = useTranslation();
   const [rows, setRows] = useState<GasReading[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,11 +68,11 @@ export function ReadingsPage() {
       const data = await readingsApi.getAll(cups || undefined);
       setRows(data);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al cargar datos');
+      setError(e instanceof Error ? e.message : t('common.errorLoading'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { void loadData(); }, [loadData]);
 
@@ -91,22 +93,22 @@ export function ReadingsPage() {
   }
 
   async function handleSave() {
-    const errors = validate(formData);
+    const errors = validate(formData, t);
     if (Object.keys(errors).length > 0) { setFormErrors(errors); return; }
     const payload = { cups: formData.cups, fecha: formData.fecha, lecturaM3: Number(formData.lecturaM3), tipo: formData.tipo };
     setSaving(true);
     try {
       if (editingId !== null) {
         await readingsApi.update(editingId, payload);
-        setSuccessMsg('Lectura actualizada');
+        setSuccessMsg(t('readings.updated'));
       } else {
         await readingsApi.create(payload);
-        setSuccessMsg('Lectura creada');
+        setSuccessMsg(t('readings.created'));
       }
       setFormOpen(false);
       await loadData(filterCups || undefined);
     } catch (e) {
-      setFormErrors({ _global: e instanceof Error ? e.message : 'Error al guardar' });
+      setFormErrors({ _global: e instanceof Error ? e.message : t('common.errorSaving') });
     } finally {
       setSaving(false);
     }
@@ -117,11 +119,11 @@ export function ReadingsPage() {
     setDeleting(true);
     try {
       await readingsApi.delete(deleteTarget.id);
-      setSuccessMsg('Lectura eliminada');
+      setSuccessMsg(t('readings.deleted'));
       setDeleteTarget(null);
       await loadData(filterCups || undefined);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al eliminar');
+      setError(e instanceof Error ? e.message : t('common.errorDeleting'));
       setDeleteTarget(null);
     } finally {
       setDeleting(false);
@@ -130,10 +132,10 @@ export function ReadingsPage() {
 
   const columns: GridColDef<GasReading>[] = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'cups', headerName: 'CUPS', flex: 2, minWidth: 180 },
-    { field: 'fecha', headerName: 'Fecha', width: 120 },
-    { field: 'lecturaM3', headerName: 'Lectura (m³)', width: 130, type: 'number' },
-    { field: 'tipo', headerName: 'Tipo', width: 110 },
+    { field: 'cups', headerName: t('readings.cups'), flex: 2, minWidth: 180 },
+    { field: 'fecha', headerName: t('readings.date'), width: 120 },
+    { field: 'lecturaM3', headerName: t('readings.readingM3'), width: 130, type: 'number' },
+    { field: 'tipo', headerName: t('readings.type'), width: 110 },
     {
       field: '_actions',
       headerName: '',
@@ -156,27 +158,27 @@ export function ReadingsPage() {
   return (
     <Box>
       <PageHeader
-        title="Lecturas de Gas"
+        title={t('readings.title')}
         action={
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>
-            Nueva
+            {t('readings.newBtn')}
           </Button>
         }
       />
       <Paper sx={{ p: 2, mb: 2 }}>
         <Stack direction="row" spacing={2} alignItems="center">
           <TextField
-            label="Filtrar por CUPS"
+            label={t('readings.filterByCups')}
             value={filterCups}
             onChange={(e) => setFilterCups(e.target.value)}
             size="small"
             sx={{ minWidth: 240 }}
           />
           <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>
-            Buscar
+            {t('common.search')}
           </Button>
           <Button variant="text" onClick={() => { setFilterCups(''); void loadData(); }}>
-            Limpiar
+            {t('common.clear')}
           </Button>
         </Stack>
       </Paper>
@@ -191,15 +193,15 @@ export function ReadingsPage() {
         pageSizeOptions={[10, 25, 50]}
         initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         disableRowSelectionOnClick
-        slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>Sin datos</Box> }}
+        slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }}
       />
 
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>{editingId !== null ? 'Editar Lectura' : 'Nueva Lectura'}</DialogTitle>
+        <DialogTitle>{editingId !== null ? t('readings.editTitle') : t('readings.createTitle')}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           {formErrors._global && <Alert severity="error">{formErrors._global}</Alert>}
           <TextField
-            label="CUPS"
+            label={t('readings.cups')}
             value={formData.cups}
             onChange={(e) => setFormData((p) => ({ ...p, cups: e.target.value }))}
             error={!!formErrors.cups}
@@ -208,16 +210,16 @@ export function ReadingsPage() {
             fullWidth
           />
           <TextField
-            label="Fecha (YYYY-MM-DD)"
+            label={t('readings.date')}
             value={formData.fecha}
             onChange={(e) => setFormData((p) => ({ ...p, fecha: e.target.value }))}
             error={!!formErrors.fecha}
-            helperText={formErrors.fecha ?? 'Ej: 2026-01-31'}
+            helperText={formErrors.fecha ?? t('readings.dateExample')}
             required
             fullWidth
           />
           <TextField
-            label="Lectura (m³)"
+            label={t('readings.readingM3')}
             value={formData.lecturaM3}
             onChange={(e) => setFormData((p) => ({ ...p, lecturaM3: e.target.value }))}
             error={!!formErrors.lecturaM3}
@@ -227,10 +229,10 @@ export function ReadingsPage() {
             fullWidth
           />
           <FormControl fullWidth>
-            <InputLabel id="tipo-label">Tipo</InputLabel>
+            <InputLabel id="tipo-label">{t('readings.type')}</InputLabel>
             <Select
               labelId="tipo-label"
-              label="Tipo"
+              label={t('readings.type')}
               value={formData.tipo}
               onChange={(e) => setFormData((p) => ({ ...p, tipo: e.target.value as 'REAL' | 'ESTIMADA' }))}
             >
@@ -241,22 +243,22 @@ export function ReadingsPage() {
           </FormControl>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setFormOpen(false)} disabled={saving}>Cancelar</Button>
+          <Button onClick={() => setFormOpen(false)} disabled={saving}>{t('common.cancel')}</Button>
           <Button
             variant="contained"
             onClick={() => { void handleSave(); }}
             disabled={saving}
             startIcon={saving ? <CircularProgress size={16} color="inherit" /> : undefined}
           >
-            Guardar
+            {t('common.save')}
           </Button>
         </DialogActions>
       </Dialog>
 
       <ConfirmDialog
         open={deleteTarget !== null}
-        title="Eliminar Lectura"
-        message={`¿Eliminar lectura ID ${deleteTarget?.id ?? ''} del CUPS ${deleteTarget?.cups ?? ''}?`}
+        title={t('readings.deleteTitle')}
+        message={t('readings.deleteMsg', { id: deleteTarget?.id ?? '' })}
         onConfirm={() => { void handleDeleteConfirm(); }}
         onCancel={() => setDeleteTarget(null)}
         loading={deleting}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -45,6 +46,7 @@ function DetailRow({ label, value }: DetailField) {
 }
 
 export function InvoicesPage() {
+  const { t } = useTranslation();
   const [rows, setRows] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,11 +68,11 @@ export function InvoicesPage() {
     try {
       setRows(await invoicesApi.getAll(cups, period, fechaEmision));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al cargar facturas');
+      setError(e instanceof Error ? e.message : t('invoices.errorLoad'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { void loadData(); }, [loadData]);
 
@@ -93,7 +95,7 @@ export function InvoicesPage() {
       const full = await invoicesApi.getOne(invoice.numeroFactura);
       setDetailInvoice(full);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al cargar detalle');
+      setError(e instanceof Error ? e.message : t('invoices.errorDetail'));
       setDetailOpen(false);
     } finally {
       setDetailLoading(false);
@@ -110,33 +112,33 @@ export function InvoicesPage() {
       a.download = `${invoiceId}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
-      setSuccessMsg('PDF descargado');
+      setSuccessMsg(t('invoices.pdfDownloaded'));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al descargar PDF');
+      setError(e instanceof Error ? e.message : t('invoices.errorPdf'));
     } finally {
       setPdfLoading(null);
     }
   }
 
   const columns: GridColDef<Invoice>[] = [
-    { field: 'numeroFactura', headerName: 'Nº Factura', flex: 2, minWidth: 200 },
-    { field: 'cups', headerName: 'CUPS', flex: 2, minWidth: 180 },
-    { field: 'periodoInicio', headerName: 'Periodo Inicio', width: 130 },
-    { field: 'periodoFin', headerName: 'Periodo Fin', width: 120 },
-    { field: 'base', headerName: 'Base (€)', width: 110, renderCell: (p) => fmtEur(p.row.base) },
-    { field: 'impuestos', headerName: 'Impuestos (€)', width: 130, renderCell: (p) => fmtEur(p.row.impuestos) },
-    { field: 'total', headerName: 'Total (€)', width: 110, renderCell: (p) => <Typography fontWeight={700}>{fmtEur(p.row.total)}</Typography> },
-    { field: 'fechaEmision', headerName: 'Emisión', width: 110 },
+    { field: 'numeroFactura', headerName: t('invoices.invoiceNumber'), flex: 2, minWidth: 200 },
+    { field: 'cups', headerName: t('invoices.cups'), flex: 2, minWidth: 180 },
+    { field: 'periodoInicio', headerName: t('invoices.periodStart'), width: 130 },
+    { field: 'periodoFin', headerName: t('invoices.periodEnd'), width: 120 },
+    { field: 'base', headerName: t('invoices.base'), width: 110, renderCell: (p) => fmtEur(p.row.base) },
+    { field: 'impuestos', headerName: t('invoices.taxes'), width: 130, renderCell: (p) => fmtEur(p.row.impuestos) },
+    { field: 'total', headerName: t('invoices.total'), width: 110, renderCell: (p) => <Typography fontWeight={700}>{fmtEur(p.row.total)}</Typography> },
+    { field: 'fechaEmision', headerName: t('invoices.issueDate'), width: 110 },
     {
       field: '_actions', headerName: '', width: 120, sortable: false, filterable: false,
       renderCell: (params) => (
         <Stack direction="row">
-          <IconButton size="small" aria-label="ver detalle" onClick={() => { void handleViewDetail(params.row); }}>
+          <IconButton size="small" aria-label={t('invoices.viewDetail')} onClick={() => { void handleViewDetail(params.row); }}>
             <VisibilityIcon fontSize="small" />
           </IconButton>
           <IconButton
             size="small"
-            aria-label="descargar PDF"
+            aria-label={t('invoices.downloadPdf')}
             color="secondary"
             onClick={() => { void handleDownloadPdf(params.row.numeroFactura); }}
             disabled={pdfLoading === params.row.numeroFactura}
@@ -151,24 +153,24 @@ export function InvoicesPage() {
   ];
 
   const lineColumns: GridColDef<InvoiceLine>[] = [
-    { field: 'tipoLinea', headerName: 'Tipo', width: 160, renderCell: (p) => <Chip label={p.row.tipoLinea} size="small" variant="outlined" /> },
-    { field: 'descripcion', headerName: 'Descripción', flex: 2, minWidth: 160 },
-    { field: 'cantidad', headerName: 'Cantidad', width: 110, type: 'number', renderCell: (p) => p.row.cantidad.toLocaleString('es-ES', { maximumFractionDigits: 3 }) },
-    { field: 'precioUnitario', headerName: 'Precio Unit.', width: 120, renderCell: (p) => fmtEur(p.row.precioUnitario) },
-    { field: 'importe', headerName: 'Importe (€)', width: 120, renderCell: (p) => <Typography fontWeight={600}>{fmtEur(p.row.importe)}</Typography> },
+    { field: 'tipoLinea', headerName: t('invoices.lineType'), width: 160, renderCell: (p) => <Chip label={p.row.tipoLinea} size="small" variant="outlined" /> },
+    { field: 'descripcion', headerName: t('invoices.lineDescription'), flex: 2, minWidth: 160 },
+    { field: 'cantidad', headerName: t('invoices.lineQuantity'), width: 110, type: 'number', renderCell: (p) => p.row.cantidad.toLocaleString('es-ES', { maximumFractionDigits: 3 }) },
+    { field: 'precioUnitario', headerName: t('invoices.lineUnitPrice'), width: 120, renderCell: (p) => fmtEur(p.row.precioUnitario) },
+    { field: 'importe', headerName: t('invoices.lineAmount'), width: 120, renderCell: (p) => <Typography fontWeight={600}>{fmtEur(p.row.importe)}</Typography> },
   ];
 
   return (
     <Box>
-      <PageHeader title="Facturas" />
+      <PageHeader title={t('invoices.title')} />
 
       <Paper sx={{ p: 2, mb: 2 }}>
         <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap" useFlexGap>
-          <TextField label="CUPS" value={filterCups} onChange={(e) => setFilterCups(e.target.value)} size="small" sx={{ minWidth: 200 }} />
-          <TextField label="Periodo (YYYY-MM)" value={filterPeriod} onChange={(e) => setFilterPeriod(e.target.value)} size="small" sx={{ minWidth: 160 }} />
-          <TextField label="Fecha Emisión (YYYY-MM-DD)" value={filterFecha} onChange={(e) => setFilterFecha(e.target.value)} size="small" sx={{ minWidth: 200 }} />
-          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>Buscar</Button>
-          <Button variant="text" onClick={handleClear}>Limpiar</Button>
+          <TextField label={t('invoices.filterCups')} value={filterCups} onChange={(e) => setFilterCups(e.target.value)} size="small" sx={{ minWidth: 200 }} />
+          <TextField label={t('invoices.filterPeriod')} value={filterPeriod} onChange={(e) => setFilterPeriod(e.target.value)} size="small" sx={{ minWidth: 160 }} />
+          <TextField label={t('invoices.filterDate')} value={filterFecha} onChange={(e) => setFilterFecha(e.target.value)} size="small" sx={{ minWidth: 200 }} />
+          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>{t('common.search')}</Button>
+          <Button variant="text" onClick={handleClear}>{t('common.clear')}</Button>
         </Stack>
       </Paper>
 
@@ -183,14 +185,14 @@ export function InvoicesPage() {
         pageSizeOptions={[10, 25, 50]}
         initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
         disableRowSelectionOnClick
-        slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>Sin facturas. Ejecuta la facturación primero.</Box> }}
+        slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('invoices.noInvoices')}</Box> }}
       />
 
       {/* Invoice Detail Dialog */}
       <Dialog open={detailOpen} onClose={() => setDetailOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <PictureAsPdfIcon color="secondary" />
-          Detalle de Factura
+          {t('invoices.detailTitle')}
           {detailInvoice && (
             <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
               {detailInvoice.numeroFactura}
@@ -202,11 +204,11 @@ export function InvoicesPage() {
           {detailInvoice && (
             <Box>
               <Grid container spacing={2} sx={{ mb: 3 }}>
-                <DetailRow label="Nº Factura" value={detailInvoice.numeroFactura} />
-                <DetailRow label="CUPS" value={detailInvoice.cups} />
-                <DetailRow label="Periodo Inicio" value={detailInvoice.periodoInicio} />
-                <DetailRow label="Periodo Fin" value={detailInvoice.periodoFin} />
-                <DetailRow label="Fecha Emisión" value={detailInvoice.fechaEmision} />
+                <DetailRow label={t('invoices.invoiceNumber')} value={detailInvoice.numeroFactura} />
+                <DetailRow label={t('invoices.cups')} value={detailInvoice.cups} />
+                <DetailRow label={t('invoices.periodStart')} value={detailInvoice.periodoInicio} />
+                <DetailRow label={t('invoices.periodEnd')} value={detailInvoice.periodoFin} />
+                <DetailRow label={t('invoices.issueDate')} value={detailInvoice.fechaEmision} />
               </Grid>
 
               <Divider sx={{ my: 2 }} />
@@ -214,26 +216,26 @@ export function InvoicesPage() {
               <Grid container spacing={2} sx={{ mb: 3 }}>
                 <Grid size={{ xs: 12, sm: 4 }}>
                   <Paper variant="outlined" sx={{ p: 2, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">Base Imponible</Typography>
+                    <Typography variant="caption" color="text.secondary">{t('invoices.baseAmount')}</Typography>
                     <Typography variant="h6">{fmtEur(detailInvoice.base)}</Typography>
                   </Paper>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 4 }}>
                   <Paper variant="outlined" sx={{ p: 2, textAlign: 'center' }}>
-                    <Typography variant="caption" color="text.secondary">Impuestos</Typography>
+                    <Typography variant="caption" color="text.secondary">{t('invoices.taxAmount')}</Typography>
                     <Typography variant="h6">{fmtEur(detailInvoice.impuestos)}</Typography>
                   </Paper>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 4 }}>
                   <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'primary.main', color: 'primary.contrastText' }}>
-                    <Typography variant="caption" sx={{ opacity: 0.8 }}>Total</Typography>
+                    <Typography variant="caption" sx={{ opacity: 0.8 }}>{t('invoices.totalAmount')}</Typography>
                     <Typography variant="h5" fontWeight={700}>{fmtEur(detailInvoice.total)}</Typography>
                   </Paper>
                 </Grid>
               </Grid>
 
               <Divider sx={{ my: 2 }} />
-              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 1 }}>Líneas de Factura</Typography>
+              <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 1 }}>{t('invoices.invoiceLines')}</Typography>
 
               {detailInvoice.lines && detailInvoice.lines.length > 0 ? (
                 <DataGrid
@@ -244,7 +246,7 @@ export function InvoicesPage() {
                   disableRowSelectionOnClick
                 />
               ) : (
-                <Typography color="text.secondary">Sin líneas de detalle</Typography>
+                <Typography color="text.secondary">{t('invoices.noLines')}</Typography>
               )}
             </Box>
           )}
@@ -257,10 +259,10 @@ export function InvoicesPage() {
               onClick={() => { void handleDownloadPdf(detailInvoice.numeroFactura); }}
               disabled={pdfLoading === detailInvoice.numeroFactura}
             >
-              Descargar PDF
+              {t('invoices.downloadPdf')}
             </Button>
           )}
-          <Button onClick={() => setDetailOpen(false)}>Cerrar</Button>
+          <Button onClick={() => setDetailOpen(false)}>{t('common.close')}</Button>
         </DialogActions>
       </Dialog>
 

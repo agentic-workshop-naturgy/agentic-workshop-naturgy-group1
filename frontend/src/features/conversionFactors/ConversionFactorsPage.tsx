@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -26,19 +27,20 @@ import type { ConversionFactor, ConversionFactorForm } from './types';
 const DEFAULT_FORM: ConversionFactorForm = { zona: '', mes: '', coefConv: '', pcsKwhM3: '' };
 const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/;
 
-function validate(form: ConversionFactorForm): Record<string, string> {
+function validate(form: ConversionFactorForm, t: (k: string) => string): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (!form.zona.trim()) errors.zona = 'Zona es requerida';
-  if (!form.mes.trim()) errors.mes = 'Mes es requerido';
-  else if (!MONTH_RE.test(form.mes)) errors.mes = 'Formato YYYY-MM';
-  if (!form.coefConv.trim()) errors.coefConv = 'Requerido';
-  else if (isNaN(Number(form.coefConv)) || Number(form.coefConv) <= 0) errors.coefConv = 'Debe ser > 0';
-  if (!form.pcsKwhM3.trim()) errors.pcsKwhM3 = 'Requerido';
-  else if (isNaN(Number(form.pcsKwhM3)) || Number(form.pcsKwhM3) <= 0) errors.pcsKwhM3 = 'Debe ser > 0';
+  if (!form.zona.trim()) errors.zona = t('conversionFactors.zoneRequired');
+  if (!form.mes.trim()) errors.mes = t('conversionFactors.monthRequired');
+  else if (!MONTH_RE.test(form.mes)) errors.mes = t('conversionFactors.monthRequired');
+  if (!form.coefConv.trim()) errors.coefConv = t('conversionFactors.coefRequired');
+  else if (isNaN(Number(form.coefConv)) || Number(form.coefConv) <= 0) errors.coefConv = t('conversionFactors.coefPositive');
+  if (!form.pcsKwhM3.trim()) errors.pcsKwhM3 = t('conversionFactors.pcsRequired');
+  else if (isNaN(Number(form.pcsKwhM3)) || Number(form.pcsKwhM3) <= 0) errors.pcsKwhM3 = t('conversionFactors.pcsPositive');
   return errors;
 }
 
 export function ConversionFactorsPage() {
+  const { t } = useTranslation();
   const [rows, setRows] = useState<ConversionFactor[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -62,11 +64,11 @@ export function ConversionFactorsPage() {
     try {
       setRows(await conversionFactorsApi.getAll(zona, mes));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al cargar datos');
+      setError(e instanceof Error ? e.message : t('common.errorLoading'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { void loadData(); }, [loadData]);
 
@@ -87,22 +89,22 @@ export function ConversionFactorsPage() {
   }
 
   async function handleSave() {
-    const errors = validate(formData);
+    const errors = validate(formData, t);
     if (Object.keys(errors).length > 0) { setFormErrors(errors); return; }
     const payload = { zona: formData.zona, mes: formData.mes, coefConv: Number(formData.coefConv), pcsKwhM3: Number(formData.pcsKwhM3) };
     setSaving(true);
     try {
       if (editingId !== null) {
         await conversionFactorsApi.update(editingId, payload);
-        setSuccessMsg('Factor actualizado');
+        setSuccessMsg(t('conversionFactors.updated'));
       } else {
         await conversionFactorsApi.create(payload);
-        setSuccessMsg('Factor creado');
+        setSuccessMsg(t('conversionFactors.created'));
       }
       setFormOpen(false);
       await loadData(filterZona || undefined, filterMes || undefined);
     } catch (e) {
-      setFormErrors({ _global: e instanceof Error ? e.message : 'Error al guardar' });
+      setFormErrors({ _global: e instanceof Error ? e.message : t('common.errorSaving') });
     } finally {
       setSaving(false);
     }
@@ -113,11 +115,11 @@ export function ConversionFactorsPage() {
     setDeleting(true);
     try {
       await conversionFactorsApi.delete(deleteTarget.id);
-      setSuccessMsg('Factor eliminado');
+      setSuccessMsg(t('conversionFactors.deleted'));
       setDeleteTarget(null);
       await loadData(filterZona || undefined, filterMes || undefined);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al eliminar');
+      setError(e instanceof Error ? e.message : t('common.errorDeleting'));
       setDeleteTarget(null);
     } finally {
       setDeleting(false);
@@ -126,10 +128,10 @@ export function ConversionFactorsPage() {
 
   const columns: GridColDef<ConversionFactor>[] = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'zona', headerName: 'Zona', flex: 1, minWidth: 100 },
-    { field: 'mes', headerName: 'Mes', width: 110 },
-    { field: 'coefConv', headerName: 'Coef. Conv.', flex: 1, minWidth: 120, type: 'number' },
-    { field: 'pcsKwhM3', headerName: 'PCS (kWh/m³)', flex: 1, minWidth: 130, type: 'number' },
+    { field: 'zona', headerName: t('conversionFactors.zone'), flex: 1, minWidth: 100 },
+    { field: 'mes', headerName: t('conversionFactors.month'), width: 110 },
+    { field: 'coefConv', headerName: t('conversionFactors.coefConv'), flex: 1, minWidth: 120, type: 'number' },
+    { field: 'pcsKwhM3', headerName: t('conversionFactors.pcsKwhM3'), flex: 1, minWidth: 130, type: 'number' },
     {
       field: '_actions', headerName: '', width: 100, sortable: false, filterable: false,
       renderCell: (params) => (
@@ -143,38 +145,38 @@ export function ConversionFactorsPage() {
 
   return (
     <Box>
-      <PageHeader title="Factores de Conversión" action={<Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>Nuevo Factor</Button>} />
+      <PageHeader title={t('conversionFactors.title')} action={<Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>{t('conversionFactors.newBtn')}</Button>} />
 
       <Paper sx={{ p: 2, mb: 2 }}>
         <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
-          <TextField label="Zona" value={filterZona} onChange={(e) => setFilterZona(e.target.value)} size="small" sx={{ minWidth: 150 }} />
-          <TextField label="Mes (YYYY-MM)" value={filterMes} onChange={(e) => setFilterMes(e.target.value)} size="small" sx={{ minWidth: 150 }} />
-          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>Buscar</Button>
-          <Button variant="text" onClick={() => { setFilterZona(''); setFilterMes(''); void loadData(); }}>Limpiar</Button>
+          <TextField label={t('conversionFactors.zone')} value={filterZona} onChange={(e) => setFilterZona(e.target.value)} size="small" sx={{ minWidth: 150 }} />
+          <TextField label={t('conversionFactors.monthFormat')} value={filterMes} onChange={(e) => setFilterMes(e.target.value)} size="small" sx={{ minWidth: 150 }} />
+          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>{t('common.search')}</Button>
+          <Button variant="text" onClick={() => { setFilterZona(''); setFilterMes(''); void loadData(); }}>{t('common.clear')}</Button>
         </Stack>
       </Paper>
 
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
 
-      <DataGrid rows={rows} columns={columns} autoHeight pageSizeOptions={[10, 25]} initialState={{ pagination: { paginationModel: { pageSize: 10 } } }} disableRowSelectionOnClick slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>Sin datos</Box> }} />
+      <DataGrid rows={rows} columns={columns} autoHeight pageSizeOptions={[10, 25]} initialState={{ pagination: { paginationModel: { pageSize: 10 } } }} disableRowSelectionOnClick slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }} />
 
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>{editingId !== null ? 'Editar Factor' : 'Nuevo Factor de Conversión'}</DialogTitle>
+        <DialogTitle>{editingId !== null ? t('conversionFactors.editTitle') : t('conversionFactors.createTitle')}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           {formErrors._global && <Alert severity="error">{formErrors._global}</Alert>}
-          <TextField label="Zona" value={formData.zona} onChange={(e) => setFormData((p) => ({ ...p, zona: e.target.value }))} error={!!formErrors.zona} helperText={formErrors.zona} required fullWidth />
-          <TextField label="Mes (YYYY-MM)" value={formData.mes} onChange={(e) => setFormData((p) => ({ ...p, mes: e.target.value }))} error={!!formErrors.mes} helperText={formErrors.mes ?? 'Ej: 2026-01'} required fullWidth />
-          <TextField label="Coeficiente Conv." value={formData.coefConv} onChange={(e) => setFormData((p) => ({ ...p, coefConv: e.target.value }))} error={!!formErrors.coefConv} helperText={formErrors.coefConv} inputProps={{ inputMode: 'decimal' }} required fullWidth />
-          <TextField label="PCS (kWh/m³)" value={formData.pcsKwhM3} onChange={(e) => setFormData((p) => ({ ...p, pcsKwhM3: e.target.value }))} error={!!formErrors.pcsKwhM3} helperText={formErrors.pcsKwhM3} inputProps={{ inputMode: 'decimal' }} required fullWidth />
+          <TextField label={t('conversionFactors.zone')} value={formData.zona} onChange={(e) => setFormData((p) => ({ ...p, zona: e.target.value }))} error={!!formErrors.zona} helperText={formErrors.zona} required fullWidth />
+          <TextField label={t('conversionFactors.monthFormat')} value={formData.mes} onChange={(e) => setFormData((p) => ({ ...p, mes: e.target.value }))} error={!!formErrors.mes} helperText={formErrors.mes ?? t('conversionFactors.monthExample')} required fullWidth />
+          <TextField label={t('conversionFactors.coefConv')} value={formData.coefConv} onChange={(e) => setFormData((p) => ({ ...p, coefConv: e.target.value }))} error={!!formErrors.coefConv} helperText={formErrors.coefConv} inputProps={{ inputMode: 'decimal' }} required fullWidth />
+          <TextField label={t('conversionFactors.pcsKwhM3')} value={formData.pcsKwhM3} onChange={(e) => setFormData((p) => ({ ...p, pcsKwhM3: e.target.value }))} error={!!formErrors.pcsKwhM3} helperText={formErrors.pcsKwhM3} inputProps={{ inputMode: 'decimal' }} required fullWidth />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setFormOpen(false)} disabled={saving}>Cancelar</Button>
-          <Button variant="contained" onClick={() => { void handleSave(); }} disabled={saving} startIcon={saving ? <CircularProgress size={16} color="inherit" /> : undefined}>Guardar</Button>
+          <Button onClick={() => setFormOpen(false)} disabled={saving}>{t('common.cancel')}</Button>
+          <Button variant="contained" onClick={() => { void handleSave(); }} disabled={saving} startIcon={saving ? <CircularProgress size={16} color="inherit" /> : undefined}>{t('common.save')}</Button>
         </DialogActions>
       </Dialog>
 
-      <ConfirmDialog open={deleteTarget !== null} title="Eliminar Factor" message={`¿Eliminar factor ID ${deleteTarget?.id ?? ''}?`} onConfirm={() => { void handleDeleteConfirm(); }} onCancel={() => setDeleteTarget(null)} loading={deleting} />
+      <ConfirmDialog open={deleteTarget !== null} title={t('conversionFactors.deleteTitle')} message={t('conversionFactors.deleteMsg', { id: deleteTarget?.id ?? '' })} onConfirm={() => { void handleDeleteConfirm(); }} onCancel={() => setDeleteTarget(null)} loading={deleting} />
 
       <Snackbar open={successMsg !== null} autoHideDuration={3000} onClose={() => setSuccessMsg(null)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
         <Alert severity="success" onClose={() => setSuccessMsg(null)}>{successMsg}</Alert>

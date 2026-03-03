@@ -127,7 +127,7 @@ class BillingIntegrationTest {
         // Use fetch-join to load lines eagerly
         Invoice invoiceWithLines = invoiceRepository.findByIdWithLines(invoiceOpt.get().getNumeroFactura()).orElseThrow();
 
-        byte[] pdfBytes = pdfService.generate(invoiceWithLines);
+        byte[] pdfBytes = pdfService.generate(invoiceWithLines, List.of());
 
         assertThat(pdfBytes).isNotNull();
         assertThat(pdfBytes.length).isGreaterThan(0);
