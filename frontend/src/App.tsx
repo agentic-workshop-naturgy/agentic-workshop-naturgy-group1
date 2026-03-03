@@ -19,6 +19,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { DRAWER_WIDTH } from './app/theme';
+import { NaturgyLogo } from './shared/ui/NaturgyLogo';
 import { SupplyPointsPage } from './features/supplyPoints/SupplyPointsPage';
 import { ReadingsPage } from './features/readings/ReadingsPage';
 import { TariffsPage } from './features/tariffs/TariffsPage';
@@ -92,9 +93,7 @@ export function App() {
             {PAGE_TITLES[currentPage]}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Typography variant="body2" sx={{ opacity: 0.7 }}>
-            GAS Workshop · Naturgy
-          </Typography>
+          <NaturgyLogo height={36} />
         </Toolbar>
       </AppBar>
 
