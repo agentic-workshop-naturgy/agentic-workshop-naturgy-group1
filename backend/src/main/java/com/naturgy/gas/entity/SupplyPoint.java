@@ -26,6 +26,30 @@ public class SupplyPoint {
     @Column(nullable = false, length = 10)
     private EstadoSupply estado;
 
+    // Relación con el titular del suministro
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    // Dirección del punto de suministro
+    @Column(length = 200)
+    private String calle;
+
+    @Column(length = 20)
+    private String numero;
+
+    @Column(length = 30)
+    private String piso;
+
+    @Column(length = 10)
+    private String codigoPostal;
+
+    @Column(length = 100)
+    private String municipio;
+
+    @Column(length = 100)
+    private String provincia;
+
     public enum EstadoSupply {
         ACTIVO, INACTIVO
     }

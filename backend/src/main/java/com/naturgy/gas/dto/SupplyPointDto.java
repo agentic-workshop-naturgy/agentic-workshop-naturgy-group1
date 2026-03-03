@@ -6,10 +6,29 @@ public record SupplyPointDto(
         String cups,
         String zona,
         String tarifa,
-        String estado
+        String estado,
+        Long clienteId,
+        String calle,
+        String numero,
+        String piso,
+        String codigoPostal,
+        String municipio,
+        String provincia
 ) {
     public static SupplyPointDto from(SupplyPoint e) {
-        return new SupplyPointDto(e.getCups(), e.getZona(), e.getTarifa(), e.getEstado().name());
+        return new SupplyPointDto(
+                e.getCups(),
+                e.getZona(),
+                e.getTarifa(),
+                e.getEstado().name(),
+                e.getCliente() != null ? e.getCliente().getId() : null,
+                e.getCalle(),
+                e.getNumero(),
+                e.getPiso(),
+                e.getCodigoPostal(),
+                e.getMunicipio(),
+                e.getProvincia()
+        );
     }
 
     public SupplyPoint toEntity() {
@@ -18,6 +37,12 @@ public record SupplyPointDto(
         sp.setZona(zona);
         sp.setTarifa(tarifa);
         sp.setEstado(SupplyPoint.EstadoSupply.valueOf(estado));
+        sp.setCalle(calle);
+        sp.setNumero(numero);
+        sp.setPiso(piso);
+        sp.setCodigoPostal(codigoPostal);
+        sp.setMunicipio(municipio);
+        sp.setProvincia(provincia);
         return sp;
     }
 }

@@ -2,6 +2,7 @@ package com.naturgy.gas.seed;
 
 import com.naturgy.gas.entity.*;
 import com.naturgy.gas.repository.*;
+import com.naturgy.gas.repository.ClienteRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class DataSeeder implements ApplicationRunner {
 
     private static final String SAMPLES_RELATIVE = "_data/db/samples/";
 
+    private final ClienteRepository clienteRepository;
     private final SupplyPointRepository supplyPointRepository;
     private final GasTariffRepository gasTariffRepository;
     private final GasConversionFactorRepository gasConversionFactorRepository;
@@ -45,6 +47,7 @@ public class DataSeeder implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         log.info("=== DataSeeder: starting idempotent CSV seed ===");
         String samplesDir = resolveSamplesDir();
+        seedClientes();
         seedSupplyPoints(samplesDir);
         seedGasTariffs(samplesDir);
         seedGasConversionFactors(samplesDir);
@@ -75,6 +78,28 @@ public class DataSeeder implements ApplicationRunner {
     }
 
     @Transactional
+    public void seedClientes() {
+        if (clienteRepository.count() > 0) return;
+        Object[][] data = {
+            {"12345678A", "Ana",    "García López",    "ana.garcia@example.com",    "600111222", java.time.LocalDate.of(1985, 3, 14)},
+            {"87654321B", "Carlos", "Martínez Ruiz",   "carlos.m@example.com",      "611333444", java.time.LocalDate.of(1978, 7, 22)},
+            {"11223344C", "Lucía",  "Fernández Pérez", "lucia.f@example.com",       "622555666", java.time.LocalDate.of(1992, 11, 5)},
+            {"44332211D", "Javier", "López Sánchez",   "javier.l@example.com",      "633777888", java.time.LocalDate.of(1970, 1, 30)},
+        };
+        for (Object[] row : data) {
+            Cliente c = new Cliente();
+            c.setNif((String) row[0]);
+            c.setNombre((String) row[1]);
+            c.setApellidos((String) row[2]);
+            c.setEmail((String) row[3]);
+            c.setTelefono((String) row[4]);
+            c.setFechaNacimiento((java.time.LocalDate) row[5]);
+            clienteRepository.save(c);
+        }
+        log.info("clientes: {} seed rows loaded", clienteRepository.count());
+    }
+
+    @Transactional
     public void seedSupplyPoints(String samplesDir) {
         String file = samplesDir + "supply-points.csv";
         if (!fileExists(file)) return;
@@ -88,6 +113,12 @@ public class DataSeeder implements ApplicationRunner {
             sp.setZona(cell(row, 1, file));
             sp.setTarifa(cell(row, 2, file));
             sp.setEstado(parseEnum(SupplyPoint.EstadoSupply.class, cell(row, 3, file), file));
+            if (row.length > 4)  sp.setCalle(cell(row, 4, file));
+            if (row.length > 5)  sp.setNumero(cell(row, 5, file));
+            if (row.length > 6)  sp.setPiso(cell(row, 6, file));
+            if (row.length > 7)  sp.setCodigoPostal(cell(row, 7, file));
+            if (row.length > 8)  sp.setMunicipio(cell(row, 8, file));
+            if (row.length > 9)  sp.setProvincia(cell(row, 9, file));
             supplyPointRepository.save(sp);
             loaded++;
         }

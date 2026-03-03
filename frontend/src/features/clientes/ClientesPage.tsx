@@ -8,65 +8,52 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
+import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import SearchIcon from '@mui/icons-material/Search';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { PageHeader } from '../../shared/ui/PageHeader';
 import { ConfirmDialog } from '../../shared/ui/ConfirmDialog';
-import { readingsApi } from './api';
-import type { GasReading, GasReadingForm } from './types';
-import { TIPO_OPTIONS } from './types';
+import { clientesApi } from './api';
+import type { Cliente, ClienteForm } from './types';
 
-const DEFAULT_FORM: GasReadingForm = { cups: '', fecha: '', lecturaM3: '', tipo: 'REAL' };
-const DATE_RE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+const DEFAULT_FORM: ClienteForm = {
+  nif: '', nombre: '', apellidos: '', email: '', telefono: '', fechaNacimiento: '',
+};
 
-function validate(form: GasReadingForm, t: (key: string) => string): Record<string, string> {
+function validate(form: ClienteForm, t: (key: string) => string): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (!form.cups.trim()) errors.cups = t('readings.cupsRequired');
-  if (!form.fecha.trim()) errors.fecha = t('readings.fechaRequired');
-  else if (!DATE_RE.test(form.fecha)) errors.fecha = t('readings.fechaFormat');
-  if (!form.lecturaM3.trim()) errors.lecturaM3 = t('readings.lecturaRequired');
-  else if (isNaN(Number(form.lecturaM3)) || Number(form.lecturaM3) < 0)
-    errors.lecturaM3 = t('readings.lecturaPositive');
+  if (!form.nif.trim()) errors.nif = t('clients.nifRequired');
+  if (!form.nombre.trim()) errors.nombre = t('clients.nombreRequired');
+  if (!form.apellidos.trim()) errors.apellidos = t('clients.apellidosRequired');
   return errors;
 }
 
-export function ReadingsPage() {
+export function ClientesPage() {
   const { t } = useTranslation();
-  const [rows, setRows] = useState<GasReading[]>([]);
+  const [rows, setRows] = useState<Cliente[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const [filterCups, setFilterCups] = useState('');
-
   const [formOpen, setFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [formData, setFormData] = useState<GasReadingForm>(DEFAULT_FORM);
+  const [formData, setFormData] = useState<ClienteForm>(DEFAULT_FORM);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
 
-  const [deleteTarget, setDeleteTarget] = useState<GasReading | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Cliente | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const loadData = useCallback(async (cups?: string) => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await readingsApi.getAll(cups || undefined);
-      setRows(data);
+      setRows(await clientesApi.getAll());
     } catch (e) {
       setError(e instanceof Error ? e.message : t('common.errorLoad'));
     } finally {
@@ -76,8 +63,6 @@ export function ReadingsPage() {
 
   useEffect(() => { void loadData(); }, [loadData]);
 
-  function handleFilter() { void loadData(filterCups); }
-
   function handleOpenCreate() {
     setEditingId(null);
     setFormData(DEFAULT_FORM);
@@ -85,9 +70,16 @@ export function ReadingsPage() {
     setFormOpen(true);
   }
 
-  function handleOpenEdit(row: GasReading) {
+  function handleOpenEdit(row: Cliente) {
     setEditingId(row.id);
-    setFormData({ cups: row.cups, fecha: row.fecha, lecturaM3: String(row.lecturaM3), tipo: row.tipo });
+    setFormData({
+      nif: row.nif,
+      nombre: row.nombre,
+      apellidos: row.apellidos,
+      email: row.email ?? '',
+      telefono: row.telefono ?? '',
+      fechaNacimiento: row.fechaNacimiento ?? '',
+    });
     setFormErrors({});
     setFormOpen(true);
   }
@@ -95,18 +87,17 @@ export function ReadingsPage() {
   async function handleSave() {
     const errors = validate(formData, t);
     if (Object.keys(errors).length > 0) { setFormErrors(errors); return; }
-    const payload = { cups: formData.cups, fecha: formData.fecha, lecturaM3: Number(formData.lecturaM3), tipo: formData.tipo };
     setSaving(true);
     try {
       if (editingId !== null) {
-        await readingsApi.update(editingId, payload);
-        setSuccessMsg(t('readings.updated'));
+        await clientesApi.update(editingId, formData);
+        setSuccessMsg(t('clients.updated'));
       } else {
-        await readingsApi.create(payload);
-        setSuccessMsg(t('readings.created'));
+        await clientesApi.create(formData);
+        setSuccessMsg(t('clients.created'));
       }
       setFormOpen(false);
-      await loadData(filterCups || undefined);
+      await loadData();
     } catch (e) {
       setFormErrors({ _global: e instanceof Error ? e.message : t('common.errorSave') });
     } finally {
@@ -118,10 +109,10 @@ export function ReadingsPage() {
     if (!deleteTarget) return;
     setDeleting(true);
     try {
-      await readingsApi.delete(deleteTarget.id);
-      setSuccessMsg(t('readings.deleted'));
+      await clientesApi.delete(deleteTarget.id);
+      setSuccessMsg(t('clients.deleted'));
       setDeleteTarget(null);
-      await loadData(filterCups || undefined);
+      await loadData();
     } catch (e) {
       setError(e instanceof Error ? e.message : t('common.errorDelete'));
       setDeleteTarget(null);
@@ -130,12 +121,13 @@ export function ReadingsPage() {
     }
   }
 
-  const columns: GridColDef<GasReading>[] = [
-    { field: 'id', headerName: t('readings.colId'), width: 70 },
-    { field: 'cups', headerName: t('readings.colCups'), flex: 2, minWidth: 180 },
-    { field: 'fecha', headerName: t('readings.colFecha'), width: 120 },
-    { field: 'lecturaM3', headerName: t('readings.colLecturaM3'), width: 130, type: 'number' },
-    { field: 'tipo', headerName: t('readings.colTipo'), width: 110 },
+  const columns: GridColDef<Cliente>[] = [
+    { field: 'nif', headerName: t('clients.colNif'), flex: 1, minWidth: 110 },
+    { field: 'nombre', headerName: t('clients.colNombre'), flex: 1, minWidth: 120 },
+    { field: 'apellidos', headerName: t('clients.colApellidos'), flex: 2, minWidth: 160 },
+    { field: 'email', headerName: t('clients.colEmail'), flex: 2, minWidth: 180 },
+    { field: 'telefono', headerName: t('clients.colTelefono'), flex: 1, minWidth: 120 },
+    { field: 'fechaNacimiento', headerName: t('clients.colFechaNacimiento'), flex: 1, minWidth: 130 },
     {
       field: '_actions',
       headerName: '',
@@ -158,34 +150,15 @@ export function ReadingsPage() {
   return (
     <Box>
       <PageHeader
-        title={t('readings.title')}
+        title={t('clients.title')}
         action={
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>
-            {t('readings.new')}
+            {t('clients.new')}
           </Button>
         }
       />
-      <Paper sx={{ p: 2, mb: 2 }}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <TextField
-            label={t('readings.filterByCups')}
-            value={filterCups}
-            onChange={(e) => setFilterCups(e.target.value)}
-            size="small"
-            sx={{ minWidth: 240 }}
-          />
-          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>
-            {t('common.search')}
-          </Button>
-          <Button variant="text" onClick={() => { setFilterCups(''); void loadData(); }}>
-            {t('common.clear')}
-          </Button>
-        </Stack>
-      </Paper>
-
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
-
       <DataGrid
         rows={rows}
         columns={columns}
@@ -196,51 +169,59 @@ export function ReadingsPage() {
         slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }}
       />
 
+      {/* Create / Edit dialog */}
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>{editingId !== null ? t('readings.editReading') : t('readings.newReading')}</DialogTitle>
+        <DialogTitle>{editingId !== null ? t('clients.editClient') : t('clients.newClient')}</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: '16px !important' }}>
           {formErrors._global && <Alert severity="error">{formErrors._global}</Alert>}
           <TextField
-            label={t('readings.cups')}
-            value={formData.cups}
-            onChange={(e) => setFormData((p) => ({ ...p, cups: e.target.value }))}
-            error={!!formErrors.cups}
-            helperText={formErrors.cups}
+            label={t('clients.nif')}
+            value={formData.nif}
+            onChange={(e) => setFormData((p) => ({ ...p, nif: e.target.value }))}
+            error={!!formErrors.nif}
+            helperText={formErrors.nif}
             required
             fullWidth
           />
           <TextField
-            label={t('readings.fecha')}
-            value={formData.fecha}
-            onChange={(e) => setFormData((p) => ({ ...p, fecha: e.target.value }))}
-            error={!!formErrors.fecha}
-            helperText={formErrors.fecha ?? t('readings.helperFecha')}
+            label={t('clients.nombre')}
+            value={formData.nombre}
+            onChange={(e) => setFormData((p) => ({ ...p, nombre: e.target.value }))}
+            error={!!formErrors.nombre}
+            helperText={formErrors.nombre}
             required
             fullWidth
           />
           <TextField
-            label={t('readings.lecturaM3')}
-            value={formData.lecturaM3}
-            onChange={(e) => setFormData((p) => ({ ...p, lecturaM3: e.target.value }))}
-            error={!!formErrors.lecturaM3}
-            helperText={formErrors.lecturaM3}
-            inputProps={{ inputMode: 'decimal' }}
+            label={t('clients.apellidos')}
+            value={formData.apellidos}
+            onChange={(e) => setFormData((p) => ({ ...p, apellidos: e.target.value }))}
+            error={!!formErrors.apellidos}
+            helperText={formErrors.apellidos}
             required
             fullWidth
           />
-          <FormControl fullWidth>
-            <InputLabel id="tipo-label">{t('readings.tipo')}</InputLabel>
-            <Select
-              labelId="tipo-label"
-              label={t('readings.tipo')}
-              value={formData.tipo}
-              onChange={(e) => setFormData((p) => ({ ...p, tipo: e.target.value as 'REAL' | 'ESTIMADA' }))}
-            >
-              {TIPO_OPTIONS.map((opt) => (
-                <MenuItem key={opt} value={opt}>{opt}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <TextField
+            label={t('clients.email')}
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
+            fullWidth
+          />
+          <TextField
+            label={t('clients.telefono')}
+            value={formData.telefono}
+            onChange={(e) => setFormData((p) => ({ ...p, telefono: e.target.value }))}
+            fullWidth
+          />
+          <TextField
+            label={t('clients.fechaNacimiento')}
+            type="date"
+            value={formData.fechaNacimiento}
+            onChange={(e) => setFormData((p) => ({ ...p, fechaNacimiento: e.target.value }))}
+            InputLabelProps={{ shrink: true }}
+            fullWidth
+          />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={() => setFormOpen(false)} disabled={saving}>{t('common.cancel')}</Button>
@@ -255,10 +236,11 @@ export function ReadingsPage() {
         </DialogActions>
       </Dialog>
 
+      {/* Delete confirm */}
       <ConfirmDialog
         open={deleteTarget !== null}
-        title={t('readings.deleteTitle')}
-        message={t('readings.deleteMessage', { id: deleteTarget?.id ?? '', cups: deleteTarget?.cups ?? '' })}
+        title={t('clients.deleteTitle')}
+        message={t('clients.deleteMessage', { name: deleteTarget?.nombre ?? '', surname: deleteTarget?.apellidos ?? '' })}
         onConfirm={() => { void handleDeleteConfirm(); }}
         onCancel={() => setDeleteTarget(null)}
         loading={deleting}

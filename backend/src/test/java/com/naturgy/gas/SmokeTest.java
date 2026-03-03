@@ -18,6 +18,9 @@ class SmokeTest {
     private SupplyPointRepository supplyPointRepository;
 
     @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
     private GasTariffRepository gasTariffRepository;
 
     @Autowired
@@ -85,7 +88,7 @@ class SmokeTest {
 
         // Re-trigger seed via a new seeder instance
         com.naturgy.gas.seed.DataSeeder seeder = new com.naturgy.gas.seed.DataSeeder(
-                supplyPointRepository, gasTariffRepository,
+                clienteRepository, supplyPointRepository, gasTariffRepository,
                 gasConversionFactorRepository, taxConfigRepository, gasReadingRepository);
         seeder.run(null);
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -26,19 +27,20 @@ import type { ConversionFactor, ConversionFactorForm } from './types';
 const DEFAULT_FORM: ConversionFactorForm = { zona: '', mes: '', coefConv: '', pcsKwhM3: '' };
 const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/;
 
-function validate(form: ConversionFactorForm): Record<string, string> {
+function validate(form: ConversionFactorForm, t: (k: string) => string): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (!form.zona.trim()) errors.zona = 'Zona es requerida';
-  if (!form.mes.trim()) errors.mes = 'Mes es requerido';
-  else if (!MONTH_RE.test(form.mes)) errors.mes = 'Formato YYYY-MM';
-  if (!form.coefConv.trim()) errors.coefConv = 'Requerido';
-  else if (isNaN(Number(form.coefConv)) || Number(form.coefConv) <= 0) errors.coefConv = 'Debe ser > 0';
-  if (!form.pcsKwhM3.trim()) errors.pcsKwhM3 = 'Requerido';
-  else if (isNaN(Number(form.pcsKwhM3)) || Number(form.pcsKwhM3) <= 0) errors.pcsKwhM3 = 'Debe ser > 0';
+  if (!form.zona.trim()) errors.zona = t('conversionFactors.zonaRequired');
+  if (!form.mes.trim()) errors.mes = t('conversionFactors.mesRequired');
+  else if (!MONTH_RE.test(form.mes)) errors.mes = t('conversionFactors.mesFormat');
+  if (!form.coefConv.trim()) errors.coefConv = t('conversionFactors.required');
+  else if (isNaN(Number(form.coefConv)) || Number(form.coefConv) <= 0) errors.coefConv = t('conversionFactors.mustBeGreaterThanZero');
+  if (!form.pcsKwhM3.trim()) errors.pcsKwhM3 = t('conversionFactors.required');
+  else if (isNaN(Number(form.pcsKwhM3)) || Number(form.pcsKwhM3) <= 0) errors.pcsKwhM3 = t('conversionFactors.mustBeGreaterThanZero');
   return errors;
 }
 
 export function ConversionFactorsPage() {
+  const { t } = useTranslation();
   const [rows, setRows] = useState<ConversionFactor[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -87,17 +89,17 @@ export function ConversionFactorsPage() {
   }
 
   async function handleSave() {
-    const errors = validate(formData);
+    const errors = validate(formData, t);
     if (Object.keys(errors).length > 0) { setFormErrors(errors); return; }
     const payload = { zona: formData.zona, mes: formData.mes, coefConv: Number(formData.coefConv), pcsKwhM3: Number(formData.pcsKwhM3) };
     setSaving(true);
     try {
       if (editingId !== null) {
         await conversionFactorsApi.update(editingId, payload);
-        setSuccessMsg('Factor actualizado');
+        setSuccessMsg(t('conversionFactors.updated'));
       } else {
         await conversionFactorsApi.create(payload);
-        setSuccessMsg('Factor creado');
+        setSuccessMsg(t('conversionFactors.created'));
       }
       setFormOpen(false);
       await loadData(filterZona || undefined, filterMes || undefined);
