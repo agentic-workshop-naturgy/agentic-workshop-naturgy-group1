@@ -88,6 +88,8 @@ public class DataSeeder implements ApplicationRunner {
             sp.setZona(cell(row, 1, file));
             sp.setTarifa(cell(row, 2, file));
             sp.setEstado(parseEnum(SupplyPoint.EstadoSupply.class, cell(row, 3, file), file));
+            sp.setServigas(row.length > 4 && "true".equalsIgnoreCase(row[4].trim()));
+            sp.setContratoDual(row.length > 5 && "true".equalsIgnoreCase(row[5].trim()));
             supplyPointRepository.save(sp);
             loaded++;
         }

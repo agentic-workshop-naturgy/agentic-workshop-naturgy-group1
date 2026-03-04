@@ -6,13 +6,16 @@
   "nav": {
     "sectionMasters": "Master Data",
     "sectionBilling": "Billing",
+    "sectionAnalytics": "Analytics",
     "supplyPoints": "Supply Points",
     "readings": "Readings",
     "tariffs": "Tariffs",
     "conversionFactors": "Conversion Factors",
     "taxes": "Taxes (VAT)",
     "billing": "Billing",
-    "invoices": "Invoices"
+    "invoices": "Invoices",
+    "tariffRecommender": "Tariff Recommender",
+    "analytics": "Analytics"
   },
   "common": {
     "new": "New",
@@ -48,7 +51,11 @@
     "deleted": "Supply point deleted",
     "cupsRequired": "CUPS is required",
     "zoneRequired": "Zone is required",
-    "tariffRequired": "Tariff is required"
+    "tariffRequired": "Tariff is required",
+    "servigas": "ServiGas (€12/month)",
+    "dualContract": "Dual contract (gas+elec. -10%)",
+    "yes": "Yes",
+    "no": "No"
   },
   "readings": {
     "title": "Gas Readings",
@@ -153,6 +160,28 @@
     "successMsg": "Billing completed without errors. Go to Invoices to see the result.",
     "noDataMsg": "No active supply points with enough data for period {{period}}."
   },
+  "analytics": {
+    "title": "Consumption Analytics",
+    "totalSupplyPoints": "Supply Points",
+    "totalReadings": "Total Readings",
+    "totalConsumption": "Total Consumption",
+    "consumptionBySupplyPoint": "Consumption by Supply Point",
+    "consumptionOverTime": "Consumption Over Time",
+    "filterByCups": "Filter by CUPS",
+    "allSupplyPoints": "All supply points",
+    "readingM3": "Reading (m³)",
+    "tariffAnalysis": "Statistical Analysis by Tariff",
+    "distributionByTariff": "Distribution by Tariff",
+    "statisticsByTariff": "Statistics by Tariff",
+    "tariff": "Tariff",
+    "supplyPoints": "Points",
+    "readings": "Readings",
+    "totalM3": "Total (m³)",
+    "avgM3": "Avg (m³)",
+    "minM3": "Min (m³)",
+    "maxM3": "Max (m³)",
+    "stdDev": "Std Dev"
+  },
   "invoices": {
     "title": "Invoices",
     "filterCups": "CUPS",
@@ -184,5 +213,48 @@
     "errorDetail": "Error loading detail",
     "errorLoad": "Error loading invoices",
     "viewDetail": "View detail"
+  },
+  "tariffRecommender": {
+    "title": "Tariff Recommender",
+    "analyze": "Analyze",
+    "zone": "Zone",
+    "currentTariff": "Current Tariff",
+    "recommendedTariff": "Recommended Tariff",
+    "currentCost": "Current Cost (€/mo)",
+    "optimalCost": "Optimal Cost (€/mo)",
+    "monthlySavings": "Monthly Savings",
+    "annualSavings": "Annual Savings",
+    "status": "Status",
+    "optimal": "Optimal",
+    "changeSuggested": "Change suggested",
+    "viewDetail": "View detail",
+    "analyzed": "Analyzed",
+    "supplyPoints": "supply points",
+    "canImprove": "Can Improve",
+    "changeRecommended": "change recommended",
+    "allOptimal": "All tariffs optimal",
+    "potentialSavings": "Potential Savings",
+    "perYear": "per year",
+    "noData": "No data. Make sure you have active supply points with readings.",
+    "detailTitle": "Detailed analysis — {{cups}}",
+    "periodsAnalyzed": "Periods analyzed",
+    "comparisonTitle": "Tariff comparison (average monthly cost)",
+    "tariff": "Tariff",
+    "fixedCost": "Fixed Cost (€)",
+    "variableCost": "Variable Cost (€)",
+    "totalMonthly": "Monthly Total (€)",
+    "current": "Current",
+    "recommended": "Recommended",
+    "switchTo": "Switch to"
+  },
+  "login": {
+    "title": "Sign In",
+    "subtitle": "Gas Management – Naturgy",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign In",
+    "loggingIn": "Signing in…",
+    "error": "Invalid username or password",
+    "logout": "Sign out"
   }
 }

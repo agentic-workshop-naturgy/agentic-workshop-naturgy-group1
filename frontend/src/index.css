@@ -5,3 +5,20 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Responsive DataGrid: allow horizontal scroll on small screens */
+.MuiDataGrid-root {
+  min-width: 0;
+}
+.MuiDataGrid-main {
+  overflow: auto !important;
+}
+
+@media (max-width: 600px) {
+  .MuiDataGrid-root {
+    font-size: 0.8125rem;
+  }
+  .MuiDataGrid-columnHeaderTitle {
+    font-size: 0.75rem;
+  }
+}

@@ -6,13 +6,16 @@
   "nav": {
     "sectionMasters": "Mestres",
     "sectionBilling": "Facturació",
+    "sectionAnalytics": "Anàlisi",
     "supplyPoints": "Punts de Subministrament",
     "readings": "Lectures",
     "tariffs": "Tarifari",
     "conversionFactors": "Factors de Conversió",
     "taxes": "Impostos (IVA)",
     "billing": "Facturació",
-    "invoices": "Factures"
+    "invoices": "Factures",
+    "tariffRecommender": "Recomanador Tarifes",
+    "analytics": "Anàlisi"
   },
   "common": {
     "new": "Nou",
@@ -48,7 +51,11 @@
     "deleted": "Punt de subministrament eliminat",
     "cupsRequired": "CUPS és requerit",
     "zoneRequired": "Zona és requerida",
-    "tariffRequired": "Tarifa és requerida"
+    "tariffRequired": "Tarifa és requerida",
+    "servigas": "ServiGas (12 €/mes)",
+    "dualContract": "Contracte dual (gas+elec. -10%)",
+    "yes": "Sí",
+    "no": "No"
   },
   "readings": {
     "title": "Lectures de Gas",
@@ -153,6 +160,28 @@
     "successMsg": "Facturació completada sense errors. Ves a Factures per veure el resultat.",
     "noDataMsg": "No hi ha punts de subministrament actius amb dades suficients per al període {{period}}."
   },
+  "analytics": {
+    "title": "Anàlisi de Consum",
+    "totalSupplyPoints": "Punts de Subministrament",
+    "totalReadings": "Total Lectures",
+    "totalConsumption": "Consum Total",
+    "consumptionBySupplyPoint": "Consum per Punt de Subministrament",
+    "consumptionOverTime": "Consum al llarg del Temps",
+    "filterByCups": "Filtrar per CUPS",
+    "allSupplyPoints": "Tots els punts",
+    "readingM3": "Lectura (m³)",
+    "tariffAnalysis": "Anàlisi Estadística per Tarifa",
+    "distributionByTariff": "Distribució per Tarifa",
+    "statisticsByTariff": "Estadístiques per Tarifa",
+    "tariff": "Tarifa",
+    "supplyPoints": "Punts",
+    "readings": "Lectures",
+    "totalM3": "Total (m³)",
+    "avgM3": "Mitjana (m³)",
+    "minM3": "Mín (m³)",
+    "maxM3": "Màx (m³)",
+    "stdDev": "Desv. Típica"
+  },
   "invoices": {
     "title": "Factures",
     "filterCups": "CUPS",
@@ -184,5 +213,48 @@
     "errorDetail": "Error en carregar detall",
     "errorLoad": "Error en carregar factures",
     "viewDetail": "Veure detall"
+  },
+  "tariffRecommender": {
+    "title": "Recomanador de Tarifes",
+    "analyze": "Analitzar",
+    "zone": "Zona",
+    "currentTariff": "Tarifa Actual",
+    "recommendedTariff": "Tarifa Recomanada",
+    "currentCost": "Cost Actual (€/mes)",
+    "optimalCost": "Cost Òptim (€/mes)",
+    "monthlySavings": "Estalvi Mensual",
+    "annualSavings": "Estalvi Anual",
+    "status": "Estat",
+    "optimal": "Òptima",
+    "changeSuggested": "Canvi suggerit",
+    "viewDetail": "Veure detall",
+    "analyzed": "Analitzats",
+    "supplyPoints": "punts de subministrament",
+    "canImprove": "Poden millorar",
+    "changeRecommended": "canvi recomanat",
+    "allOptimal": "Totes les tarifes òptimes",
+    "potentialSavings": "Estalvi potencial",
+    "perYear": "a l'any",
+    "noData": "Sense dades. Assegura't de tenir punts de subministrament actius amb lectures.",
+    "detailTitle": "Anàlisi detallat — {{cups}}",
+    "periodsAnalyzed": "Períodes analitzats",
+    "comparisonTitle": "Comparativa de tarifes (cost mitjà mensual)",
+    "tariff": "Tarifa",
+    "fixedCost": "Cost Fix (€)",
+    "variableCost": "Cost Variable (€)",
+    "totalMonthly": "Total Mensual (€)",
+    "current": "Actual",
+    "recommended": "Recomanada",
+    "switchTo": "Canviar a"
+  },
+  "login": {
+    "title": "Iniciar Sessió",
+    "subtitle": "Gestió de Gas – Naturgy",
+    "username": "Usuari",
+    "password": "Contrasenya",
+    "submit": "Iniciar Sessió",
+    "loggingIn": "Iniciant sessió…",
+    "error": "Usuari o contrasenya incorrectes",
+    "logout": "Tancar sessió"
   }
 }

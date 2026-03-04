@@ -143,7 +143,9 @@ export function TaxesPage() {
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
 
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <DataGrid rows={rows} columns={columns} getRowId={(r) => r.taxCode} autoHeight pageSizeOptions={[10, 25]} initialState={{ pagination: { paginationModel: { pageSize: 10 } } }} disableRowSelectionOnClick slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('taxes.noDataHint')}</Box> }} />
+      </Box>
 
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{editingCode ? t('taxes.editTitle') : t('taxes.createTitle')}</DialogTitle>

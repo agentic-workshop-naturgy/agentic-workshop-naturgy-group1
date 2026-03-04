@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -47,6 +49,8 @@ function DetailRow({ label, value }: DetailField) {
 
 export function InvoicesPage() {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [rows, setRows] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -165,18 +169,21 @@ export function InvoicesPage() {
       <PageHeader title={t('invoices.title')} />
 
       <Paper sx={{ p: 2, mb: 2 }}>
-        <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap" useFlexGap>
-          <TextField label={t('invoices.filterCups')} value={filterCups} onChange={(e) => setFilterCups(e.target.value)} size="small" sx={{ minWidth: 200 }} />
-          <TextField label={t('invoices.filterPeriod')} value={filterPeriod} onChange={(e) => setFilterPeriod(e.target.value)} size="small" sx={{ minWidth: 160 }} />
-          <TextField label={t('invoices.filterDate')} value={filterFecha} onChange={(e) => setFilterFecha(e.target.value)} size="small" sx={{ minWidth: 200 }} />
-          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>{t('common.search')}</Button>
-          <Button variant="text" onClick={handleClear}>{t('common.clear')}</Button>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'center' }} flexWrap="wrap" useFlexGap>
+          <TextField label={t('invoices.filterCups')} value={filterCups} onChange={(e) => setFilterCups(e.target.value)} size="small" sx={{ minWidth: { sm: 200 } }} />
+          <TextField label={t('invoices.filterPeriod')} value={filterPeriod} onChange={(e) => setFilterPeriod(e.target.value)} size="small" sx={{ minWidth: { sm: 160 } }} />
+          <TextField label={t('invoices.filterDate')} value={filterFecha} onChange={(e) => setFilterFecha(e.target.value)} size="small" sx={{ minWidth: { sm: 200 } }} />
+          <Stack direction="row" spacing={1}>
+            <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>{t('common.search')}</Button>
+            <Button variant="text" onClick={handleClear}>{t('common.clear')}</Button>
+          </Stack>
         </Stack>
       </Paper>
 
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
 
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -187,9 +194,10 @@ export function InvoicesPage() {
         disableRowSelectionOnClick
         slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('invoices.noInvoices')}</Box> }}
       />
+      </Box>
 
       {/* Invoice Detail Dialog */}
-      <Dialog open={detailOpen} onClose={() => setDetailOpen(false)} maxWidth="md" fullWidth>
+      <Dialog open={detailOpen} onClose={() => setDetailOpen(false)} maxWidth="md" fullWidth fullScreen={isMobile}>
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <PictureAsPdfIcon color="secondary" />
           {t('invoices.detailTitle')}

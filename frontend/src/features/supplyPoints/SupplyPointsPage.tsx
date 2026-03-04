@@ -9,12 +9,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import LinearProgress from '@mui/material/LinearProgress';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Snackbar from '@mui/material/Snackbar';
+import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
@@ -28,7 +30,7 @@ import { supplyPointsApi } from './api';
 import type { SupplyPoint, SupplyPointForm } from './types';
 import { ESTADO_OPTIONS } from './types';
 
-const DEFAULT_FORM: SupplyPointForm = { cups: '', zona: '', tarifa: '', estado: 'ACTIVO' };
+const DEFAULT_FORM: SupplyPointForm = { cups: '', zona: '', tarifa: '', estado: 'ACTIVO', servigas: false, contratoDual: false };
 
 function validate(form: SupplyPointForm, isEdit: boolean, t: (k: string) => string): Record<string, string> {
   const errors: Record<string, string> = {};
@@ -78,7 +80,7 @@ export function SupplyPointsPage() {
 
   function handleOpenEdit(row: SupplyPoint) {
     setEditingCups(row.cups);
-    setFormData({ cups: row.cups, zona: row.zona, tarifa: row.tarifa, estado: row.estado });
+    setFormData({ cups: row.cups, zona: row.zona, tarifa: row.tarifa, estado: row.estado, servigas: row.servigas ?? false, contratoDual: row.contratoDual ?? false });
     setFormErrors({});
     setFormOpen(true);
   }
@@ -138,6 +140,34 @@ export function SupplyPointsPage() {
       ),
     },
     {
+      field: 'servigas',
+      headerName: 'ServiGas',
+      flex: 1,
+      minWidth: 110,
+      renderCell: (params) => (
+        <Chip
+          label={params.row.servigas ? t('supplyPoints.yes') : t('supplyPoints.no')}
+          color={params.row.servigas ? 'secondary' : 'default'}
+          size="small"
+          variant={params.row.servigas ? 'filled' : 'outlined'}
+        />
+      ),
+    },
+    {
+      field: 'contratoDual',
+      headerName: t('supplyPoints.dualContract'),
+      flex: 1,
+      minWidth: 130,
+      renderCell: (params) => (
+        <Chip
+          label={params.row.contratoDual ? t('supplyPoints.yes') : t('supplyPoints.no')}
+          color={params.row.contratoDual ? 'info' : 'default'}
+          size="small"
+          variant={params.row.contratoDual ? 'filled' : 'outlined'}
+        />
+      ),
+    },
+    {
       field: '_actions',
       headerName: '',
       width: 100,
@@ -168,6 +198,7 @@ export function SupplyPointsPage() {
       />
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -178,6 +209,7 @@ export function SupplyPointsPage() {
         disableRowSelectionOnClick
         slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }}
       />
+      </Box>
 
       {/* Create/Edit Dialog */}
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
@@ -226,6 +258,26 @@ export function SupplyPointsPage() {
             </Select>
             {formErrors.estado && <FormHelperText>{formErrors.estado}</FormHelperText>}
           </FormControl>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.servigas}
+                onChange={(e) => setFormData((p) => ({ ...p, servigas: e.target.checked }))}
+                color="secondary"
+              />
+            }
+            label={t('supplyPoints.servigas')}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={formData.contratoDual}
+                onChange={(e) => setFormData((p) => ({ ...p, contratoDual: e.target.checked }))}
+                color="info"
+              />
+            }
+            label={t('supplyPoints.dualContract')}
+          />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={() => setFormOpen(false)} disabled={saving}>{t('common.cancel')}</Button>

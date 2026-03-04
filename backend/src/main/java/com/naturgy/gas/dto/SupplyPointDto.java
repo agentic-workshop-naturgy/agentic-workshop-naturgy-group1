@@ -6,10 +6,12 @@ public record SupplyPointDto(
         String cups,
         String zona,
         String tarifa,
-        String estado
+        String estado,
+        Boolean servigas,
+        Boolean contratoDual
 ) {
     public static SupplyPointDto from(SupplyPoint e) {
-        return new SupplyPointDto(e.getCups(), e.getZona(), e.getTarifa(), e.getEstado().name());
+        return new SupplyPointDto(e.getCups(), e.getZona(), e.getTarifa(), e.getEstado().name(), e.isServigas(), e.isContratoDual());
     }
 
     public SupplyPoint toEntity() {
@@ -18,6 +20,8 @@ public record SupplyPointDto(
         sp.setZona(zona);
         sp.setTarifa(tarifa);
         sp.setEstado(SupplyPoint.EstadoSupply.valueOf(estado));
+        sp.setServigas(servigas != null && servigas);
+        sp.setContratoDual(contratoDual != null && contratoDual);
         return sp;
     }
 }

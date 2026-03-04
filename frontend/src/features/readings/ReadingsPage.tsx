@@ -166,26 +166,29 @@ export function ReadingsPage() {
         }
       />
       <Paper sx={{ p: 2, mb: 2 }}>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'center' }}>
           <TextField
             label={t('readings.filterByCups')}
             value={filterCups}
             onChange={(e) => setFilterCups(e.target.value)}
             size="small"
-            sx={{ minWidth: 240 }}
+            sx={{ minWidth: { sm: 240 } }}
           />
-          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>
-            {t('common.search')}
-          </Button>
-          <Button variant="text" onClick={() => { setFilterCups(''); void loadData(); }}>
-            {t('common.clear')}
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>
+              {t('common.search')}
+            </Button>
+            <Button variant="text" onClick={() => { setFilterCups(''); void loadData(); }}>
+              {t('common.clear')}
+            </Button>
+          </Stack>
         </Stack>
       </Paper>
 
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
 
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -195,6 +198,7 @@ export function ReadingsPage() {
         disableRowSelectionOnClick
         slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }}
       />
+      </Box>
 
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{editingId !== null ? t('readings.editTitle') : t('readings.createTitle')}</DialogTitle>

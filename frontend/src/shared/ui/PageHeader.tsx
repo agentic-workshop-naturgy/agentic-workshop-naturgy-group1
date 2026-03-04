@@ -11,8 +11,8 @@ interface PageHeaderProps {
 export function PageHeader({ title, action }: PageHeaderProps) {
   return (
     <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-        <Typography variant="h4" sx={{ flexGrow: 1, fontWeight: 700 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'stretch', sm: 'center' }, gap: 1.5, mb: 1.5 }}>
+        <Typography variant="h4" sx={{ flexGrow: 1, fontWeight: 700, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>
           {title}
         </Typography>
         {action}

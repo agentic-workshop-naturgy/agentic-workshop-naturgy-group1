@@ -63,7 +63,7 @@ export function BillingPage() {
       <PageHeader title={t('billing.title')} />
 
       <Box sx={{ maxWidth: 600, mb: 4 }}>
-        <Stack direction="row" spacing={2} alignItems="flex-start">
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'flex-start' }}>
           <TextField
             label={t('billing.period')}
             value={period}
@@ -80,7 +80,7 @@ export function BillingPage() {
             startIcon={running ? <CircularProgress size={20} color="inherit" /> : <PlayArrowIcon />}
             onClick={() => { void handleRun(); }}
             disabled={running}
-            sx={{ mt: '4px', minWidth: 180, height: 56 }}
+            sx={{ mt: { xs: 0, sm: '4px' }, minWidth: { xs: '100%', sm: 180 }, height: 56 }}
           >
             {running ? t('billing.running') : t('billing.runBtn')}
           </Button>
@@ -149,6 +149,7 @@ export function BillingPage() {
               <Typography variant="h6" color="error" sx={{ mb: 1 }}>
                 {t('billing.errorsCups')}
               </Typography>
+              <Box sx={{ width: '100%', overflowX: 'auto' }}>
               <DataGrid
                 rows={errorRows}
                 columns={errorColumns}
@@ -158,6 +159,7 @@ export function BillingPage() {
                 initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
                 disableRowSelectionOnClick
               />
+              </Box>
             </Box>
           )}
 

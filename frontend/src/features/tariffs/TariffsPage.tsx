@@ -143,7 +143,9 @@ export function TariffsPage() {
       <PageHeader title={t('tariffs.title')} action={<Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>{t('tariffs.newBtn')}</Button>} />
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <DataGrid rows={rows} columns={columns} getRowId={(r) => r.tarifa} autoHeight pageSizeOptions={[10, 25]} initialState={{ pagination: { paginationModel: { pageSize: 10 } } }} disableRowSelectionOnClick slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }} />
+      </Box>
 
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{editingTarifa ? t('tariffs.editTitle') : t('tariffs.createTitle')}</DialogTitle>

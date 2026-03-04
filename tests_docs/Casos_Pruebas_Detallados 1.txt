@@ -1,0 +1,408 @@
+FUNCIONALIDAD: Gestión de Puntos de Suministro
+
+  CASO FUNCIONAL 1: Alta exitosa de un nuevo punto de suministro
+  - Objetivo: Verificar que se puede dar de alta un punto de suministro con todos los campos obligatorios correctamente completados.
+  - Precondiciones: Usuario autenticado, acceso a https://app.naturgy.com/puntos-suministro en Chrome 90+, Firefox 88+, Safari 14+.
+  - Pasos:
+    1. Ingresar a la URL indicada.
+    2. Hacer clic en "NUEVO".
+    3. Completar campo CUPS: "ES1234567890123456".
+    4. Completar campo Zona: "Centro".
+    5. Completar campo Tarifa: "T1".
+    6. Completar campo Estado: "Activo".
+    7. Hacer clic en "GUARDAR".
+    8. Esperar máximo 3 segundos la respuesta.
+    9. Validar mensaje visual de éxito: "Punto de suministro creado correctamente".
+    10. Verificar que el nuevo registro aparece en el listado.
+  - Datos de entrada: CUPS: ES1234567890123456, Zona: Centro, Tarifa: T1, Estado: Activo.
+  - Resultado esperado: El punto de suministro se crea y aparece en el listado con los datos ingresados.
+
+  CASO FUNCIONAL 2: Intento de alta con CUPS duplicado
+  - Objetivo: Validar que el sistema impide la creación de un punto de suministro con CUPS ya existente.
+  - Precondiciones: Existe un punto de suministro con CUPS "ES1234567890123456".
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nuevo Punto de Suministro".
+    3. Completar CUPS: "ES1234567890123456".
+    4. Completar el resto de campos válidos.
+    5. Hacer clic en "Guardar".
+    6. Esperar máximo 3 segundos.
+    7. Validar mensaje de error: "El CUPS ya existe".
+  - Datos de entrada: CUPS duplicado.
+  - Resultado esperado: No se crea el registro y se muestra el mensaje de error.
+
+  CASO FUNCIONAL 3: Edición de un punto de suministro
+  - Objetivo: Verificar que se puede editar un punto de suministro y que los cambios se reflejan.
+  - Precondiciones: Existe un punto de suministro en el listado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Localizar el registro a editar.
+    3. Hacer clic en "Editar".
+    4. Modificar el campo Tarifa a "T2".
+    5. Hacer clic en "Guardar".
+    6. Esperar máximo 3 segundos.
+    7. Validar mensaje de éxito.
+    8. Verificar que el cambio se refleja en el listado.
+  - Datos de entrada: Tarifa: T2.
+  - Resultado esperado: El registro se actualiza correctamente.
+
+  CASO TRANSICIONAL 1: Eliminación/inactivación de un punto de suministro
+  - Objetivo: Verificar el flujo de eliminación/inactivación y la confirmación de la acción.
+  - Precondiciones: Existe al menos un punto de suministro.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Localizar el registro.
+    3. Hacer clic en "Eliminar".
+    4. Aparece ventana de confirmación.
+    5. Confirmar la acción.
+    6. Esperar máximo 3 segundos.
+    7. Validar mensaje de éxito.
+    8. Verificar que el registro ya no aparece en el listado.
+  - Resultado esperado: El registro es eliminado/inactivado tras confirmación.
+
+  CASO TRANSICIONAL 2: Navegación entre listado y formulario de alta/edición
+  - Objetivo: Validar la navegación fluida entre el listado y el formulario.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nuevo Punto de Suministro".
+    3. Verificar carga del formulario en menos de 2 segundos.
+    4. Hacer clic en "Cancelar".
+    5. Verificar retorno al listado.
+  - Resultado esperado: Navegación sin errores ni recargas innecesarias.
+
+FUNCIONALIDAD: Gestión de Lecturas
+
+  CASO FUNCIONAL 1: Alta exitosa de una lectura
+  - Objetivo: Verificar que se puede dar de alta una lectura asociada a un CUPS válido y fecha no duplicada.
+  - Precondiciones: Existe al menos un CUPS válido.
+  - Pasos:
+    1. Ingresar a https://app.naturgy.com/lecturas.
+    2. Hacer clic en "Nueva Lectura".
+    3. Seleccionar CUPS: "ES1234567890123456".
+    4. Ingresar Fecha: "2024-06-01".
+    5. Ingresar Valor: "1500".
+    6. Hacer clic en "Guardar".
+    7. Esperar máximo 3 segundos.
+    8. Validar mensaje de éxito y aparición en el listado.
+  - Datos de entrada: CUPS, Fecha, Valor.
+  - Resultado esperado: Lectura creada y visible en el listado.
+
+  CASO FUNCIONAL 2: Alta de lectura con combinación CUPS+Fecha duplicada
+  - Objetivo: Validar que no se permite duplicidad de CUPS+Fecha.
+  - Precondiciones: Ya existe una lectura con CUPS "ES1234567890123456" y Fecha "2024-06-01".
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nueva Lectura".
+    3. Seleccionar CUPS y Fecha duplicados.
+    4. Ingresar Valor válido.
+    5. Hacer clic en "Guardar".
+    6. Esperar máximo 3 segundos.
+    7. Validar mensaje de error: "Ya existe una lectura para ese CUPS y fecha".
+  - Resultado esperado: No se crea la lectura y se muestra el error.
+
+  CASO FUNCIONAL 3: Edición de una lectura
+  - Objetivo: Verificar que se puede editar una lectura y que el cambio se refleja.
+  - Precondiciones: Existe una lectura.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Localizar la lectura.
+    3. Hacer clic en "Editar".
+    4. Modificar Valor a "1600".
+    5. Hacer clic en "Guardar".
+    6. Esperar máximo 3 segundos.
+    7. Validar mensaje de éxito y actualización en el listado.
+  - Datos de entrada: Valor: 1600.
+  - Resultado esperado: Lectura actualizada.
+
+  CASO TRANSICIONAL 1: Eliminación de una lectura
+  - Objetivo: Verificar el flujo de eliminación y confirmación.
+  - Precondiciones: Existe una lectura.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Localizar la lectura.
+    3. Hacer clic en "Eliminar".
+    4. Confirmar la acción.
+    5. Esperar máximo 3 segundos.
+    6. Validar mensaje de éxito y eliminación del listado.
+  - Resultado esperado: Lectura eliminada tras confirmación.
+
+  CASO TRANSICIONAL 2: Navegación entre listado y formulario de alta/edición
+  - Objetivo: Validar la navegación entre listado y formulario.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nueva Lectura".
+    3. Verificar carga del formulario en menos de 2 segundos.
+    4. Hacer clic en "Cancelar".
+    5. Verificar retorno al listado.
+  - Resultado esperado: Navegación fluida.
+
+FUNCIONALIDAD: Gestión de Tarifario
+
+  CASO FUNCIONAL 1: Alta exitosa de una tarifa
+  - Objetivo: Verificar alta de tarifa con datos válidos.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a https://app.naturgy.com/tarifas.
+    2. Hacer clic en "Nueva Tarifa".
+    3. Ingresar Nombre: "T1".
+    4. Ingresar Fijo: "10".
+    5. Ingresar Variable: "0.15".
+    6. Ingresar Vigencia: "2024-06-01".
+    7. Hacer clic en "Guardar".
+    8. Validar mensaje de éxito y aparición en el listado.
+  - Datos de entrada: Nombre, Fijo, Variable, Vigencia.
+  - Resultado esperado: Tarifa creada correctamente.
+
+  CASO FUNCIONAL 2: Alta de tarifa con campos obligatorios vacíos
+  - Objetivo: Validar que no se permite alta con campos vacíos.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nueva Tarifa".
+    3. Dejar campos vacíos.
+    4. Hacer clic en "Guardar".
+    5. Validar mensajes de error en los campos obligatorios.
+  - Resultado esperado: No se crea la tarifa y se muestran los errores.
+
+  CASO TRANSICIONAL 1: Navegación entre listado y formulario de alta/edición
+  - Objetivo: Validar navegación entre listado y formulario.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nueva Tarifa".
+    3. Verificar carga del formulario.
+    4. Hacer clic en "Cancelar".
+    5. Verificar retorno al listado.
+  - Resultado esperado: Navegación fluida.
+
+FUNCIONALIDAD: Gestión de Factores de Conversión
+
+  CASO FUNCIONAL 1: Alta exitosa de un factor de conversión
+  - Objetivo: Verificar alta con datos válidos.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a https://app.naturgy.com/factores-conversion.
+    2. Hacer clic en "Nuevo Factor".
+    3. Ingresar Mes: "2024-06".
+    4. Ingresar CoefConv: "1.05".
+    5. Ingresar PCS: "10.5".
+    6. Hacer clic en "Guardar".
+    7. Validar mensaje de éxito y aparición en el listado.
+  - Datos de entrada: Mes, CoefConv, PCS.
+  - Resultado esperado: Factor creado correctamente.
+
+  CASO FUNCIONAL 2: Alta con datos fuera de rango
+  - Objetivo: Validar que no se permite alta con datos fuera de rango.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nuevo Factor".
+    3. Ingresar CoefConv: "-1".
+    4. Ingresar PCS: "1000".
+    5. Hacer clic en "Guardar".
+    6. Validar mensajes de error.
+  - Resultado esperado: No se crea el factor y se muestran los errores.
+
+  CASO TRANSICIONAL 1: Navegación entre listado y formulario de alta/edición
+  - Objetivo: Validar navegación entre listado y formulario.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nuevo Factor".
+    3. Verificar carga del formulario.
+    4. Hacer clic en "Cancelar".
+    5. Verificar retorno al listado.
+  - Resultado esperado: Navegación fluida.
+
+FUNCIONALIDAD: Gestión de Impuestos (IVA)
+
+  CASO FUNCIONAL 1: Alta exitosa de un impuesto
+  - Objetivo: Verificar alta con tasa válida.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a https://app.naturgy.com/impuestos.
+    2. Hacer clic en "Nuevo Impuesto".
+    3. Ingresar Código: "IVA21".
+    4. Ingresar Tasa: "21".
+    5. Hacer clic en "Guardar".
+    6. Validar mensaje de éxito y aparición en el listado.
+  - Datos de entrada: Código, Tasa.
+  - Resultado esperado: Impuesto creado correctamente.
+
+  CASO FUNCIONAL 2: Alta con tasa fuera de valores permitidos
+  - Objetivo: Validar que no se permite alta con tasa fuera de rango.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nuevo Impuesto".
+    3. Ingresar Tasa: "150".
+    4. Hacer clic en "Guardar".
+    5. Validar mensaje de error.
+  - Resultado esperado: No se crea el impuesto y se muestra el error.
+
+  CASO TRANSICIONAL 1: Navegación entre listado y formulario de alta/edición
+  - Objetivo: Validar navegación entre listado y formulario.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en "Nuevo Impuesto".
+    3. Verificar carga del formulario.
+    4. Hacer clic en "Cancelar".
+    5. Verificar retorno al listado.
+  - Resultado esperado: Navegación fluida.
+
+FUNCIONALIDAD: Ejecución de Facturación
+
+  CASO FUNCIONAL 1: Ejecución exitosa de la facturación
+  - Objetivo: Verificar que la facturación se ejecuta correctamente con todos los datos requeridos.
+  - Precondiciones: Existen lecturas, tarifas, factores de conversión e impuestos válidos.
+  - Pasos:
+    1. Ingresar a https://app.naturgy.com/facturacion.
+    2. Seleccionar Periodo: "2024-06".
+    3. Hacer clic en "Ejecutar Facturación".
+    4. Esperar máximo 10 segundos.
+    5. Validar mensaje de éxito.
+    6. Verificar generación de facturas en el listado.
+    7. Verificar contador de facturas generadas.
+    8. Validar que no hay errores en la ejecución.
+  - Datos de entrada: Periodo: 2024-06.
+  - Resultado esperado: Facturación ejecutada y facturas generadas.
+
+  CASO FUNCIONAL 2: Ejecución con datos incompletos/inconsistentes
+  - Objetivo: Validar que la facturación no se ejecuta si faltan datos.
+  - Precondiciones: Faltan lecturas o tarifas.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Seleccionar Periodo con datos incompletos.
+    3. Hacer clic en "Ejecutar Facturación".
+    4. Esperar máximo 10 segundos.
+    5. Validar mensaje de error y listado de errores.
+  - Resultado esperado: No se ejecuta la facturación y se muestran los errores.
+
+  CASO NO FUNCIONAL 1: Ejecución con gran volumen de datos
+  - Objetivo: Evaluar rendimiento y tiempos de respuesta con gran volumen.
+  - Precondiciones: Cargados más de 10,000 registros de lecturas.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Seleccionar Periodo.
+    3. Hacer clic en "Ejecutar Facturación".
+    4. Medir tiempo de respuesta (debe ser < 30 segundos).
+    5. Validar que no hay caídas ni errores de sistema.
+  - Resultado esperado: Facturación completada en menos de 30 segundos.
+
+  CASO FUNCIONAL 3: Integración entre módulos durante facturación
+  - Objetivo: Verificar integración correcta entre Lecturas, Tarifas, Factores de Conversión e Impuestos.
+  - Precondiciones: Datos válidos en todos los módulos.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Ejecutar facturación.
+    3. Validar que los datos de cada módulo se reflejan en las facturas generadas.
+    4. Verificar que los cálculos son correctos.
+  - Resultado esperado: Integración y cálculos correctos.
+
+  CASO FUNCIONAL 4: Visualización y descarga de errores de facturación
+  - Objetivo: Verificar que los errores se visualizan y pueden descargarse.
+  - Precondiciones: Ejecución con errores.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Ejecutar facturación con datos erróneos.
+    3. Visualizar listado de errores.
+    4. Descargar archivo de errores.
+    5. Validar contenido del archivo.
+  - Resultado esperado: Errores visibles y descargables.
+
+  CASO TRANSICIONAL 1: Navegación entre ejecución y resultados/errores
+  - Objetivo: Validar navegación entre pantalla de ejecución y resultados.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Ejecutar facturación.
+    3. Hacer clic en "Ver Resultados".
+    4. Verificar carga de resultados en menos de 3 segundos.
+    5. Hacer clic en "Ver Errores".
+    6. Verificar carga de errores.
+  - Resultado esperado: Navegación fluida.
+
+FUNCIONALIDAD: Gestión de Facturas
+
+  CASO FUNCIONAL 1: Visualización del listado de facturas
+  - Objetivo: Verificar visualización correcta del listado de facturas.
+  - Precondiciones: Existen facturas generadas.
+  - Pasos:
+    1. Ingresar a https://app.naturgy.com/facturas.
+    2. Verificar que se muestran todas las facturas.
+    3. Validar datos: número, fecha, importe.
+  - Resultado esperado: Listado correcto.
+
+  CASO FUNCIONAL 2: Descarga exitosa del PDF de una factura
+  - Objetivo: Verificar descarga correcta del PDF.
+  - Precondiciones: Existe factura con PDF generado.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Localizar factura.
+    3. Hacer clic en "Descargar PDF".
+    4. Validar descarga y apertura del archivo.
+  - Resultado esperado: PDF descargado y visualizable.
+
+  CASO FUNCIONAL 3: Descarga de PDF de factura inexistente/error
+  - Objetivo: Validar manejo de error al descargar PDF inexistente.
+  - Precondiciones: Factura sin PDF o con error.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Localizar factura sin PDF.
+    3. Hacer clic en "Descargar PDF".
+    4. Validar mensaje de error.
+  - Resultado esperado: No se descarga el PDF y se muestra error.
+
+  CASO TRANSICIONAL 1: Navegación entre listado y detalle de factura
+  - Objetivo: Validar navegación entre listado y detalle.
+  - Precondiciones: Existen facturas.
+  - Pasos:
+    1. Ingresar a la URL.
+    2. Hacer clic en una factura.
+    3. Verificar carga del detalle.
+    4. Hacer clic en "Volver".
+    5. Verificar retorno al listado.
+  - Resultado esperado: Navegación fluida.
+
+FUNCIONALIDAD: Comportamiento general
+
+  CASO FUNCIONAL 1: Visualización de mensajes de error y éxito en tiempo real
+  - Objetivo: Verificar que los mensajes se muestran en tiempo real al interactuar con formularios.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a cualquier formulario.
+    2. Dejar campos obligatorios vacíos.
+    3. Hacer clic en "Guardar".
+    4. Validar mensaje de error inmediato.
+    5. Completar campos correctamente.
+    6. Hacer clic en "Guardar".
+    7. Validar mensaje de éxito inmediato.
+  - Resultado esperado: Mensajes en tiempo real.
+
+  CASO FUNCIONAL 2: Confirmación obligatoria antes de acciones destructivas
+  - Objetivo: Verificar que se solicita confirmación antes de eliminar/inactivar.
+  - Precondiciones: Existe registro eliminable.
+  - Pasos:
+    1. Ingresar a cualquier listado.
+    2. Hacer clic en "Eliminar".
+    3. Validar aparición de ventana de confirmación.
+    4. Cancelar la acción.
+    5. Verificar que no se elimina el registro.
+  - Resultado esperado: Confirmación obligatoria.
+
+  CASO TRANSICIONAL 1: Navegación fluida entre módulos
+  - Objetivo: Validar navegación entre módulos del sistema.
+  - Precondiciones: Usuario autenticado.
+  - Pasos:
+    1. Ingresar a la aplicación.
+    2. Navegar entre los módulos desde el menú principal.
+    3. Verificar tiempos de carga (<2 segundos).
+    4. Validar que no hay errores de navegación.
+  - Resultado esperado: Navegación fluida y sin errores.
+
+Casos generados: 34 total (22 funcionales, 1 no funcional, 11 transicionales) distribuidos en 7 funcionalidades.
+
+@TestPlanCompiler para compilar todos los archivos en un plan profesional completo con matriz de trazabilidad.

@@ -6,13 +6,16 @@
   "nav": {
     "sectionMasters": "Maestros",
     "sectionBilling": "Facturación",
+    "sectionAnalytics": "Análisis",
     "supplyPoints": "Puntos de Suministro",
     "readings": "Lecturas",
     "tariffs": "Tarifario",
     "conversionFactors": "Factores Conversión",
     "taxes": "Impuestos (IVA)",
     "billing": "Facturación",
-    "invoices": "Facturas"
+    "invoices": "Facturas",
+    "tariffRecommender": "Recomendador Tarifas",
+    "analytics": "Análisis"
   },
   "common": {
     "new": "Nuevo",
@@ -48,7 +51,11 @@
     "deleted": "Punto de suministro eliminado",
     "cupsRequired": "CUPS es requerido",
     "zoneRequired": "Zona es requerida",
-    "tariffRequired": "Tarifa es requerida"
+    "tariffRequired": "Tarifa es requerida",
+    "servigas": "ServiGas (12 €/mes)",
+    "dualContract": "Contrato dual (gas+elec. -10%)",
+    "yes": "Sí",
+    "no": "No"
   },
   "readings": {
     "title": "Lecturas de Gas",
@@ -153,6 +160,28 @@
     "successMsg": "Facturación completada sin errores. Ve a Facturas para ver el resultado.",
     "noDataMsg": "No hay puntos de suministro activos con datos suficientes para el periodo {{period}}."
   },
+  "analytics": {
+    "title": "Análisis de Consumo",
+    "totalSupplyPoints": "Puntos de Suministro",
+    "totalReadings": "Total Lecturas",
+    "totalConsumption": "Consumo Total",
+    "consumptionBySupplyPoint": "Consumo por Punto de Suministro",
+    "consumptionOverTime": "Consumo a lo largo del Tiempo",
+    "filterByCups": "Filtrar por CUPS",
+    "allSupplyPoints": "Todos los puntos",
+    "readingM3": "Lectura (m³)",
+    "tariffAnalysis": "Análisis Estadístico por Tarifa",
+    "distributionByTariff": "Distribución por Tarifa",
+    "statisticsByTariff": "Estadísticas por Tarifa",
+    "tariff": "Tarifa",
+    "supplyPoints": "Puntos",
+    "readings": "Lecturas",
+    "totalM3": "Total (m³)",
+    "avgM3": "Media (m³)",
+    "minM3": "Mín (m³)",
+    "maxM3": "Máx (m³)",
+    "stdDev": "Desv. Típica"
+  },
   "invoices": {
     "title": "Facturas",
     "filterCups": "CUPS",
@@ -184,5 +213,48 @@
     "errorDetail": "Error al cargar detalle",
     "errorLoad": "Error al cargar facturas",
     "viewDetail": "Ver detalle"
+  },
+  "tariffRecommender": {
+    "title": "Recomendador de Tarifas",
+    "analyze": "Analizar",
+    "zone": "Zona",
+    "currentTariff": "Tarifa Actual",
+    "recommendedTariff": "Tarifa Recomendada",
+    "currentCost": "Coste Actual (€/mes)",
+    "optimalCost": "Coste Óptimo (€/mes)",
+    "monthlySavings": "Ahorro Mensual",
+    "annualSavings": "Ahorro Anual",
+    "status": "Estado",
+    "optimal": "Óptima",
+    "changeSuggested": "Cambio sugerido",
+    "viewDetail": "Ver detalle",
+    "analyzed": "Analizados",
+    "supplyPoints": "puntos de suministro",
+    "canImprove": "Pueden mejorar",
+    "changeRecommended": "cambio recomendado",
+    "allOptimal": "Todos con tarifa óptima",
+    "potentialSavings": "Ahorro potencial",
+    "perYear": "al año",
+    "noData": "Sin datos. Asegúrate de tener puntos de suministro activos con lecturas.",
+    "detailTitle": "Análisis detallado — {{cups}}",
+    "periodsAnalyzed": "Períodos analizados",
+    "comparisonTitle": "Comparativa de tarifas (coste medio mensual)",
+    "tariff": "Tarifa",
+    "fixedCost": "Coste Fijo (€)",
+    "variableCost": "Coste Variable (€)",
+    "totalMonthly": "Total Mensual (€)",
+    "current": "Actual",
+    "recommended": "Recomendada",
+    "switchTo": "Cambiar a"
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "subtitle": "Gestión de Gas – Naturgy",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "submit": "Iniciar Sesión",
+    "loggingIn": "Iniciando sesión…",
+    "error": "Usuario o contraseña incorrectos",
+    "logout": "Cerrar sesión"
   }
 }

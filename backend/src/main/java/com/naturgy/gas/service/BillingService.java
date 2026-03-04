@@ -140,7 +140,23 @@ public class BillingService {
                 .setScale(2, RoundingMode.HALF_UP);
 
         BigDecimal alquilerEur = ZERO; // Workshop default: 0.00
-        BigDecimal base = costeFijo.add(costeVariable).add(alquilerEur)
+
+        BigDecimal servigasEur = sp.isServigas()
+                ? new BigDecimal("12.00")
+                : ZERO;
+
+        BigDecimal subtotalAntesDescuento = costeFijo.add(costeVariable).add(alquilerEur).add(servigasEur)
+                .setScale(2, RoundingMode.HALF_UP);
+
+        // Bonificación 10% para contratos duales (gas + electricidad)
+        BigDecimal bonificacion = ZERO;
+        if (sp.isContratoDual()) {
+            bonificacion = subtotalAntesDescuento
+                    .multiply(new BigDecimal("0.10"))
+                    .setScale(2, RoundingMode.HALF_UP);
+        }
+
+        BigDecimal base = subtotalAntesDescuento.subtract(bonificacion)
                 .setScale(2, RoundingMode.HALF_UP);
 
         BigDecimal impuestos = base.multiply(iva.getTaxRate())
@@ -201,6 +217,29 @@ public class BillingService {
 
         invoice.getLines().add(lineaFija);
         invoice.getLines().add(lineaVariable);
+
+        if (sp.isServigas()) {
+            InvoiceLine lineaServigas = new InvoiceLine();
+            lineaServigas.setInvoice(invoice);
+            lineaServigas.setTipoLinea(InvoiceLine.TipoLinea.SERVIGAS);
+            lineaServigas.setDescripcion("ServiGas");
+            lineaServigas.setCantidad(BigDecimal.ONE.setScale(3, RoundingMode.HALF_UP));
+            lineaServigas.setPrecioUnitario(servigasEur.setScale(6, RoundingMode.HALF_UP));
+            lineaServigas.setImporte(servigasEur);
+            invoice.getLines().add(lineaServigas);
+        }
+
+        if (sp.isContratoDual()) {
+            InvoiceLine lineaBonificacion = new InvoiceLine();
+            lineaBonificacion.setInvoice(invoice);
+            lineaBonificacion.setTipoLinea(InvoiceLine.TipoLinea.BONIFICACION);
+            lineaBonificacion.setDescripcion("Bonificación contrato dual gas+electricidad (-10%)");
+            lineaBonificacion.setCantidad(new BigDecimal("0.100").setScale(3, RoundingMode.HALF_UP));
+            lineaBonificacion.setPrecioUnitario(subtotalAntesDescuento.setScale(6, RoundingMode.HALF_UP));
+            lineaBonificacion.setImporte(bonificacion.negate());
+            invoice.getLines().add(lineaBonificacion);
+        }
+
         invoice.getLines().add(lineaIva);
 
         invoiceRepository.save(invoice);

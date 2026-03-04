@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -23,7 +25,14 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LanguageIcon from '@mui/icons-material/Language';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
+import Tooltip from '@mui/material/Tooltip';
 import { DRAWER_WIDTH, NATURGY } from './app/theme';
+import { useAuth } from './features/auth/AuthContext';
+import { LoginPage } from './features/auth/LoginPage';
 import { SupplyPointsPage } from './features/supplyPoints/SupplyPointsPage';
 import { ReadingsPage } from './features/readings/ReadingsPage';
 import { TariffsPage } from './features/tariffs/TariffsPage';
@@ -31,6 +40,9 @@ import { ConversionFactorsPage } from './features/conversionFactors/ConversionFa
 import { TaxesPage } from './features/taxes/TaxesPage';
 import { BillingPage } from './features/billing/BillingPage';
 import { InvoicesPage } from './features/invoices/InvoicesPage';
+import { TariffRecommenderPage } from './features/tariffRecommender/TariffRecommenderPage';
+import { AnalyticsPage } from './features/analytics/AnalyticsPage';
+import InsightsIcon from '@mui/icons-material/Insights';
 
 type PageKey =
   | 'supply-points'
@@ -39,7 +51,9 @@ type PageKey =
   | 'conversion-factors'
   | 'taxes'
   | 'billing'
-  | 'invoices';
+  | 'invoices'
+  | 'tariff-recommender'
+  | 'analytics';
 
 interface NavItem {
   key: PageKey;
@@ -56,6 +70,8 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'taxes', labelKey: 'nav.taxes', icon: <AccountBalanceIcon /> },
   { key: 'billing', labelKey: 'nav.billing', icon: <RequestQuoteIcon />, sectionKey: 'nav.sectionBilling' },
   { key: 'invoices', labelKey: 'nav.invoices', icon: <DescriptionIcon /> },
+  { key: 'tariff-recommender', labelKey: 'nav.tariffRecommender', icon: <AssessmentIcon /> },
+  { key: 'analytics', labelKey: 'nav.analytics', icon: <InsightsIcon />, sectionKey: 'nav.sectionAnalytics' },
 ];
 
 const PAGE_TITLE_KEYS: Record<PageKey, string> = {
@@ -66,6 +82,8 @@ const PAGE_TITLE_KEYS: Record<PageKey, string> = {
   taxes: 'taxes.title',
   billing: 'billing.title',
   invoices: 'invoices.title',
+  'tariff-recommender': 'tariffRecommender.title',
+  analytics: 'analytics.title',
 };
 
 const LANGUAGES = [
@@ -83,13 +101,25 @@ function renderPage(page: PageKey): React.ReactNode {
     case 'taxes': return <TaxesPage />;
     case 'billing': return <BillingPage />;
     case 'invoices': return <InvoicesPage />;
+    case 'tariff-recommender': return <TariffRecommenderPage />;
+    case 'analytics': return <AnalyticsPage />;
   }
 }
 
 export function App() {
   const { t, i18n } = useTranslation();
+  const { isAuthenticated, username, logout } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [currentPage, setCurrentPage] = useState<PageKey>('supply-points');
   const [langAnchor, setLangAnchor] = useState<null | HTMLElement>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
+
+  const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
 
   let lastSection = '';
 
@@ -101,10 +131,24 @@ export function App() {
     <Box sx={{ display: 'flex' }}>
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${DRAWER_WIDTH}px)`, ml: `${DRAWER_WIDTH}px` }}
+        sx={{
+          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
+          ml: { md: `${DRAWER_WIDTH}px` },
+        }}
         elevation={0}
       >
         <Toolbar>
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 1 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
           <Typography variant="h6" noWrap fontWeight={700}>
             {t(PAGE_TITLE_KEYS[currentPage])}
           </Typography>
@@ -119,7 +163,7 @@ export function App() {
           </IconButton>
           <Typography
             variant="body2"
-            sx={{ color: NATURGY.grayText, fontWeight: 600, cursor: 'pointer', mr: 2 }}
+            sx={{ color: NATURGY.grayText, fontWeight: 600, cursor: 'pointer', mr: 2, display: { xs: 'none', sm: 'block' } }}
             onClick={(e) => setLangAnchor(e.currentTarget as HTMLElement)}
           >
             {currentLang}
@@ -142,7 +186,7 @@ export function App() {
 
           <Box
             sx={{
-              display: 'flex',
+              display: { xs: 'none', sm: 'flex' },
               alignItems: 'center',
               gap: 1,
               bgcolor: NATURGY.grayLight,
@@ -151,18 +195,29 @@ export function App() {
               borderRadius: 2,
             }}
           >
+            <PersonIcon sx={{ color: NATURGY.grayText, fontSize: 18 }} />
             <Typography variant="body2" sx={{ color: NATURGY.grayText, fontWeight: 600 }}>
-              {t('app.title')}
+              {username}
             </Typography>
           </Box>
+          <Tooltip title={t('login.logout')}>
+            <IconButton onClick={logout} sx={{ ml: 1, color: NATURGY.grayText }}>
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
 
+      <Box
+        component="nav"
+        sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}
+      >
       <Drawer
-        variant="permanent"
+        variant={isMobile ? 'temporary' : 'permanent'}
+        open={isMobile ? mobileOpen : true}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
         sx={{
-          width: DRAWER_WIDTH,
-          flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
@@ -198,7 +253,7 @@ export function App() {
                 <ListItem disablePadding>
                   <ListItemButton
                     selected={currentPage === item.key}
-                    onClick={() => setCurrentPage(item.key)}
+                    onClick={() => { setCurrentPage(item.key); if (isMobile) setMobileOpen(false); }}
                     sx={{
                       borderRadius: 1.5,
                       mb: 0.5,
@@ -226,6 +281,7 @@ export function App() {
           })}
         </List>
       </Drawer>
+      </Box>
 
       <Box
         component="main"
@@ -233,10 +289,12 @@ export function App() {
           flexGrow: 1,
           bgcolor: 'background.default',
           minHeight: '100vh',
+          width: { xs: '100%', md: `calc(100% - ${DRAWER_WIDTH}px)` },
+          overflow: 'hidden',
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ py: 3 }}>
+        <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 }, px: { xs: 1.5, sm: 2, md: 3 } }}>
           {renderPage(currentPage)}
         </Container>
       </Box>

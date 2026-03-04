@@ -45,6 +45,8 @@ public class SupplyPointController {
         sp.setZona(dto.zona());
         sp.setTarifa(dto.tarifa());
         sp.setEstado(SupplyPoint.EstadoSupply.valueOf(dto.estado()));
+        sp.setServigas(dto.servigas() != null && dto.servigas());
+        sp.setContratoDual(dto.contratoDual() != null && dto.contratoDual());
         return SupplyPointDto.from(repo.save(sp));
     }
 

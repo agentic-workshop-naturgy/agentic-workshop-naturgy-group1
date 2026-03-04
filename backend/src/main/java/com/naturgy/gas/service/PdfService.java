@@ -316,12 +316,16 @@ public class PdfService {
         BigDecimal consumo = BigDecimal.ZERO;
         BigDecimal fijo    = BigDecimal.ZERO;
         BigDecimal iva     = BigDecimal.ZERO;
+        BigDecimal servigas = BigDecimal.ZERO;
+        BigDecimal bonificacion = BigDecimal.ZERO;
 
         for (InvoiceLine line : lines) {
             switch (line.getTipoLinea()) {
                 case TERMINO_VARIABLE, ALQUILER -> consumo = consumo.add(line.getImporte());
                 case TERMINO_FIJO               -> fijo    = fijo.add(line.getImporte());
                 case IVA                        -> iva     = iva.add(line.getImporte());
+                case SERVIGAS                   -> servigas = servigas.add(line.getImporte());
+                case BONIFICACION               -> bonificacion = bonificacion.add(line.getImporte());
             }
         }
 
@@ -330,15 +334,19 @@ public class PdfService {
         float[][] colors = {
             NARANJA,                                    // Consumo  — orange
             AZUL,                                       // T. Fijo  — blue
-            {0.400f, 0.733f, 0.416f}                    // IVA      — green #66BB6A
+            {0.400f, 0.733f, 0.416f},                   // IVA      — green #66BB6A
+            {0.612f, 0.153f, 0.690f},                   // ServiGas — purple #9C27B0
+            {0.129f, 0.588f, 0.953f}                    // Bonificación — light blue #2196F3
         };
         if (consumo.signum() > 0) slices.add(new PieSlice("Consumo", consumo, colors[0]));
         if (fijo.signum() > 0)    slices.add(new PieSlice("Término fijo", fijo, colors[1]));
         if (iva.signum() > 0)     slices.add(new PieSlice("IVA", iva, colors[2]));
+        if (servigas.signum() > 0) slices.add(new PieSlice("ServiGas", servigas, colors[3]));
+        if (bonificacion.signum() != 0) slices.add(new PieSlice("Bonificación", bonificacion.abs(), colors[4]));
 
         if (slices.isEmpty()) return startY;
 
-        BigDecimal grandTotal = consumo.add(fijo).add(iva);
+        BigDecimal grandTotal = consumo.add(fijo).add(iva).add(servigas).add(bonificacion.abs());
         if (grandTotal.signum() <= 0) return startY;
 
         // Title
@@ -576,6 +584,7 @@ public class PdfService {
         return switch (line.getTipoLinea()) {
             case TERMINO_VARIABLE -> KWH_FMT.format(line.getCantidad()) + " kWh";
             case IVA -> line.getCantidad().multiply(BigDecimal.valueOf(100)).setScale(0, java.math.RoundingMode.HALF_UP) + " %";
+            case BONIFICACION -> line.getCantidad().multiply(BigDecimal.valueOf(100)).setScale(0, java.math.RoundingMode.HALF_UP) + " %";
             default -> KWH_FMT.format(line.getCantidad());
         };
     }
@@ -584,6 +593,7 @@ public class PdfService {
         return switch (line.getTipoLinea()) {
             case TERMINO_VARIABLE -> line.getPrecioUnitario().toPlainString() + " €/kWh";
             case IVA -> EUR_FMT.format(line.getPrecioUnitario()) + " €";
+            case BONIFICACION -> EUR_FMT.format(line.getPrecioUnitario()) + " €";
             default -> EUR_FMT.format(line.getPrecioUnitario()) + " €";
         };
     }

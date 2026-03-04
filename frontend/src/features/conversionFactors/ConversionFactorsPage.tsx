@@ -148,18 +148,22 @@ export function ConversionFactorsPage() {
       <PageHeader title={t('conversionFactors.title')} action={<Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>{t('conversionFactors.newBtn')}</Button>} />
 
       <Paper sx={{ p: 2, mb: 2 }}>
-        <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
-          <TextField label={t('conversionFactors.zone')} value={filterZona} onChange={(e) => setFilterZona(e.target.value)} size="small" sx={{ minWidth: 150 }} />
-          <TextField label={t('conversionFactors.monthFormat')} value={filterMes} onChange={(e) => setFilterMes(e.target.value)} size="small" sx={{ minWidth: 150 }} />
-          <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>{t('common.search')}</Button>
-          <Button variant="text" onClick={() => { setFilterZona(''); setFilterMes(''); void loadData(); }}>{t('common.clear')}</Button>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'center' }} flexWrap="wrap" useFlexGap>
+          <TextField label={t('conversionFactors.zone')} value={filterZona} onChange={(e) => setFilterZona(e.target.value)} size="small" sx={{ minWidth: { sm: 150 } }} />
+          <TextField label={t('conversionFactors.monthFormat')} value={filterMes} onChange={(e) => setFilterMes(e.target.value)} size="small" sx={{ minWidth: { sm: 150 } }} />
+          <Stack direction="row" spacing={1}>
+            <Button variant="outlined" startIcon={<SearchIcon />} onClick={handleFilter}>{t('common.search')}</Button>
+            <Button variant="text" onClick={() => { setFilterZona(''); setFilterMes(''); void loadData(); }}>{t('common.clear')}</Button>
+          </Stack>
         </Stack>
       </Paper>
 
       {loading && <LinearProgress sx={{ mb: 2 }} />}
       {error && <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>{error}</Alert>}
 
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
       <DataGrid rows={rows} columns={columns} autoHeight pageSizeOptions={[10, 25]} initialState={{ pagination: { paginationModel: { pageSize: 10 } } }} disableRowSelectionOnClick slots={{ noRowsOverlay: () => <Box sx={{ p: 3, textAlign: 'center' }}>{t('common.noData')}</Box> }} />
+      </Box>
 
       <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{editingId !== null ? t('conversionFactors.editTitle') : t('conversionFactors.createTitle')}</DialogTitle>

@@ -39,6 +39,6 @@ public class InvoiceLine {
     private BigDecimal importe;
 
     public enum TipoLinea {
-        TERMINO_FIJO, TERMINO_VARIABLE, ALQUILER, IVA
+        TERMINO_FIJO, TERMINO_VARIABLE, ALQUILER, SERVIGAS, BONIFICACION, IVA
     }
 }
