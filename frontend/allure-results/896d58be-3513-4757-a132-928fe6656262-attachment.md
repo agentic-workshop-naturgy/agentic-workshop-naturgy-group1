@@ -1,0 +1,272 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - heading [level=6] [ref=e6]: Lecturas de Gas
+        - paragraph [ref=e7]: Gas Billing · Naturgy
+    - generic [ref=e9]:
+      - img [ref=e11]
+      - separator [ref=e12]
+      - list [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: Maestros
+          - listitem [ref=e16]:
+            - button [ref=e17] [cursor=pointer]:
+              - img [ref=e19]
+              - generic [ref=e22]: Puntos de Suministro
+        - listitem [ref=e24]:
+          - button [ref=e25] [cursor=pointer]:
+            - img [ref=e27]
+            - generic [ref=e30]: Lecturas
+        - listitem [ref=e32]:
+          - button [ref=e33] [cursor=pointer]:
+            - img [ref=e35]
+            - generic [ref=e38]: Tarifario
+        - listitem [ref=e40]:
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e43]
+            - generic [ref=e46]: Factores Conversión
+        - listitem [ref=e48]:
+          - button [ref=e49] [cursor=pointer]:
+            - img [ref=e51]
+            - generic [ref=e54]: Impuestos (IVA)
+        - generic [ref=e55]:
+          - generic [ref=e56]: Análisis
+          - listitem [ref=e57]:
+            - button [ref=e58] [cursor=pointer]:
+              - img [ref=e60]
+              - generic [ref=e63]: Gráfico Consumo
+        - listitem [ref=e65]:
+          - button [ref=e66] [cursor=pointer]:
+            - img [ref=e68]
+            - generic [ref=e71]: Recomendador Tarifa
+        - generic [ref=e72]:
+          - generic [ref=e73]: Facturación
+          - listitem [ref=e74]:
+            - button [ref=e75] [cursor=pointer]:
+              - img [ref=e77]
+              - generic [ref=e80]: Facturación
+        - listitem [ref=e82]:
+          - button [ref=e83] [cursor=pointer]:
+            - img [ref=e85]
+            - generic [ref=e88]: Facturas
+    - main [ref=e89]:
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - heading [level=4] [ref=e94]: Lecturas de Gas
+          - button [ref=e95] [cursor=pointer]:
+            - img [ref=e97]
+            - text: Nueva
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - generic: Filtrar por CUPS
+            - generic [ref=e102]:
+              - textbox [ref=e103]
+              - group:
+                - generic: Filtrar por CUPS
+          - button [ref=e104] [cursor=pointer]:
+            - img [ref=e106]
+            - text: Buscar
+          - button [ref=e108] [cursor=pointer]: Limpiar
+        - generic [ref=e109]:
+          - grid [ref=e110]:
+            - row [ref=e111]:
+              - columnheader [ref=e112] [cursor=pointer]:
+                - generic [ref=e114]: ID
+                - generic [ref=e115]:
+                  - img
+              - columnheader [ref=e116] [cursor=pointer]:
+                - generic [ref=e118]: CUPS
+                - generic [ref=e119]:
+                  - img
+              - columnheader [ref=e120] [cursor=pointer]:
+                - generic [ref=e122]: Fecha
+                - generic [ref=e123]:
+                  - img
+              - columnheader [ref=e124] [cursor=pointer]:
+                - generic [ref=e126]: Lectura (m³)
+                - generic [ref=e127]:
+                  - img
+              - columnheader [ref=e128] [cursor=pointer]:
+                - generic [ref=e130]: Tipo
+                - generic [ref=e131]:
+                  - img
+              - columnheader [ref=e132]:
+                - generic [ref=e133]:
+                  - img
+            - rowgroup [ref=e134]:
+              - row [ref=e135]:
+                - gridcell [ref=e136]: "1"
+                - gridcell [ref=e137]: ES0021000000001AA
+                - gridcell [ref=e138]: 2025-12-31
+                - gridcell [ref=e139]: 1,200
+                - gridcell [ref=e140]: REAL
+                - gridcell [ref=e141]:
+                  - generic [ref=e142]:
+                    - button [ref=e143] [cursor=pointer]:
+                      - img [ref=e144]
+                    - button [ref=e146] [cursor=pointer]:
+                      - img [ref=e147]
+              - row [ref=e149]:
+                - gridcell [ref=e150]: "2"
+                - gridcell [ref=e151]: ES0021000000001AA
+                - gridcell [ref=e152]: 2026-01-31
+                - gridcell [ref=e153]: 1,250.5
+                - gridcell [ref=e154]: REAL
+                - gridcell [ref=e155]:
+                  - generic [ref=e156]:
+                    - button [ref=e157] [cursor=pointer]:
+                      - img [ref=e158]
+                    - button [ref=e160] [cursor=pointer]:
+                      - img [ref=e161]
+              - row [ref=e163]:
+                - gridcell [ref=e164]: "3"
+                - gridcell [ref=e165]: ES0021000000001AA
+                - gridcell [ref=e166]: 2026-02-28
+                - gridcell [ref=e167]: 1,325.8
+                - gridcell [ref=e168]: REAL
+                - gridcell [ref=e169]:
+                  - generic [ref=e170]:
+                    - button [ref=e171] [cursor=pointer]:
+                      - img [ref=e172]
+                    - button [ref=e174] [cursor=pointer]:
+                      - img [ref=e175]
+              - row [ref=e177]:
+                - gridcell [ref=e178]: "4"
+                - gridcell [ref=e179]: ES0021000000002BB
+                - gridcell [ref=e180]: 2025-12-31
+                - gridcell [ref=e181]: "850"
+                - gridcell [ref=e182]: REAL
+                - gridcell [ref=e183]:
+                  - generic [ref=e184]:
+                    - button [ref=e185] [cursor=pointer]:
+                      - img [ref=e186]
+                    - button [ref=e188] [cursor=pointer]:
+                      - img [ref=e189]
+              - row [ref=e191]:
+                - gridcell [ref=e192]: "5"
+                - gridcell [ref=e193]: ES0021000000002BB
+                - gridcell [ref=e194]: 2026-01-31
+                - gridcell [ref=e195]: "900"
+                - gridcell [ref=e196]: REAL
+                - gridcell [ref=e197]:
+                  - generic [ref=e198]:
+                    - button [ref=e199] [cursor=pointer]:
+                      - img [ref=e200]
+                    - button [ref=e202] [cursor=pointer]:
+                      - img [ref=e203]
+              - row [ref=e205]:
+                - gridcell [ref=e206]: "6"
+                - gridcell [ref=e207]: ES0021000000002BB
+                - gridcell [ref=e208]: 2026-02-28
+                - gridcell [ref=e209]: "980.2"
+                - gridcell [ref=e210]: ESTIMADA
+                - gridcell [ref=e211]:
+                  - generic [ref=e212]:
+                    - button [ref=e213] [cursor=pointer]:
+                      - img [ref=e214]
+                    - button [ref=e216] [cursor=pointer]:
+                      - img [ref=e217]
+              - row [ref=e219]:
+                - gridcell [ref=e220]: "7"
+                - gridcell [ref=e221]: ES0021000000003CC
+                - gridcell [ref=e222]: 2025-12-31
+                - gridcell [ref=e223]: "475"
+                - gridcell [ref=e224]: REAL
+                - gridcell [ref=e225]:
+                  - generic [ref=e226]:
+                    - button [ref=e227] [cursor=pointer]:
+                      - img [ref=e228]
+                    - button [ref=e230] [cursor=pointer]:
+                      - img [ref=e231]
+              - row [ref=e233]:
+                - gridcell [ref=e234]: "8"
+                - gridcell [ref=e235]: ES0021000000003CC
+                - gridcell [ref=e236]: 2026-01-31
+                - gridcell [ref=e237]: "500"
+                - gridcell [ref=e238]: REAL
+                - gridcell [ref=e239]:
+                  - generic [ref=e240]:
+                    - button [ref=e241] [cursor=pointer]:
+                      - img [ref=e242]
+                    - button [ref=e244] [cursor=pointer]:
+                      - img [ref=e245]
+              - row [ref=e247]:
+                - gridcell [ref=e248]: "9"
+                - gridcell [ref=e249]: ES0021000000003CC
+                - gridcell [ref=e250]: 2026-02-28
+                - gridcell [ref=e251]: "550"
+                - gridcell [ref=e252]: REAL
+                - gridcell [ref=e253]:
+                  - generic [ref=e254]:
+                    - button [ref=e255] [cursor=pointer]:
+                      - img [ref=e256]
+                    - button [ref=e258] [cursor=pointer]:
+                      - img [ref=e259]
+              - row [ref=e261]:
+                - gridcell [ref=e262]: "10"
+                - gridcell [ref=e263]: ES0021000000003CD
+                - gridcell [ref=e264]: 2025-12-31
+                - gridcell [ref=e265]: "100"
+                - gridcell [ref=e266]: REAL
+                - gridcell [ref=e267]:
+                  - generic [ref=e268]:
+                    - button [ref=e269] [cursor=pointer]:
+                      - img [ref=e270]
+                    - button [ref=e272] [cursor=pointer]:
+                      - img [ref=e273]
+          - generic [ref=e277]:
+            - paragraph [ref=e278]: "Rows per page:"
+            - generic [ref=e279]:
+              - combobox [ref=e280] [cursor=pointer]: "10"
+              - textbox: "10"
+              - img
+            - paragraph [ref=e281]: 1–10 of 11
+            - generic [ref=e282]:
+              - button [disabled]:
+                - img
+              - button [ref=e283] [cursor=pointer]:
+                - img [ref=e284]
+  - dialog "Nueva Lectura" [ref=e288]:
+    - heading "Nueva Lectura" [level=2] [ref=e289]
+    - generic [ref=e290]:
+      - generic [ref=e291]:
+        - generic [ref=e292]:
+          - text: CUPS
+          - generic [ref=e293]: "*"
+        - generic [ref=e294]:
+          - textbox "CUPS" [ref=e295]: ES1234567890123456
+          - group:
+            - generic: CUPS *
+      - generic [ref=e296]:
+        - generic [ref=e297]:
+          - text: Fecha (YYYY-MM-DD)
+          - generic [ref=e298]: "*"
+        - generic [ref=e299]:
+          - textbox "Fecha (YYYY-MM-DD)" [active] [ref=e300]: 2024-06-01
+          - group:
+            - generic: Fecha (YYYY-MM-DD) *
+        - paragraph [ref=e301]: "Ej: 2026-01-31"
+      - generic [ref=e302]:
+        - generic:
+          - text: Lectura (m³)
+          - generic: "*"
+        - generic [ref=e303]:
+          - textbox "Lectura (m³)" [ref=e304]
+          - group:
+            - generic: Lectura (m³) *
+      - generic [ref=e305]:
+        - generic [ref=e306]: Tipo
+        - generic [ref=e307]:
+          - combobox "Tipo" [ref=e308] [cursor=pointer]: REAL
+          - textbox: REAL
+          - img
+          - group:
+            - generic: Tipo
+    - generic [ref=e309]:
+      - button "Cancelar" [ref=e310] [cursor=pointer]
+      - button "Guardar" [ref=e311] [cursor=pointer]
+```

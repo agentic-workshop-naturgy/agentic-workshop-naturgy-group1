@@ -1,0 +1,216 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - heading [level=6] [ref=e6]: Puntos de Suministro
+        - paragraph [ref=e7]: Gas Billing · Naturgy
+    - generic [ref=e9]:
+      - img [ref=e11]
+      - separator [ref=e12]
+      - list [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: Maestros
+          - listitem [ref=e16]:
+            - button [ref=e17] [cursor=pointer]:
+              - img [ref=e19]
+              - generic [ref=e22]: Puntos de Suministro
+        - listitem [ref=e24]:
+          - button [ref=e25] [cursor=pointer]:
+            - img [ref=e27]
+            - generic [ref=e30]: Lecturas
+        - listitem [ref=e32]:
+          - button [ref=e33] [cursor=pointer]:
+            - img [ref=e35]
+            - generic [ref=e38]: Tarifario
+        - listitem [ref=e40]:
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e43]
+            - generic [ref=e46]: Factores Conversión
+        - listitem [ref=e48]:
+          - button [ref=e49] [cursor=pointer]:
+            - img [ref=e51]
+            - generic [ref=e54]: Impuestos (IVA)
+        - generic [ref=e55]:
+          - generic [ref=e56]: Análisis
+          - listitem [ref=e57]:
+            - button [ref=e58] [cursor=pointer]:
+              - img [ref=e60]
+              - generic [ref=e63]: Gráfico Consumo
+        - listitem [ref=e65]:
+          - button [ref=e66] [cursor=pointer]:
+            - img [ref=e68]
+            - generic [ref=e71]: Recomendador Tarifa
+        - generic [ref=e72]:
+          - generic [ref=e73]: Facturación
+          - listitem [ref=e74]:
+            - button [ref=e75] [cursor=pointer]:
+              - img [ref=e77]
+              - generic [ref=e80]: Facturación
+        - listitem [ref=e82]:
+          - button [ref=e83] [cursor=pointer]:
+            - img [ref=e85]
+            - generic [ref=e88]: Facturas
+    - main [ref=e89]:
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - heading [level=4] [ref=e94]: Puntos de Suministro
+          - button [ref=e95] [cursor=pointer]:
+            - img [ref=e97]
+            - text: Nuevo
+        - generic [ref=e99]:
+          - grid [ref=e100]:
+            - row [ref=e101]:
+              - columnheader [ref=e102] [cursor=pointer]:
+                - generic [ref=e104]: CUPS
+                - generic [ref=e105]:
+                  - img
+              - columnheader [ref=e106] [cursor=pointer]:
+                - generic [ref=e108]: Zona
+                - generic [ref=e109]:
+                  - img
+              - columnheader [ref=e110] [cursor=pointer]:
+                - generic [ref=e112]: Tarifa
+                - generic [ref=e113]:
+                  - img
+              - columnheader [ref=e114] [cursor=pointer]:
+                - generic [ref=e116]: Servigas
+                - generic [ref=e117]:
+                  - img
+              - columnheader [ref=e118] [cursor=pointer]:
+                - generic [ref=e120]: Estado
+                - generic [ref=e121]:
+                  - img
+              - columnheader [ref=e122]:
+                - generic [ref=e123]:
+                  - img
+            - rowgroup [ref=e124]:
+              - row [ref=e125]:
+                - gridcell [ref=e126]: ES0021000000001AA
+                - gridcell [ref=e127]: ZONA1
+                - gridcell [ref=e128]: RL1
+                - gridcell [ref=e129]:
+                  - generic [ref=e131]: Sí
+                - gridcell [ref=e132]:
+                  - generic [ref=e134]: ACTIVO
+                - gridcell [ref=e135]:
+                  - generic [ref=e136]:
+                    - button [ref=e137] [cursor=pointer]:
+                      - img [ref=e138]
+                    - button [ref=e140] [cursor=pointer]:
+                      - img [ref=e141]
+              - row [ref=e143]:
+                - gridcell [ref=e144]: ES0021000000002BB
+                - gridcell [ref=e145]: ZONA1
+                - gridcell [ref=e146]: RL2
+                - gridcell [ref=e147]:
+                  - generic [ref=e149]: Sí
+                - gridcell [ref=e150]:
+                  - generic [ref=e152]: ACTIVO
+                - gridcell [ref=e153]:
+                  - generic [ref=e154]:
+                    - button [ref=e155] [cursor=pointer]:
+                      - img [ref=e156]
+                    - button [ref=e158] [cursor=pointer]:
+                      - img [ref=e159]
+              - row [ref=e161]:
+                - gridcell [ref=e162]: ES0021000000003CC
+                - gridcell [ref=e163]: ZONA2
+                - gridcell [ref=e164]: RL1-DUAL
+                - gridcell [ref=e165]:
+                  - generic [ref=e167]: "No"
+                - gridcell [ref=e168]:
+                  - generic [ref=e170]: ACTIVO
+                - gridcell [ref=e171]:
+                  - generic [ref=e172]:
+                    - button [ref=e173] [cursor=pointer]:
+                      - img [ref=e174]
+                    - button [ref=e176] [cursor=pointer]:
+                      - img [ref=e177]
+              - row [ref=e179]:
+                - gridcell [ref=e180]: ES1772618018790
+                - gridcell [ref=e181]: Test
+                - gridcell [ref=e182]: T1
+                - gridcell [ref=e183]:
+                  - generic [ref=e185]: "No"
+                - gridcell [ref=e186]:
+                  - generic [ref=e188]: ACTIVO
+                - gridcell [ref=e189]:
+                  - generic [ref=e190]:
+                    - button [ref=e191] [cursor=pointer]:
+                      - img [ref=e192]
+                    - button [ref=e194] [cursor=pointer]:
+                      - img [ref=e195]
+              - row [ref=e197]:
+                - gridcell [ref=e198]: ES1234567890123456
+                - gridcell [ref=e199]: Centro
+                - gridcell [ref=e200]: T1
+                - gridcell [ref=e201]:
+                  - generic [ref=e203]: "No"
+                - gridcell [ref=e204]:
+                  - generic [ref=e206]: ACTIVO
+                - gridcell [ref=e207]:
+                  - generic [ref=e208]:
+                    - button [ref=e209] [cursor=pointer]:
+                      - img [ref=e210]
+                    - button [ref=e212] [cursor=pointer]:
+                      - img [ref=e213]
+          - generic [ref=e217]:
+            - paragraph [ref=e218]: "Rows per page:"
+            - generic [ref=e219]:
+              - combobox [ref=e220] [cursor=pointer]: "10"
+              - textbox: "10"
+              - img
+            - paragraph [ref=e221]: 1–5 of 5
+            - generic [ref=e222]:
+              - button [disabled]:
+                - img
+              - button [disabled]:
+                - img
+  - dialog "Editar Punto de Suministro" [ref=e225]:
+    - heading "Editar Punto de Suministro" [level=2] [ref=e226]
+    - generic [ref=e227]:
+      - alert [ref=e228]:
+        - img [ref=e230]
+        - generic [ref=e232]: Recurso no encontrado
+      - generic [ref=e233]:
+        - generic [ref=e234]:
+          - text: CUPS
+          - generic [ref=e235]: "*"
+        - generic [ref=e236]:
+          - textbox "CUPS" [disabled] [ref=e237]: ES1234567890123456
+          - group:
+            - generic: CUPS *
+      - generic [ref=e238]:
+        - generic [ref=e239]:
+          - text: Zona
+          - generic [ref=e240]: "*"
+        - generic [ref=e241]:
+          - textbox "Zona" [ref=e242]: Centro
+          - group:
+            - generic: Zona *
+      - generic [ref=e243]:
+        - generic [ref=e244]:
+          - text: Tarifa
+          - generic [ref=e245]: "*"
+        - generic [ref=e246]:
+          - textbox "Tarifa" [ref=e247]: T2
+          - group:
+            - generic: Tarifa *
+      - generic [ref=e248]:
+        - generic [ref=e249]: Estado
+        - generic [ref=e250]:
+          - combobox "Estado" [ref=e251] [cursor=pointer]: ACTIVO
+          - textbox: ACTIVO
+          - img
+          - group:
+            - generic: Estado
+      - generic [ref=e252] [cursor=pointer]:
+        - switch "Servigas (mantenimiento caldera +12 €/mes)" [ref=e255]
+        - generic [ref=e258]: Servigas (mantenimiento caldera +12 €/mes)
+    - generic [ref=e259]:
+      - button "Cancelar" [ref=e260] [cursor=pointer]
+      - button "Guardar" [ref=e261] [cursor=pointer]: Guardar
+```

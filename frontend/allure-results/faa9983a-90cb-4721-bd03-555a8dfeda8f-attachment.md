@@ -1,0 +1,137 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - heading [level=6] [ref=e6]: Impuestos (IVA)
+        - paragraph [ref=e7]: Gas Billing · Naturgy
+    - generic [ref=e9]:
+      - img [ref=e11]
+      - separator [ref=e12]
+      - list [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: Maestros
+          - listitem [ref=e16]:
+            - button [ref=e17] [cursor=pointer]:
+              - img [ref=e19]
+              - generic [ref=e22]: Puntos de Suministro
+        - listitem [ref=e24]:
+          - button [ref=e25] [cursor=pointer]:
+            - img [ref=e27]
+            - generic [ref=e30]: Lecturas
+        - listitem [ref=e32]:
+          - button [ref=e33] [cursor=pointer]:
+            - img [ref=e35]
+            - generic [ref=e38]: Tarifario
+        - listitem [ref=e40]:
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e43]
+            - generic [ref=e46]: Factores Conversión
+        - listitem [ref=e48]:
+          - button [ref=e49] [cursor=pointer]:
+            - img [ref=e51]
+            - generic [ref=e54]: Impuestos (IVA)
+        - generic [ref=e55]:
+          - generic [ref=e56]: Análisis
+          - listitem [ref=e57]:
+            - button [ref=e58] [cursor=pointer]:
+              - img [ref=e60]
+              - generic [ref=e63]: Gráfico Consumo
+        - listitem [ref=e65]:
+          - button [ref=e66] [cursor=pointer]:
+            - img [ref=e68]
+            - generic [ref=e71]: Recomendador Tarifa
+        - generic [ref=e72]:
+          - generic [ref=e73]: Facturación
+          - listitem [ref=e74]:
+            - button [ref=e75] [cursor=pointer]:
+              - img [ref=e77]
+              - generic [ref=e80]: Facturación
+        - listitem [ref=e82]:
+          - button [ref=e83] [cursor=pointer]:
+            - img [ref=e85]
+            - generic [ref=e88]: Facturas
+    - main [ref=e89]:
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - heading [level=4] [ref=e94]: Impuestos (IVA)
+          - button [ref=e95] [cursor=pointer]:
+            - img [ref=e97]
+            - text: Nuevo Impuesto
+        - generic [ref=e99]:
+          - grid [ref=e100]:
+            - row [ref=e101]:
+              - columnheader [ref=e102] [cursor=pointer]:
+                - generic [ref=e104]: Código
+                - generic [ref=e105]:
+                  - img
+              - columnheader [ref=e106] [cursor=pointer]:
+                - generic [ref=e108]: Tasa (%)
+                - generic [ref=e109]:
+                  - img
+              - columnheader [ref=e110] [cursor=pointer]:
+                - generic [ref=e112]: Vigencia Desde
+                - generic [ref=e113]:
+                  - img
+              - columnheader [ref=e114]:
+                - generic [ref=e115]:
+                  - img
+            - rowgroup [ref=e116]:
+              - row [ref=e117]:
+                - gridcell [ref=e118]: IVA
+                - gridcell [ref=e119]: 21.00%
+                - gridcell [ref=e120]: 2026-01-01
+                - gridcell [ref=e121]:
+                  - generic [ref=e122]:
+                    - button [ref=e123] [cursor=pointer]:
+                      - img [ref=e124]
+                    - button [ref=e126] [cursor=pointer]:
+                      - img [ref=e127]
+          - generic [ref=e131]:
+            - paragraph [ref=e132]: "Rows per page:"
+            - generic [ref=e133]:
+              - combobox [ref=e134] [cursor=pointer]: "10"
+              - textbox: "10"
+              - img
+            - paragraph [ref=e135]: 1–1 of 1
+            - generic [ref=e136]:
+              - button [disabled]:
+                - img
+              - button [disabled]:
+                - img
+  - dialog "Nuevo Impuesto" [ref=e139]:
+    - heading "Nuevo Impuesto" [level=2] [ref=e140]
+    - generic [ref=e141]:
+      - generic [ref=e142]:
+        - generic [ref=e143]:
+          - text: Código
+          - generic [ref=e144]: "*"
+        - generic [ref=e145]:
+          - textbox "Código" [ref=e146]: IVA21
+          - group:
+            - generic: Código *
+        - paragraph [ref=e147]: "Ej: IVA"
+      - generic [ref=e148]:
+        - generic [ref=e149]:
+          - text: Tasa (0 a 1)
+          - generic [ref=e150]: "*"
+        - generic [ref=e151]:
+          - textbox "Tasa (0 a 1)" [ref=e152]: "21"
+          - group:
+            - generic: Tasa (0 a 1) *
+        - paragraph [ref=e153]: "Debe ser un decimal en [0, 1] (ej: 0.21)"
+      - generic [ref=e154]:
+        - generic:
+          - text: Vigencia Desde (YYYY-MM-DD)
+          - generic: "*"
+        - generic [ref=e155]:
+          - textbox "Vigencia Desde (YYYY-MM-DD)" [ref=e156]
+          - group:
+            - generic: Vigencia Desde (YYYY-MM-DD) *
+        - paragraph [ref=e157]: Fecha de vigencia es requerida
+    - generic [ref=e158]:
+      - button "Cancelar" [ref=e159] [cursor=pointer]
+      - button "Guardar" [active] [ref=e160] [cursor=pointer]: Guardar
+```

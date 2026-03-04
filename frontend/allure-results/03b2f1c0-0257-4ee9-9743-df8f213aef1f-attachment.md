@@ -1,0 +1,143 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Puntos de Suministro" [level=6] [ref=e6]
+      - paragraph [ref=e7]: Gas Billing · Naturgy
+  - generic [ref=e9]:
+    - img "Naturgy" [ref=e11]
+    - separator [ref=e12]
+    - list [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: Maestros
+        - listitem [ref=e16]:
+          - button "Puntos de Suministro" [ref=e17] [cursor=pointer]:
+            - img [ref=e19]
+            - generic [ref=e22]: Puntos de Suministro
+      - listitem [ref=e24]:
+        - button "Lecturas" [ref=e25] [cursor=pointer]:
+          - img [ref=e27]
+          - generic [ref=e30]: Lecturas
+      - listitem [ref=e32]:
+        - button "Tarifario" [ref=e33] [cursor=pointer]:
+          - img [ref=e35]
+          - generic [ref=e38]: Tarifario
+      - listitem [ref=e40]:
+        - button "Factores Conversión" [ref=e41] [cursor=pointer]:
+          - img [ref=e43]
+          - generic [ref=e46]: Factores Conversión
+      - listitem [ref=e48]:
+        - button "Impuestos (IVA)" [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+          - generic [ref=e54]: Impuestos (IVA)
+      - generic [ref=e55]:
+        - generic [ref=e56]: Análisis
+        - listitem [ref=e57]:
+          - button "Gráfico Consumo" [ref=e58] [cursor=pointer]:
+            - img [ref=e60]
+            - generic [ref=e63]: Gráfico Consumo
+      - listitem [ref=e65]:
+        - button "Recomendador Tarifa" [ref=e66] [cursor=pointer]:
+          - img [ref=e68]
+          - generic [ref=e71]: Recomendador Tarifa
+      - generic [ref=e72]:
+        - generic [ref=e73]: Facturación
+        - listitem [ref=e74]:
+          - button "Facturación" [ref=e75] [cursor=pointer]:
+            - img [ref=e77]
+            - generic [ref=e80]: Facturación
+      - listitem [ref=e82]:
+        - button "Facturas" [ref=e83] [cursor=pointer]:
+          - img [ref=e85]
+          - generic [ref=e88]: Facturas
+  - main [ref=e89]:
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - heading "Puntos de Suministro" [level=4] [ref=e94]
+        - button "Nuevo" [ref=e95] [cursor=pointer]:
+          - img [ref=e97]
+          - text: Nuevo
+      - generic [ref=e99]:
+        - grid [ref=e100]:
+          - row "CUPS Zona Tarifa Servigas Estado" [ref=e101]:
+            - columnheader "CUPS" [ref=e102] [cursor=pointer]:
+              - generic [ref=e104]: CUPS
+              - generic [ref=e105]:
+                - img
+            - columnheader "Zona" [ref=e106] [cursor=pointer]:
+              - generic [ref=e108]: Zona
+              - generic [ref=e109]:
+                - img
+            - columnheader "Tarifa" [ref=e110] [cursor=pointer]:
+              - generic [ref=e112]: Tarifa
+              - generic [ref=e113]:
+                - img
+            - columnheader "Servigas" [ref=e114] [cursor=pointer]:
+              - generic [ref=e116]: Servigas
+              - generic [ref=e117]:
+                - img
+            - columnheader "Estado" [ref=e118] [cursor=pointer]:
+              - generic [ref=e120]: Estado
+              - generic [ref=e121]:
+                - img
+            - columnheader [ref=e122]:
+              - generic [ref=e123]:
+                - img
+          - rowgroup [ref=e124]:
+            - row "ES0021000000001AA ZONA1 RL1 Sí ACTIVO editar eliminar" [ref=e125]:
+              - gridcell "ES0021000000001AA" [ref=e126]
+              - gridcell "ZONA1" [ref=e127]
+              - gridcell "RL1" [ref=e128]
+              - gridcell "Sí" [ref=e129]:
+                - generic [ref=e131]: Sí
+              - gridcell "ACTIVO" [ref=e132]:
+                - generic [ref=e134]: ACTIVO
+              - gridcell "editar eliminar" [ref=e135]:
+                - generic [ref=e136]:
+                  - button "editar" [ref=e137] [cursor=pointer]:
+                    - img [ref=e138]
+                  - button "eliminar" [ref=e140] [cursor=pointer]:
+                    - img [ref=e141]
+            - row "ES0021000000002BB ZONA1 RL2 Sí ACTIVO editar eliminar" [ref=e143]:
+              - gridcell "ES0021000000002BB" [ref=e144]
+              - gridcell "ZONA1" [ref=e145]
+              - gridcell "RL2" [ref=e146]
+              - gridcell "Sí" [ref=e147]:
+                - generic [ref=e149]: Sí
+              - gridcell "ACTIVO" [ref=e150]:
+                - generic [ref=e152]: ACTIVO
+              - gridcell "editar eliminar" [ref=e153]:
+                - generic [ref=e154]:
+                  - button "editar" [ref=e155] [cursor=pointer]:
+                    - img [ref=e156]
+                  - button "eliminar" [ref=e158] [cursor=pointer]:
+                    - img [ref=e159]
+            - row "ES0021000000003CC ZONA2 RL1-DUAL No ACTIVO editar eliminar" [ref=e161]:
+              - gridcell "ES0021000000003CC" [ref=e162]
+              - gridcell "ZONA2" [ref=e163]
+              - gridcell "RL1-DUAL" [ref=e164]
+              - gridcell "No" [ref=e165]:
+                - generic [ref=e167]: "No"
+              - gridcell "ACTIVO" [ref=e168]:
+                - generic [ref=e170]: ACTIVO
+              - gridcell "editar eliminar" [ref=e171]:
+                - generic [ref=e172]:
+                  - button "editar" [ref=e173] [cursor=pointer]:
+                    - img [ref=e174]
+                  - button "eliminar" [ref=e176] [cursor=pointer]:
+                    - img [ref=e177]
+        - generic [ref=e181]:
+          - paragraph [ref=e182]: "Rows per page:"
+          - generic [ref=e183]:
+            - 'combobox "Rows per page: 10" [ref=e184] [cursor=pointer]': "10"
+            - textbox: "10"
+            - img
+          - paragraph [ref=e185]: 1–3 of 3
+          - generic [ref=e186]:
+            - button "Go to previous page" [disabled]:
+              - img
+            - button "Go to next page" [disabled]:
+              - img
+```

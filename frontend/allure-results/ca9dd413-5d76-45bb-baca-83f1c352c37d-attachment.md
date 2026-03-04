@@ -1,0 +1,222 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - heading [level=6] [ref=e6]: Factores de Conversión
+        - paragraph [ref=e7]: Gas Billing · Naturgy
+    - generic [ref=e9]:
+      - img [ref=e11]
+      - separator [ref=e12]
+      - list [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: Maestros
+          - listitem [ref=e16]:
+            - button [ref=e17] [cursor=pointer]:
+              - img [ref=e19]
+              - generic [ref=e22]: Puntos de Suministro
+        - listitem [ref=e24]:
+          - button [ref=e25] [cursor=pointer]:
+            - img [ref=e27]
+            - generic [ref=e30]: Lecturas
+        - listitem [ref=e32]:
+          - button [ref=e33] [cursor=pointer]:
+            - img [ref=e35]
+            - generic [ref=e38]: Tarifario
+        - listitem [ref=e40]:
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e43]
+            - generic [ref=e46]: Factores Conversión
+        - listitem [ref=e48]:
+          - button [ref=e49] [cursor=pointer]:
+            - img [ref=e51]
+            - generic [ref=e54]: Impuestos (IVA)
+        - generic [ref=e55]:
+          - generic [ref=e56]: Análisis
+          - listitem [ref=e57]:
+            - button [ref=e58] [cursor=pointer]:
+              - img [ref=e60]
+              - generic [ref=e63]: Gráfico Consumo
+        - listitem [ref=e65]:
+          - button [ref=e66] [cursor=pointer]:
+            - img [ref=e68]
+            - generic [ref=e71]: Recomendador Tarifa
+        - generic [ref=e72]:
+          - generic [ref=e73]: Facturación
+          - listitem [ref=e74]:
+            - button [ref=e75] [cursor=pointer]:
+              - img [ref=e77]
+              - generic [ref=e80]: Facturación
+        - listitem [ref=e82]:
+          - button [ref=e83] [cursor=pointer]:
+            - img [ref=e85]
+            - generic [ref=e88]: Facturas
+    - main [ref=e89]:
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - heading [level=4] [ref=e94]: Factores de Conversión
+          - button [ref=e95] [cursor=pointer]:
+            - img [ref=e97]
+            - text: Nuevo Factor
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - generic: Zona
+            - generic [ref=e102]:
+              - textbox [ref=e103]
+              - group:
+                - generic: Zona
+          - generic [ref=e104]:
+            - generic: Mes (YYYY-MM)
+            - generic [ref=e105]:
+              - textbox [ref=e106]
+              - group:
+                - generic: Mes (YYYY-MM)
+          - button [ref=e107] [cursor=pointer]:
+            - img [ref=e109]
+            - text: Buscar
+          - button [ref=e111] [cursor=pointer]: Limpiar
+        - generic [ref=e112]:
+          - grid [ref=e113]:
+            - generic [ref=e114]:
+              - row [ref=e115]:
+                - columnheader [ref=e116] [cursor=pointer]:
+                  - generic [ref=e118]: ID
+                  - generic [ref=e119]:
+                    - img
+                - columnheader [ref=e120] [cursor=pointer]:
+                  - generic [ref=e122]: Zona
+                  - generic [ref=e123]:
+                    - img
+                - columnheader [ref=e124] [cursor=pointer]:
+                  - generic [ref=e126]: Mes
+                  - generic [ref=e127]:
+                    - img
+                - columnheader [ref=e128] [cursor=pointer]:
+                  - generic [ref=e130]: Coef. Conv.
+                  - generic [ref=e131]:
+                    - img
+                - columnheader [ref=e132] [cursor=pointer]:
+                  - generic [ref=e134]: PCS (kWh/m³)
+                  - generic [ref=e135]:
+                    - img
+                - columnheader [ref=e136]:
+                  - generic [ref=e137]:
+                    - img
+              - rowgroup [ref=e138]:
+                - row [ref=e139]:
+                  - gridcell [ref=e140]: "1"
+                  - gridcell [ref=e141]: ZONA1
+                  - gridcell [ref=e142]: 2026-02
+                  - gridcell [ref=e143]: "1.02"
+                  - gridcell [ref=e144]: "11.68"
+                  - gridcell [ref=e145]:
+                    - generic [ref=e146]:
+                      - button [ref=e147] [cursor=pointer]:
+                        - img [ref=e148]
+                      - button [ref=e150] [cursor=pointer]:
+                        - img [ref=e151]
+                - row [ref=e153]:
+                  - gridcell [ref=e154]: "2"
+                  - gridcell [ref=e155]: ZONA2
+                  - gridcell [ref=e156]: 2026-02
+                  - gridcell [ref=e157]: "1.01"
+                  - gridcell [ref=e158]: "11.55"
+                  - gridcell [ref=e159]:
+                    - generic [ref=e160]:
+                      - button [ref=e161] [cursor=pointer]:
+                        - img [ref=e162]
+                      - button [ref=e164] [cursor=pointer]:
+                        - img [ref=e165]
+                - row [ref=e167]:
+                  - gridcell [ref=e168]: "3"
+                  - gridcell [ref=e169]: ZONA1
+                  - gridcell [ref=e170]: 2026-01
+                  - gridcell [ref=e171]: "1.02"
+                  - gridcell [ref=e172]: "11.72"
+                  - gridcell [ref=e173]:
+                    - generic [ref=e174]:
+                      - button [ref=e175] [cursor=pointer]:
+                        - img [ref=e176]
+                      - button [ref=e178] [cursor=pointer]:
+                        - img [ref=e179]
+                - row [ref=e181]:
+                  - gridcell [ref=e182]: "4"
+                  - gridcell [ref=e183]: ZONA2
+                  - gridcell [ref=e184]: 2026-01
+                  - gridcell [ref=e185]: "1.01"
+                  - gridcell [ref=e186]: "11.6"
+                  - gridcell [ref=e187]:
+                    - generic [ref=e188]:
+                      - button [ref=e189] [cursor=pointer]:
+                        - img [ref=e190]
+                      - button [ref=e192] [cursor=pointer]:
+                        - img [ref=e193]
+                - row [ref=e195]:
+                  - gridcell [ref=e196]: "5"
+                  - gridcell [ref=e197]: Centro
+                  - gridcell [ref=e198]: 2024-06
+                  - gridcell [ref=e199]: "1.05"
+                  - gridcell [ref=e200]: "10.5"
+                  - gridcell [ref=e201]:
+                    - generic [ref=e202]:
+                      - button [ref=e203] [cursor=pointer]:
+                        - img [ref=e204]
+                      - button [ref=e206] [cursor=pointer]:
+                        - img [ref=e207]
+          - generic [ref=e211]:
+            - paragraph [ref=e212]: "Rows per page:"
+            - generic [ref=e213]:
+              - combobox [ref=e214] [cursor=pointer]: "10"
+              - textbox: "10"
+              - img
+            - paragraph [ref=e215]: 1–5 of 5
+            - generic [ref=e216]:
+              - button [disabled]:
+                - img
+              - button [disabled]:
+                - img
+  - dialog "Nuevo Factor de Conversión" [ref=e219]:
+    - heading "Nuevo Factor de Conversión" [level=2] [ref=e220]
+    - generic [ref=e221]:
+      - alert [ref=e222]:
+        - img [ref=e224]
+        - generic [ref=e226]: "Conflicto: el recurso ya existe"
+      - generic [ref=e227]:
+        - generic [ref=e228]:
+          - text: Zona
+          - generic [ref=e229]: "*"
+        - generic [ref=e230]:
+          - textbox "Zona" [ref=e231]: Centro
+          - group:
+            - generic: Zona *
+      - generic [ref=e232]:
+        - generic [ref=e233]:
+          - text: Mes (YYYY-MM)
+          - generic [ref=e234]: "*"
+        - generic [ref=e235]:
+          - textbox "Mes (YYYY-MM)" [ref=e236]: 2024-06
+          - group:
+            - generic: Mes (YYYY-MM) *
+        - paragraph [ref=e237]: "Ej: 2026-01"
+      - generic [ref=e238]:
+        - generic [ref=e239]:
+          - text: Coeficiente Conv.
+          - generic [ref=e240]: "*"
+        - generic [ref=e241]:
+          - textbox "Coeficiente Conv." [ref=e242]: "1.05"
+          - group:
+            - generic: Coeficiente Conv. *
+      - generic [ref=e243]:
+        - generic [ref=e244]:
+          - text: PCS (kWh/m³)
+          - generic [ref=e245]: "*"
+        - generic [ref=e246]:
+          - textbox "PCS (kWh/m³)" [ref=e247]: "10.5"
+          - group:
+            - generic: PCS (kWh/m³) *
+    - generic [ref=e248]:
+      - button "Cancelar" [ref=e249] [cursor=pointer]
+      - button "Guardar" [ref=e250] [cursor=pointer]: Guardar
+```

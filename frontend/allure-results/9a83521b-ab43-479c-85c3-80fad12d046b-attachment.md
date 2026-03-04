@@ -1,0 +1,232 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Lecturas de Gas" [level=6] [ref=e6]
+      - paragraph [ref=e7]: Gas Billing · Naturgy
+  - generic [ref=e9]:
+    - img "Naturgy" [ref=e11]
+    - separator [ref=e12]
+    - list [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: Maestros
+        - listitem [ref=e16]:
+          - button "Puntos de Suministro" [ref=e17] [cursor=pointer]:
+            - img [ref=e19]
+            - generic [ref=e22]: Puntos de Suministro
+      - listitem [ref=e24]:
+        - button "Lecturas" [active] [ref=e25] [cursor=pointer]:
+          - img [ref=e27]
+          - generic [ref=e30]: Lecturas
+      - listitem [ref=e32]:
+        - button "Tarifario" [ref=e33] [cursor=pointer]:
+          - img [ref=e35]
+          - generic [ref=e38]: Tarifario
+      - listitem [ref=e40]:
+        - button "Factores Conversión" [ref=e41] [cursor=pointer]:
+          - img [ref=e43]
+          - generic [ref=e46]: Factores Conversión
+      - listitem [ref=e48]:
+        - button "Impuestos (IVA)" [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+          - generic [ref=e54]: Impuestos (IVA)
+      - generic [ref=e55]:
+        - generic [ref=e56]: Análisis
+        - listitem [ref=e57]:
+          - button "Gráfico Consumo" [ref=e58] [cursor=pointer]:
+            - img [ref=e60]
+            - generic [ref=e63]: Gráfico Consumo
+      - listitem [ref=e65]:
+        - button "Recomendador Tarifa" [ref=e66] [cursor=pointer]:
+          - img [ref=e68]
+          - generic [ref=e71]: Recomendador Tarifa
+      - generic [ref=e72]:
+        - generic [ref=e73]: Facturación
+        - listitem [ref=e74]:
+          - button "Facturación" [ref=e75] [cursor=pointer]:
+            - img [ref=e77]
+            - generic [ref=e80]: Facturación
+      - listitem [ref=e82]:
+        - button "Facturas" [ref=e83] [cursor=pointer]:
+          - img [ref=e85]
+          - generic [ref=e88]: Facturas
+  - main [ref=e89]:
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - heading "Lecturas de Gas" [level=4] [ref=e94]
+        - button "Nueva" [ref=e95] [cursor=pointer]:
+          - img [ref=e97]
+          - text: Nueva
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - generic: Filtrar por CUPS
+          - generic [ref=e102]:
+            - textbox "Filtrar por CUPS" [ref=e103]
+            - group:
+              - generic: Filtrar por CUPS
+        - button "Buscar" [ref=e104] [cursor=pointer]:
+          - img [ref=e106]
+          - text: Buscar
+        - button "Limpiar" [ref=e108] [cursor=pointer]
+      - generic [ref=e109]:
+        - grid [ref=e110]:
+          - row "ID CUPS Fecha Lectura (m³) Tipo" [ref=e111]:
+            - columnheader "ID" [ref=e112] [cursor=pointer]:
+              - generic [ref=e114]: ID
+              - generic [ref=e115]:
+                - img
+            - columnheader "CUPS" [ref=e116] [cursor=pointer]:
+              - generic [ref=e118]: CUPS
+              - generic [ref=e119]:
+                - img
+            - columnheader "Fecha" [ref=e120] [cursor=pointer]:
+              - generic [ref=e122]: Fecha
+              - generic [ref=e123]:
+                - img
+            - columnheader "Lectura (m³)" [ref=e124] [cursor=pointer]:
+              - generic [ref=e126]: Lectura (m³)
+              - generic [ref=e127]:
+                - img
+            - columnheader "Tipo" [ref=e128] [cursor=pointer]:
+              - generic [ref=e130]: Tipo
+              - generic [ref=e131]:
+                - img
+            - columnheader [ref=e132]:
+              - generic [ref=e133]:
+                - img
+          - rowgroup [ref=e134]:
+            - row "1 ES0021000000001AA 2025-12-31 1,200 REAL editar eliminar" [ref=e135]:
+              - gridcell "1" [ref=e136]
+              - gridcell "ES0021000000001AA" [ref=e137]
+              - gridcell "2025-12-31" [ref=e138]
+              - gridcell "1,200" [ref=e139]
+              - gridcell "REAL" [ref=e140]
+              - gridcell "editar eliminar" [ref=e141]:
+                - generic [ref=e142]:
+                  - button "editar" [ref=e143] [cursor=pointer]:
+                    - img [ref=e144]
+                  - button "eliminar" [ref=e146] [cursor=pointer]:
+                    - img [ref=e147]
+            - row "2 ES0021000000001AA 2026-01-31 1,250.5 REAL editar eliminar" [ref=e149]:
+              - gridcell "2" [ref=e150]
+              - gridcell "ES0021000000001AA" [ref=e151]
+              - gridcell "2026-01-31" [ref=e152]
+              - gridcell "1,250.5" [ref=e153]
+              - gridcell "REAL" [ref=e154]
+              - gridcell "editar eliminar" [ref=e155]:
+                - generic [ref=e156]:
+                  - button "editar" [ref=e157] [cursor=pointer]:
+                    - img [ref=e158]
+                  - button "eliminar" [ref=e160] [cursor=pointer]:
+                    - img [ref=e161]
+            - row "3 ES0021000000001AA 2026-02-28 1,325.8 REAL editar eliminar" [ref=e163]:
+              - gridcell "3" [ref=e164]
+              - gridcell "ES0021000000001AA" [ref=e165]
+              - gridcell "2026-02-28" [ref=e166]
+              - gridcell "1,325.8" [ref=e167]
+              - gridcell "REAL" [ref=e168]
+              - gridcell "editar eliminar" [ref=e169]:
+                - generic [ref=e170]:
+                  - button "editar" [ref=e171] [cursor=pointer]:
+                    - img [ref=e172]
+                  - button "eliminar" [ref=e174] [cursor=pointer]:
+                    - img [ref=e175]
+            - row "4 ES0021000000002BB 2025-12-31 850 REAL editar eliminar" [ref=e177]:
+              - gridcell "4" [ref=e178]
+              - gridcell "ES0021000000002BB" [ref=e179]
+              - gridcell "2025-12-31" [ref=e180]
+              - gridcell "850" [ref=e181]
+              - gridcell "REAL" [ref=e182]
+              - gridcell "editar eliminar" [ref=e183]:
+                - generic [ref=e184]:
+                  - button "editar" [ref=e185] [cursor=pointer]:
+                    - img [ref=e186]
+                  - button "eliminar" [ref=e188] [cursor=pointer]:
+                    - img [ref=e189]
+            - row "5 ES0021000000002BB 2026-01-31 900 REAL editar eliminar" [ref=e191]:
+              - gridcell "5" [ref=e192]
+              - gridcell "ES0021000000002BB" [ref=e193]
+              - gridcell "2026-01-31" [ref=e194]
+              - gridcell "900" [ref=e195]
+              - gridcell "REAL" [ref=e196]
+              - gridcell "editar eliminar" [ref=e197]:
+                - generic [ref=e198]:
+                  - button "editar" [ref=e199] [cursor=pointer]:
+                    - img [ref=e200]
+                  - button "eliminar" [ref=e202] [cursor=pointer]:
+                    - img [ref=e203]
+            - row "6 ES0021000000002BB 2026-02-28 980.2 ESTIMADA editar eliminar" [ref=e205]:
+              - gridcell "6" [ref=e206]
+              - gridcell "ES0021000000002BB" [ref=e207]
+              - gridcell "2026-02-28" [ref=e208]
+              - gridcell "980.2" [ref=e209]
+              - gridcell "ESTIMADA" [ref=e210]
+              - gridcell "editar eliminar" [ref=e211]:
+                - generic [ref=e212]:
+                  - button "editar" [ref=e213] [cursor=pointer]:
+                    - img [ref=e214]
+                  - button "eliminar" [ref=e216] [cursor=pointer]:
+                    - img [ref=e217]
+            - row "7 ES0021000000003CC 2025-12-31 475 REAL editar eliminar" [ref=e219]:
+              - gridcell "7" [ref=e220]
+              - gridcell "ES0021000000003CC" [ref=e221]
+              - gridcell "2025-12-31" [ref=e222]
+              - gridcell "475" [ref=e223]
+              - gridcell "REAL" [ref=e224]
+              - gridcell "editar eliminar" [ref=e225]:
+                - generic [ref=e226]:
+                  - button "editar" [ref=e227] [cursor=pointer]:
+                    - img [ref=e228]
+                  - button "eliminar" [ref=e230] [cursor=pointer]:
+                    - img [ref=e231]
+            - row "8 ES0021000000003CC 2026-01-31 500 REAL editar eliminar" [ref=e233]:
+              - gridcell "8" [ref=e234]
+              - gridcell "ES0021000000003CC" [ref=e235]
+              - gridcell "2026-01-31" [ref=e236]
+              - gridcell "500" [ref=e237]
+              - gridcell "REAL" [ref=e238]
+              - gridcell "editar eliminar" [ref=e239]:
+                - generic [ref=e240]:
+                  - button "editar" [ref=e241] [cursor=pointer]:
+                    - img [ref=e242]
+                  - button "eliminar" [ref=e244] [cursor=pointer]:
+                    - img [ref=e245]
+            - row "9 ES0021000000003CC 2026-02-28 550 REAL editar eliminar" [ref=e247]:
+              - gridcell "9" [ref=e248]
+              - gridcell "ES0021000000003CC" [ref=e249]
+              - gridcell "2026-02-28" [ref=e250]
+              - gridcell "550" [ref=e251]
+              - gridcell "REAL" [ref=e252]
+              - gridcell "editar eliminar" [ref=e253]:
+                - generic [ref=e254]:
+                  - button "editar" [ref=e255] [cursor=pointer]:
+                    - img [ref=e256]
+                  - button "eliminar" [ref=e258] [cursor=pointer]:
+                    - img [ref=e259]
+            - row "10 ES0021000000003CD 2025-12-31 100 REAL editar eliminar" [ref=e261]:
+              - gridcell "10" [ref=e262]
+              - gridcell "ES0021000000003CD" [ref=e263]
+              - gridcell "2025-12-31" [ref=e264]
+              - gridcell "100" [ref=e265]
+              - gridcell "REAL" [ref=e266]
+              - gridcell "editar eliminar" [ref=e267]:
+                - generic [ref=e268]:
+                  - button "editar" [ref=e269] [cursor=pointer]:
+                    - img [ref=e270]
+                  - button "eliminar" [ref=e272] [cursor=pointer]:
+                    - img [ref=e273]
+        - generic [ref=e277]:
+          - paragraph [ref=e278]: "Rows per page:"
+          - generic [ref=e279]:
+            - 'combobox "Rows per page: 10" [ref=e280] [cursor=pointer]': "10"
+            - textbox: "10"
+            - img
+          - paragraph [ref=e281]: 1–10 of 11
+          - generic [ref=e282]:
+            - button "Go to previous page" [disabled]:
+              - img
+            - button "Go to next page" [ref=e283] [cursor=pointer]:
+              - img [ref=e284]
+```
