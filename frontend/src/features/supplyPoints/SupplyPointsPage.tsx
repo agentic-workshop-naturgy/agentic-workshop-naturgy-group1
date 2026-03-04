@@ -35,7 +35,7 @@ import type { Cliente } from '../clientes/types';
 const DEFAULT_FORM: SupplyPointForm = {
   cups: '', zona: '', tarifa: '', estado: 'ACTIVO',
   clienteId: null,
-  calle: '', numero: '', piso: '', codigoPostal: '', municipio: '', provincia: '',
+  calle: '', numero: '', piso: '', codigoPostal: '', municipio: '', provincia: '', direccion: '',
 };
 
 function validate(form: SupplyPointForm, isEdit: boolean, t: (key: string) => string): Record<string, string> {
@@ -106,6 +106,7 @@ export function SupplyPointsPage() {
       codigoPostal: row.codigoPostal ?? '',
       municipio: row.municipio ?? '',
       provincia: row.provincia ?? '',
+      direccion: row.direccion ?? '',
     });
     setFormErrors({});
     setFormOpen(true);
@@ -161,6 +162,7 @@ export function SupplyPointsPage() {
     { field: 'tarifa', headerName: t('supplyPoints.colTarifa'), flex: 1, minWidth: 100 },
     { field: 'municipio', headerName: t('supplyPoints.colMunicipio'), flex: 1, minWidth: 120 },
     { field: 'provincia', headerName: t('supplyPoints.colProvincia'), flex: 1, minWidth: 120 },
+    { field: 'direccion', headerName: t('supplyPoints.colDireccion'), flex: 3, minWidth: 240 },
     {
       field: 'estado',
       headerName: t('supplyPoints.colEstado'),
@@ -331,6 +333,15 @@ export function SupplyPointsPage() {
             value={formData.provincia}
             onChange={(e) => setFormData((p) => ({ ...p, provincia: e.target.value }))}
             fullWidth
+          />
+          <TextField
+            label={t('supplyPoints.direccion')}
+            value={formData.direccion}
+            onChange={(e) => setFormData((p) => ({ ...p, direccion: e.target.value }))}
+            fullWidth
+            multiline
+            rows={2}
+            placeholder="Ej: Carrer de Muntaner 350, 4t 1a, 08021 Barcelona"
           />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>

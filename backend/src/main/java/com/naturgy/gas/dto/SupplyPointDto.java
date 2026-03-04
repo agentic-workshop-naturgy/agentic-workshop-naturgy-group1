@@ -13,7 +13,8 @@ public record SupplyPointDto(
         String piso,
         String codigoPostal,
         String municipio,
-        String provincia
+        String provincia,
+        String direccion
 ) {
     public static SupplyPointDto from(SupplyPoint e) {
         return new SupplyPointDto(
@@ -27,7 +28,8 @@ public record SupplyPointDto(
                 e.getPiso(),
                 e.getCodigoPostal(),
                 e.getMunicipio(),
-                e.getProvincia()
+                e.getProvincia(),
+                e.getDireccion()
         );
     }
 
@@ -43,6 +45,7 @@ public record SupplyPointDto(
         sp.setCodigoPostal(codigoPostal);
         sp.setMunicipio(municipio);
         sp.setProvincia(provincia);
+        sp.setDireccion(direccion);
         return sp;
     }
 }

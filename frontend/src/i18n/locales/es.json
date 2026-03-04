@@ -13,6 +13,15 @@
     "appTitle": "Delta",
     "appSubtitle": "Delta · Naturgy"
   },
+  "auth": {
+    "loginTitle": "Iniciar sesión",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "loginButton": "Entrar",
+    "logout": "Salir",
+    "demoCredentials": "Credenciales demo",
+    "unauthorized": "No tienes permiso para esta acción"
+  },
   "nav": {
     "overviewSection": "Visión General",
     "dashboard": "Dashboard",
@@ -85,12 +94,14 @@
     "codigoPostal": "Código Postal",
     "municipio": "Municipio",
     "provincia": "Provincia",
+    "direccion": "Dirección del jugador",
     "colCups": "CUPS",
     "colCliente": "Cliente",
     "colZona": "Zona",
     "colTarifa": "Tarifa",
     "colMunicipio": "Municipio",
     "colProvincia": "Provincia",
+    "colDireccion": "Dirección jugador",
     "colEstado": "Estado",
     "created": "Punto de suministro creado",
     "updated": "Punto de suministro actualizado",

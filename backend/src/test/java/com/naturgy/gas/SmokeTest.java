@@ -4,6 +4,7 @@ import com.naturgy.gas.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,6 +32,12 @@ class SmokeTest {
 
     @Autowired
     private GasReadingRepository gasReadingRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private InvoiceRepository invoiceRepository;
@@ -89,7 +96,8 @@ class SmokeTest {
         // Re-trigger seed via a new seeder instance
         com.naturgy.gas.seed.DataSeeder seeder = new com.naturgy.gas.seed.DataSeeder(
                 clienteRepository, supplyPointRepository, gasTariffRepository,
-                gasConversionFactorRepository, taxConfigRepository, gasReadingRepository);
+                gasConversionFactorRepository, taxConfigRepository, gasReadingRepository,
+                usuarioRepository, passwordEncoder);
         seeder.run(null);
 
         assertThat(supplyPointRepository.count()).isEqualTo(supplyBefore);

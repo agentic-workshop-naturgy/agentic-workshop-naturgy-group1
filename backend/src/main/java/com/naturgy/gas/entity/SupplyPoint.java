@@ -50,6 +50,10 @@ public class SupplyPoint {
     @Column(length = 100)
     private String provincia;
 
+    /** Dirección completa de la vivienda del titular */
+    @Column(length = 300)
+    private String direccion;
+
     public enum EstadoSupply {
         ACTIVO, INACTIVO
     }

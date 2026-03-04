@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -22,8 +24,11 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import PeopleIcon from '@mui/icons-material/People';
 import MapIcon from '@mui/icons-material/Map';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { DRAWER_WIDTH } from './app/theme';
 import { LanguageSwitcher } from './shared/ui/LanguageSwitcher';
+import { AuthProvider, useAuth } from './features/auth/AuthContext';
+import { LoginPage } from './features/auth/LoginPage';
 import { ClientesPage } from './features/clientes/ClientesPage';
 import { SupplyPointsPage } from './features/supplyPoints/SupplyPointsPage';
 import { ReadingsPage } from './features/readings/ReadingsPage';
@@ -97,8 +102,21 @@ function renderPage(page: PageKey): React.ReactNode {
 }
 
 export function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+function AppContent() {
+  const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const [currentPage, setCurrentPage] = useState<PageKey>('dashboard');
   const { t } = useTranslation();
+
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
 
   let lastSection = '';
 
@@ -115,9 +133,21 @@ export function App() {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <LanguageSwitcher />
-          <Typography variant="body2" sx={{ opacity: 0.7, ml: 2 }}>
-            {t('common.appSubtitle')}
-          </Typography>
+          <Chip
+            label={`${user?.nombre ?? user?.username} (${user?.rol})`}
+            size="small"
+            color={isAdmin ? 'success' : 'default'}
+            sx={{ ml: 2 }}
+          />
+          <Button
+            color="inherit"
+            size="small"
+            startIcon={<LogoutIcon />}
+            onClick={logout}
+            sx={{ ml: 1, textTransform: 'none' }}
+          >
+            {t('auth.logout')}
+          </Button>
         </Toolbar>
       </AppBar>
 

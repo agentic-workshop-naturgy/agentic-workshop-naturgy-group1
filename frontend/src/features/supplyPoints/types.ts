@@ -10,6 +10,7 @@ export interface SupplyPoint {
   codigoPostal: string | null;
   municipio: string | null;
   provincia: string | null;
+  direccion: string | null;
 }
 
 export interface SupplyPointForm {
@@ -24,6 +25,7 @@ export interface SupplyPointForm {
   codigoPostal: string;
   municipio: string;
   provincia: string;
+  direccion: string;
 }
 
 export const ESTADO_OPTIONS: Array<'ACTIVO' | 'INACTIVO'> = ['ACTIVO', 'INACTIVO'];

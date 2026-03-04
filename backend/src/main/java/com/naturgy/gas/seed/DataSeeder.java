@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,11 +43,14 @@ public class DataSeeder implements ApplicationRunner {
     private final GasConversionFactorRepository gasConversionFactorRepository;
     private final TaxConfigRepository taxConfigRepository;
     private final GasReadingRepository gasReadingRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(ApplicationArguments args) {
         log.info("=== DataSeeder: starting idempotent CSV seed ===");
         String samplesDir = resolveSamplesDir();
+        seedUsuarios();
         seedClientes();
         seedSupplyPoints(samplesDir);
         seedGasTariffs(samplesDir);
@@ -78,13 +82,41 @@ public class DataSeeder implements ApplicationRunner {
     }
 
     @Transactional
+    public void seedUsuarios() {
+        if (usuarioRepository.count() > 0) return;
+        // Admin user
+        Usuario admin = new Usuario();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setNombre("Administrador");
+        admin.setRol(Usuario.Rol.ADMIN);
+        usuarioRepository.save(admin);
+        // Viewer user
+        Usuario viewer = new Usuario();
+        viewer.setUsername("viewer");
+        viewer.setPassword(passwordEncoder.encode("viewer123"));
+        viewer.setNombre("Consultor");
+        viewer.setRol(Usuario.Rol.VIEWER);
+        usuarioRepository.save(viewer);
+        log.info("usuarios: 2 seed users created (admin/viewer)");
+    }
+
+    @Transactional
     public void seedClientes() {
         if (clienteRepository.count() > 0) return;
+        // Jugadores del FC Barcelona (plantilla 2025-26)
         Object[][] data = {
-            {"12345678A", "Ana",    "García López",    "ana.garcia@example.com",    "600111222", java.time.LocalDate.of(1985, 3, 14)},
-            {"87654321B", "Carlos", "Martínez Ruiz",   "carlos.m@example.com",      "611333444", java.time.LocalDate.of(1978, 7, 22)},
-            {"11223344C", "Lucía",  "Fernández Pérez", "lucia.f@example.com",       "622555666", java.time.LocalDate.of(1992, 11, 5)},
-            {"44332211D", "Javier", "López Sánchez",   "javier.l@example.com",      "633777888", java.time.LocalDate.of(1970, 1, 30)},
+            {"X1234567A", "Marc-André", "ter Stegen",    "terstegen@fcbarcelona.com",  "600000001", java.time.LocalDate.of(1992, 4, 30)},
+            {"X2345678B", "Alejandro",  "Balde Rodríguez","balde@fcbarcelona.com",     "600000002", java.time.LocalDate.of(2003, 10, 18)},
+            {"X3456789C", "Ronald",     "Araújo da Silva","araujo@fcbarcelona.com",    "600000003", java.time.LocalDate.of(1999, 3, 7)},
+            {"54321098D", "Pau",        "Cubarsí Casas",  "cubarsi@fcbarcelona.com",   "600000004", java.time.LocalDate.of(2007, 1, 22)},
+            {"X4567890E", "Jules",      "Koundé",         "kounde@fcbarcelona.com",    "600000005", java.time.LocalDate.of(1998, 11, 12)},
+            {"67890123F", "Pedro",      "González López", "pedri@fcbarcelona.com",     "600000006", java.time.LocalDate.of(2002, 11, 25)},
+            {"78901234G", "Francisco",  "Páez Jiménez",   "gavi@fcbarcelona.com",      "600000007", java.time.LocalDate.of(2004, 2, 5)},
+            {"X5678901H", "Frenkie",    "de Jong",        "dejong@fcbarcelona.com",    "600000008", java.time.LocalDate.of(1997, 5, 12)},
+            {"89012345I", "Lamine",     "Yamal Nasraoui", "yamal@fcbarcelona.com",     "600000009", java.time.LocalDate.of(2007, 7, 16)},
+            {"X6789012J", "Robert",     "Lewandowski",    "lewandowski@fcbarcelona.com","600000010", java.time.LocalDate.of(1988, 8, 21)},
+            {"X7890123K", "Raphael",    "Dias Belloli",   "raphinha@fcbarcelona.com",  "600000011", java.time.LocalDate.of(1996, 12, 14)},
         };
         for (Object[] row : data) {
             Cliente c = new Cliente();
@@ -119,6 +151,11 @@ public class DataSeeder implements ApplicationRunner {
             if (row.length > 7)  sp.setCodigoPostal(cell(row, 7, file));
             if (row.length > 8)  sp.setMunicipio(cell(row, 8, file));
             if (row.length > 9)  sp.setProvincia(cell(row, 9, file));
+            if (row.length > 10) {
+                String nif = cell(row, 10, file);
+                clienteRepository.findByNif(nif).ifPresent(sp::setCliente);
+            }
+            if (row.length > 11) sp.setDireccion(cell(row, 11, file));
             supplyPointRepository.save(sp);
             loaded++;
         }

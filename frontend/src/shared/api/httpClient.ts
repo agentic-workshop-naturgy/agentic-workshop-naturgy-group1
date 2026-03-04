@@ -1,6 +1,10 @@
+import { getStoredToken } from '../../features/auth/AuthContext';
+
 const BASE_URL = '/api/gas';
 
 function mapError(status: number, message?: string): string {
+  if (status === 401) return 'Sesión expirada. Inicia sesión de nuevo.';
+  if (status === 403) return 'No tienes permiso para esta acción';
   if (status === 400) return message ?? 'Solicitud inválida';
   if (status === 404) return 'Recurso no encontrado';
   if (status === 409) return message ?? 'Conflicto: el recurso ya existe';
@@ -8,12 +12,26 @@ function mapError(status: number, message?: string): string {
   return message ?? `Error HTTP ${status}`;
 }
 
+function authHeaders(): Record<string, string> {
+  const token = getStoredToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const url = `${BASE_URL}${path}`;
   const res = await fetch(url, {
-    headers: { 'Content-Type': 'application/json', ...(options?.headers ?? {}) },
+    headers: { 'Content-Type': 'application/json', ...authHeaders(), ...(options?.headers ?? {}) },
     ...options,
   });
+
+  // Auto-redirect to login on 401
+  if (res.status === 401) {
+    localStorage.removeItem('gas_jwt_token');
+    localStorage.removeItem('gas_user');
+    window.location.reload();
+    throw new Error('Sesión expirada');
+  }
+
   if (!res.ok) {
     let msg: string | undefined;
     try {
@@ -46,7 +64,7 @@ export function del(path: string): Promise<void> {
 
 export async function getBlob(path: string): Promise<Blob> {
   const url = `${BASE_URL}${path}`;
-  const res = await fetch(url);
+  const res = await fetch(url, { headers: authHeaders() });
   if (!res.ok) throw new Error(mapError(res.status));
   return res.blob();
 }

@@ -1,11 +1,11 @@
-cups,zona,tarifa,estado,calle,numero,piso,codigoPostal,municipio,provincia
-ES0021000000001AA,ZONA1,RL1,ACTIVO,Calle Gran Vía,28,3B,28013,Madrid,Madrid
-ES0021000000002BB,ZONA1,RL2,ACTIVO,Avenida Diagonal,405,5A,08008,Barcelona,Barcelona
-ES0021000000003CC,ZONA2,RL1,ACTIVO,Calle Sierpes,12,2C,41004,Sevilla,Sevilla
-ES0021000000004DD,ZONA2,RL2,ACTIVO,Calle Colón,50,4D,46004,Valencia,Valencia
-ES0021000000005EE,ZONA3,RL1,ACTIVO,Calle Urzáiz,75,1A,36201,Vigo,Pontevedra
-ES0021000000006FF,ZONA3,RL2,INACTIVO,Paseo de Gracia,92,6B,08008,Barcelona,Barcelona
-ES0021000000007GG,ZONA1,RL1,ACTIVO,Calle Alfonso I,15,3C,50003,Zaragoza,Zaragoza
-ES0021000000008HH,ZONA2,RL3,ACTIVO,Alameda Principal,7,2A,29001,Málaga,Málaga
-ES0021000000009II,ZONA3,RL1,INACTIVO,Calle Corrida,18,1B,33206,Gijón,Asturias
-ES0021000000010JJ,ZONA1,RL2,ACTIVO,Calle Santiago,3,4A,48003,Bilbao,Vizcaya
+cups,zona,tarifa,estado,calle,numero,piso,codigoPostal,municipio,provincia,nif,direccion
+ES0021000000001AA,ZONA1,RL1,ACTIVO,Carrer de Muntaner,350,4t 1a,08021,Barcelona,Barcelona,X1234567A,Carrer de Muntaner 350 4t 1a 08021 Barcelona
+ES0021000000002BB,ZONA1,RL2,ACTIVO,Passeig de la Bonanova,64,3r 2a,08017,Barcelona,Barcelona,X2345678B,Passeig de la Bonanova 64 3r 2a 08017 Barcelona
+ES0021000000003CC,ZONA2,RL1,ACTIVO,Carrer de Balmes,289,5è 1a,08006,Barcelona,Barcelona,X3456789C,Carrer de Balmes 289 5è 1a 08006 Barcelona
+ES0021000000004DD,ZONA2,RL2,ACTIVO,Avinguda Diagonal,562,2n 3a,08021,Barcelona,Barcelona,54321098D,Avinguda Diagonal 562 2n 3a 08021 Barcelona
+ES0021000000005EE,ZONA3,RL1,ACTIVO,Avinguda de Pedralbes,23,1r 1a,08034,Barcelona,Barcelona,X4567890E,Avinguda de Pedralbes 23 1r 1a 08034 Barcelona
+ES0021000000006FF,ZONA3,RL2,INACTIVO,Carrer de Ganduxer,76,4t 2a,08022,Barcelona,Barcelona,67890123F,Carrer de Ganduxer 76 4t 2a 08022 Barcelona
+ES0021000000007GG,ZONA1,RL1,ACTIVO,Passeig de Sant Gervasi,38,3r 1a,08022,Barcelona,Barcelona,78901234G,Passeig de Sant Gervasi 38 3r 1a 08022 Barcelona
+ES0021000000008HH,ZONA2,RL3,ACTIVO,Carrer de la Bonaplata,12,6è 3a,08017,Barcelona,Barcelona,X5678901H,Carrer de la Bonaplata 12 6è 3a 08017 Barcelona
+ES0021000000009II,ZONA3,RL1,INACTIVO,Carrer de Brusi,22,1r 2a,08006,Barcelona,Barcelona,89012345I,Carrer de Brusi 22 1r 2a 08006 Barcelona
+ES0021000000010JJ,ZONA1,RL2,ACTIVO,Carrer Bertran,45,5è 1a,08023,Barcelona,Barcelona,X6789012J,Carrer Bertran 45 5è 1a 08023 Barcelona
